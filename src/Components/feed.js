@@ -19,18 +19,6 @@ class Feed extends Component {
             posts: [...this.state.posts, <Post postText={post.value} postPersonName={'Captain Jack Sparrow'} postPersonTag={'@CaptainJackSparrow'} pp={pp1} geotag={'Tortuga, England'}/>]
         })
     };
-
-    const animateButton = () => {
-        const button = document.getElementById('awe');
-          //reset animation
-          button.classList.remove('animate');
-           
-          button.classList.add('animate');
-          console.log(button);
-          setTimeout(function(){
-            button.classList.remove('animate');
-          },700);
-    };
          
     return( 
     <Container>
