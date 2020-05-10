@@ -22,39 +22,28 @@ class Feed extends Component {
          
     return( 
         <Container style={{padding:'0px', margin:'0px', width:'100%', margin:'auto'}}>
-            <Row style={{padding:'0px', margin:'0px', width:'100%'}}>
-                <Col
-                    xs={12}
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    xl={12}
-                    style={{padding:'0px', margin:'0px', width:'100%'}}
-                >
-                    <div className='text-center' style={{margin:'auto', marginTop:'50px'}}>
-                        <Button variant="primary" onClick={handleShow}>
-                            Create new post
-                        </Button>
-                    </div>
-                </Col>
-            </Row>
-            <Row style={{padding:'0px', margin:'0px', width:'100%'}}>
+            <Row style={{padding:'0px', margin:'0px', width:'100%', height:'100vh', overflowY:'scroll'}}>
                 <Col
                     xs={0}
                     sm={0}
-                    md={3}
-                    lg={3}
-                    xl={3}
-                    style={{padding:'0px', margin:'0px', width:'100%'}}
+                    md={1}
+                    lg={2}
+                    xl={2}
+                    style={{padding:'5px', margin:'0px', width:'100%'}}
                 ></Col>
                 <Col
                     xs={12}
                     sm={12}
-                    md={6}
-                    lg={6}
-                    xl={6}
+                    md={10}
+                    lg={8}
+                    xl={8}
                     style={{padding:'5px', margin:'0px', width:'100%'}}
                 >
+                    <div className='text-center' style={{margin:'auto'}}>
+                        <Button variant="primary" onClick={handleShow}>
+                            Create new post
+                        </Button>
+                    </div>
                     {this.state.posts.map(post => (
                         post
                     ))}
@@ -62,10 +51,10 @@ class Feed extends Component {
                 <Col
                     xs={0}
                     sm={0}
-                    md={3}
-                    lg={3}
-                    xl={3}
-                    style={{padding:'0px', margin:'0px', width:'100%'}}
+                    md={1}
+                    lg={2}
+                    xl={2}
+                    style={{padding:'5px', margin:'0px', width:'100%'}}
                 ></Col>
             </Row>
 

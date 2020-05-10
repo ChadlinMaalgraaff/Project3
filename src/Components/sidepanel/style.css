@@ -1,13 +1,27 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  .toggle {
+html {
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #EEE;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+.toggle {
     position: ralative;
     height: 100%;
     background: #5b78c7;
-    width: 200px;
+    width: 100%;
     transition: all .5s ease-in-out;
   }
   
