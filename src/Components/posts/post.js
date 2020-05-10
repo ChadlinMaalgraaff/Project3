@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Button, Form, Image, Tooltip, OverlayTrigger } from "react-bootstrap";
 import Comment from './comment';
-import pp2 from '../Images/pp2.jpg';
+import pp2 from '../../Images/pp2.jpg';
 
 class Post extends Component {
   state = {
@@ -11,7 +11,14 @@ class Post extends Component {
     open: 'true',
     pp: this.props.pp,
     heartPost: 'false',
-    likes: 1068
+    likes: 1068,
+    reposts: 10,
+    time: '7:59 PM',
+    date: '5 Mar 2020',
+    location: this.props.geotag,
+    postText: this.props.postText,
+    postPersonName: this.props.postPersonName,
+    postPersonTag: this.props.postPersonTag
   }
 
   render() {
@@ -92,16 +99,16 @@ class Post extends Component {
               <p
                 style={{marginBottom:'0px', fontSize:'17px', marginLeft:'5px'}}
               >
-                  {this.props.postPersonName}
+                  {this.state.postPersonName}
               </p>
               <p
                 style={{marginBottom:'0px', fontSize:'13px', color:'grey', marginLeft:'5px'}}
               >
-                  {this.props.postPersonTag}
+                  {this.state.postPersonTag}
               </p>
             </div>
-            <div style={{display:'inline-block'}}>
-              <p style={{fontSize:'13px'}}><i class="fas fa-map-marker-alt" style={{color:'#F83639'}}></i> {this.props.geotag}</p>
+            <div style={{display:'inline-block', marginLeft:'auto'}}>
+              <p><Button className='follow-button'>follow</Button></p>
             </div>
           </Col>
           <Col
@@ -110,13 +117,31 @@ class Post extends Component {
               md={12}
               lg={12}
               xl={12}
+              style={{width:'100%'}}
           >
               <div style={{width:'100%'}} className='post-text-div'>
-                  <p style={{width:'100%'}}>
-                      {this.props.postText}
+                  <p style={{width:'100%', margin:'0px'}}>
+                      {this.state.postText}
                   </p>
               </div>
           </Col>
+          <Col
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+          >
+            <div style={{width:'100%'}}>
+              <p style={{fontSize:'11px', color:'grey', marginBottom:'0px', display:'inline-block'}} >
+                {this.state.time} - {this.state.date}
+              </p>
+              <div>
+              <p style={{fontSize:'11px'}}><i class="fas fa-map-marker-alt" style={{color:'#F83639'}}></i> {this.state.location}</p>
+              </div>
+              <hr/>
+            </div>
+            </Col>
           <Col
               xs={12}
               sm={12}
@@ -164,11 +189,22 @@ class Post extends Component {
                 <i className="fas fa-retweet post-icon icon-retweet"></i>
               </OverlayTrigger>{' '}
             </>
-            </div>
-            <div>
-              <p style={{fontSize:'13px', color:'grey', marginBottom:'0px'}}>
-                {this.state.likes} people liked this post.
-              </p>
+            <>
+              <OverlayTrigger
+                key={'top'}
+                placement={'top'}
+                overlay={
+                  <Tooltip id={`tooltip-${'top'}`}>
+                    Send Friend request
+                  </Tooltip>
+                }
+              >
+                <i className="fas fa-user-friends post-icon icon-friends"></i>
+              </OverlayTrigger>{' '}
+            </>
+            <p align='right' style={{fontSize:'11px', color:'grey', marginBottom:'0px', display:'inline-block'}} >
+                {this.state.likes + ' likes' + '  ' +  this.state.reposts + ' reposts'}
+            </p>
             </div>
           </Col>
         </Row>

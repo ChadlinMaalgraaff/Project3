@@ -31,7 +31,7 @@ body {
   border-width: 0px;
   border-radius: 5px;
   padding: 10px;
-  margin-bottom: 5px
+  margin-bottom: 0px
 }
 
 .post-pp {
@@ -42,7 +42,7 @@ body {
 }
 
 .post-icon {
-  font-size: 20px;
+  font-size: 15px;
   margin-right: 10px;
 }
 
@@ -87,6 +87,29 @@ body {
 
 .fa-heart {
   transition: all 0.2s ease-in;
+}
+
+.follow-button {
+  font-size: 13px;
+  height: 20px;
+  border-radius: 1rem;
+  padding: 0px;
+  width: 80px;
+  background-color: white;
+  border-color: lightseagreen;
+  color: lightseagreen;
+}
+
+.follow-button:hover {
+  background-color: lightseagreen;
+  border-color: lightseagreen;
+  color: white;
+}
+
+.follow-button:focus {
+  background-color: lightseagreen;
+  border-color: lightseagreen;
+  color: white;
 }
 
 @-webkit-keyframes pulse {

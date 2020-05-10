@@ -1,5 +1,5 @@
 import React from 'react';
-import Feed from './Components/feed';
+import Feed from './Components/Dashboard/feed';
 
 function App() {
     return ( 

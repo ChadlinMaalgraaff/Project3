@@ -1,0 +1,109 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  .toggle {
+    position: ralative;
+    height: 100%;
+    background: #5b78c7;
+    width: 200px;
+    transition: all .5s ease-in-out;
+  }
+  
+  .toggle-content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .toggle {
+      position: fixed;
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+    }
+  
+    .menu-btn {
+      margin-left: 10px;
+      margin-top: 5px;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      height: 40px;
+      cursor: pointer;
+      transition: all .5s ease-in-out;
+      z-index: 2;
+    }
+    .menu-btn__burger {
+      width: 30px;
+      height: 3px;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(255,101,47,.2);
+      transition: all .5s ease-in-out;
+    }
+    .menu-btn__burger::before,
+    .menu-btn__burger::after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 3px;
+      background: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(255,101,47,.2);
+      transition: all .5s ease-in-out;
+    }
+    .menu-btn__burger::before {
+      transform: translateY(-8px);
+    }
+    .menu-btn__burger::after {
+      transform: translateY(8px);
+    }
+    /* ANIMATION */
+    .menu-btn.open .menu-btn__burger {
+      transform: translateX(-50px);
+      background: transparent;
+      box-shadow: none;
+    }
+    .menu-btn.open .menu-btn__burger::before {
+      transform: rotate(45deg) translate(35px, -35px);
+    }
+    .menu-btn.open .menu-btn__burger::after {
+      transform: rotate(-45deg) translate(35px, 35px);
+    }
+  
+    .toggle-content {
+      position: fixed;
+      background: #5b78c7;
+      height: 100vh;
+      width: 100%;
+      flex-direction: column;
+      clip-path: circle(100px at 90% -100%);
+      -webkit-clip-path: circle(100px at 90% -100%);
+      transition: all 1s ease-out;
+      pointer-events: none;
+    }
+
+    .toggle-content.open {
+      clip-path: circle(1000px at 90% );
+      -webkit-clip-path: circle(1000px at 90%);
+      pointer-events: all;
+    }
+
+    .content-item {
+      opacity: 0;
+      transition: all 0.5s ease 0.2s;
+    }
+
+    .content-item.fade {
+      opacity: 1;
+    }
+  }
