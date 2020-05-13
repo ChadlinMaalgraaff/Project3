@@ -2,80 +2,82 @@ import React, { Component } from "react";
 import { Container, Row, Col, Modal, Button, Form } from "react-bootstrap";
 import Post from '../posts/post';
 import pp1 from '../../Images/pp1.jpg';
+import Taskbar from './taskbar';
 
 class Feed extends Component {
     state = {
-        show: false,
-        posts: []
+        posts: [],
+        postPersonName: 'Captain Jack Sparrow',
+        postPersonTag: '@CaptainJackSparrow',
+        geotag: 'Tortuga, England',
+        postPersonID: Math.random(), /* Need to get a more reliable ID */
+        time: '11:57 PM',
+        date: ' 13 March 2020',
+        personPP: pp1
     }
 
   render() {
-    const handleClose = () => {this.setState({show:false})};
-    const handleShow = () => {this.setState({show:true})};
     const createPost = () => {
         const post = document.getElementById('my-post');
 
         this.setState({
-            posts: [...this.state.posts, <Post postText={post.value} postPersonName={'Captain Jack Sparrow'} postPersonTag={'@CaptainJackSparrow'} pp={pp1} geotag={'Tortuga, England'}/>]
+            posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.postPersonName} postPersonTag={this.state.postPersonTag} pp={this.state.personPP} geotag={this.state.geotag} id={this.state.postPersonID} date={this.state.date} time={this.state.time}/>]
         })
     };
          
     return( 
-        <Container style={{padding:'0px', margin:'0px', width:'100%', margin:'auto'}}>
-            <Row style={{padding:'0px', margin:'0px', width:'100%', height:'100vh', overflowY:'scroll'}}>
+        <Container fluid style={{padding:'0px', margin:'0px', width:'100%'}}>
+            <Row style={{padding:'0px', margin:'0px', width:'100%'}}>
                 <Col
                     xs={0}
                     sm={0}
-                    md={1}
-                    lg={2}
-                    xl={2}
-                    style={{padding:'5px', margin:'0px', width:'100%'}}
-                ></Col>
-                <Col
+                    md={6}
+                    lg={6}
+                    xl={6}
+                    style={{padding:'0px', margin:'0px', width:'100%'}}
+                >
+                    <Taskbar createPost={createPost}/>
+                </Col>
+                <Col 
                     xs={12}
                     sm={12}
-                    md={10}
-                    lg={8}
-                    xl={8}
-                    style={{padding:'5px', margin:'0px', width:'100%'}}
+                    md={6}
+                    lg={6}
+                    xl={6}
+                    style={{padding:'0px', margin:'0px', height:'100vh', overflowY:'scroll'}}
                 >
-                    <div className='text-center' style={{margin:'auto'}}>
-                        <Button variant="primary" onClick={handleShow}>
-                            Create new post
-                        </Button>
-                    </div>
-                    {this.state.posts.map(post => (
-                        post
-                    ))}
+                    <Row style={{padding:'0px', margin:'0px', width:'100%'}}>
+                        <Col
+                            xs={0}
+                            sm={0}
+                            md={0}
+                            lg={1}
+                            xl={1}
+                            style={{padding:'5px', margin:'0px', width:'100%'}}
+                        ></Col>
+                        <Col
+                            xs={12}
+                            sm={12}
+                            md={12}
+                            lg={10}
+                            xl={10}
+                            style={{padding:'5px', margin:'0px', width:'100%'}}
+                        >
+                            {this.state.posts.map(post => (
+                                post
+                            ))}
+                        </Col>
+                        <Col
+                            xs={0}
+                            sm={0}
+                            md={0}
+                            lg={1}
+                            xl={1}
+                            style={{padding:'5px', margin:'0px', width:'100%'}}
+                        ></Col>
+                    </Row>
                 </Col>
-                <Col
-                    xs={0}
-                    sm={0}
-                    md={1}
-                    lg={2}
-                    xl={2}
-                    style={{padding:'5px', margin:'0px', width:'100%'}}
-                ></Col>
             </Row>
-
-            {/* Modal used to type post */}
-            <Modal show={this.state.show} onHide={handleClose} centered>
-                <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
-                    <Modal.Title style={{fontFamily:'Vision-Heavy', color:'#67a495'}}>You can contact us via:</Modal.Title>
-                </Modal.Header>
-                <Modal.Body style={{backgroundColor:'#ffffff'}}>
-                    <div className='icons text-center'>
-                    <Form.Label>Enter post here</Form.Label>
-                    <Form.Control type="text" placeholder="my post..." id='my-post'/>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer style={{backgroundColor:'#faf6ee'}}>
-                <Button variant="primary" onClick={createPost}>
-                    Post
-                </Button>
-                </Modal.Footer>
-            </Modal>
-            {/* Modal used to type post */}
         </Container>
     );
   }

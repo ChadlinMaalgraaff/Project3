@@ -13,12 +13,13 @@ class Post extends Component {
     heartPost: 'false',
     likes: 1068,
     reposts: 10,
-    time: '7:59 PM',
-    date: '5 Mar 2020',
+    time: this.props.time,
+    date: this.props.date,
     location: this.props.geotag,
     postText: this.props.postText,
     postPersonName: this.props.postPersonName,
-    postPersonTag: this.props.postPersonTag
+    postPersonTag: this.props.postPersonTag,
+    postPersonID: this.props.postPersonID
   }
 
   render() {
