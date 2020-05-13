@@ -1,6 +1,5 @@
 import React from 'react';
 import Feed from './Components/Dashboard/feed';
-import { Container, Row, Col } from 'react-bootstrap';
 
 function App() {
     return ( 

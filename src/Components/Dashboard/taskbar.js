@@ -1,10 +1,116 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Button, Modal, Form } from 'react-bootstrap';
+import { Container, Row, Col, Button, Modal, Form, FormControl } from 'react-bootstrap';
 import '../sidepanel/style.css';
 
 class Taskbar extends Component {
     state = {
         show: false,
+        checkMostLiked: false,
+        checkMostReposted: false,
+        checkMostRecent: false,
+        checkFriends: false,
+        checkFollowers: false,
+        checkTime: false,
+        checkLocation: false,
+        checkCategory: false,
+        checkUserGroup: false
+    }
+
+    check = (e) => {
+        console.log(e.target.id);
+
+        if (e.target.id === 'check-most-liked') {
+            if (this.state.checkMostLiked == false) {
+                this.setState({
+                    checkMostLiked: true
+                })
+            }else {
+                this.setState({
+                    checkMostLiked: false
+                })
+            }
+        }else if (e.target.id === 'check-most-reposted') {
+            if (this.state.checkMostReposted == false) {
+                this.setState({
+                    checkMostReposted: true
+                })
+            }else {
+                this.setState({
+                    checkMostReposted: false
+                })
+            }
+        }else if (e.target.id === 'check-most-recent') {
+            if (this.state.checkMostRecent == false) {
+                this.setState({
+                    checkMostRecent: true
+                })
+            }else {
+                this.setState({
+                    checkMostRecent: false
+                })
+            }
+        }else if (e.target.id === 'check-friends') {
+            if (this.state.checkFriends == false) {
+                this.setState({
+                    checkFriends: true
+                })
+            }else {
+                this.setState({
+                    checkFriends: false
+                })
+            }
+        }else if (e.target.id === 'check-followers') {
+            if (this.state.checkFollowers == false) {
+                this.setState({
+                    checkFollowers: true
+                })
+            }else {
+                this.setState({
+                    checkFollowers: false
+                })
+            }
+        }else if (e.target.id === 'check-time') {
+            if (this.state.checkTime == false) {
+                this.setState({
+                    checkTime: true
+                })
+            }else {
+                this.setState({
+                    checkTime: false
+                })
+            }
+        }else if (e.target.id === 'check-location') {
+            if (this.state.checkLocation == false) {
+                this.setState({
+                    checkLocation: true
+                })
+            }else {
+                this.setState({
+                    checkLocation: false
+                })
+            }
+        }else if (e.target.id === 'check-category') {
+            if (this.state.checkCategory == false) {
+                this.setState({
+                    checkCategory: true
+                })
+            }else {
+                this.setState({
+                    checkCategory: false
+                })
+            }
+        }else if (e.target.id === 'check-user-group') {
+            if (this.state.checkUserGroup == false) {
+                this.setState({
+                    checkUserGroup: true
+                })
+            }else {
+                this.setState({
+                    checkUserGroup: false
+                })
+            }
+        }
+
     }
 
     render() {
@@ -60,7 +166,7 @@ class Taskbar extends Component {
                                     style={{padding:'0px', margin:'0px', width:'100%'}}
                                     className='content-item' id='content-item'
                                 >
-                                    <Button variant="primary" onClick={handleShow}>
+                                    <Button variant="dark" onClick={handleShow} style={{padding:'0px', margin:'0px', width:'100%'}}>
                                         Create new post
                                     </Button>
                                 </Col>
@@ -73,7 +179,8 @@ class Taskbar extends Component {
                                     style={{padding:'0px', margin:'0px', width:'100%'}}
                                     className='content-item' id='content-item'
                                 >
-                                    Search
+                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                                    <Button variant="outline-light" style={{width:'100%'}}>Search</Button>
                                 </Col>
                                 <Col
                                     xs={12}
@@ -84,7 +191,22 @@ class Taskbar extends Component {
                                     style={{padding:'0px', margin:'0px', width:'100%'}}
                                     className='content-item' id='content-item'
                                 >
-                                    Filter
+                                    <h3>Filter</h3>
+                                    <Form.Group controlId="formBasicCheckbox">
+                                        <Form.Check type="checkbox" label="Most Liked" id='check-most-liked' onClick={this.check}/>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicCheckbox">
+                                        <Form.Check type="checkbox" label="Most Reposted" id='check-most-reposted' onClick={this.check}/>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicCheckbox">
+                                        <Form.Check type="checkbox" label="Most Recent" id='check-most-recent' onClick={this.check}/>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicCheckbox">
+                                        <Form.Check type="checkbox" label="Friends" id='check-friends' onClick={this.check}/>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicCheckbox">
+                                        <Form.Check type="checkbox" label="Followers" id='check-followers' onClick={this.check}/>
+                                    </Form.Group>
                                 </Col>
                                 <Col
                                     xs={12}
@@ -95,7 +217,19 @@ class Taskbar extends Component {
                                     style={{padding:'0px', margin:'0px', width:'100%'}}
                                     className='content-item' id='content-item'
                                 >
-                                    Sort
+                                    <h3>Sort</h3>
+                                    <Form.Group controlId="formBasicCheckbox">
+                                        <Form.Check type="checkbox" label="Time" id='check-time' onClick={this.check}/>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicCheckbox">
+                                        <Form.Check type="checkbox" label="Location" id='check-location' onClick={this.check}/>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicCheckbox">
+                                        <Form.Check type="checkbox" label="Category" id='check-category' onClick={this.check}/>
+                                    </Form.Group>
+                                    <Form.Group controlId="formBasicCheckbox">
+                                        <Form.Check type="checkbox" label="User/Group" id='check-user-group' onClick={this.check}/>
+                                    </Form.Group>
                                 </Col>
                             </Row>
                         </Col>

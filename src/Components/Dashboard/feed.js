@@ -21,9 +21,15 @@ class Feed extends Component {
         const post = document.getElementById('my-post');
 
         this.setState({
-            posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.postPersonName} postPersonTag={this.state.postPersonTag} pp={this.state.personPP} geotag={this.state.geotag} id={this.state.postPersonID} date={this.state.date} time={this.state.time}/>]
+            posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.postPersonName} 
+                postPersonTag={this.state.postPersonTag} pp={this.state.personPP} geotag={this.state.geotag} id={this.state.postPersonID} 
+                date={this.state.date} time={this.state.time} filterMostLiked={filterLiked}/>]
         })
     };
+
+    const filterLiked = () =>{
+        console.log('Most liked.')
+    }
          
     return( 
         <Container fluid style={{padding:'0px', margin:'0px', width:'100%'}}>
