@@ -25,6 +25,10 @@ class Feed extends Component {
                 postPersonTag={this.state.postPersonTag} pp={this.state.personPP} geotag={this.state.geotag} id={this.state.postPersonID} 
                 date={this.state.date} time={this.state.time} filterMostLiked={filterLiked}/>]
         })
+        if (this.state.posts[0] != null) {
+            console.log(this.state.posts[0]);
+            console.log(this.state.posts[0].props['postText']);
+        }
     };
 
     const filterLiked = () =>{
