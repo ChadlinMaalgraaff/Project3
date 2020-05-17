@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Modal, Button, Form } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import Post from '../posts/post';
 import pp1 from '../../Images/pp1.jpg';
 import Taskbar from './taskbar';
@@ -13,7 +13,9 @@ class Feed extends Component {
         postPersonID: Math.random(), /* Need to get a more reliable ID */
         time: '11:57 PM',
         date: ' 13 March 2020',
-        personPP: pp1
+        personPP: pp1,
+        friendIDs: [],
+        followerIDs: []
     }
 
   render() {
@@ -23,16 +25,15 @@ class Feed extends Component {
         this.setState({
             posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.postPersonName} 
                 postPersonTag={this.state.postPersonTag} pp={this.state.personPP} geotag={this.state.geotag} id={this.state.postPersonID} 
-                date={this.state.date} time={this.state.time} filterMostLiked={filterLiked}/>]
+                date={this.state.date} time={this.state.time} followerIDs={this.state.followerIDs}/>]
         })
         if (this.state.posts[0] != null) {
             console.log(this.state.posts[0]);
-            console.log(this.state.posts[0].props['postText']);
         }
     };
 
-    const filterLiked = () =>{
-        console.log('Most liked.')
+    const filterPosts = (filterType) =>{
+        console.log('FilterType: ' + filterType);
     }
          
     return( 
@@ -46,7 +47,7 @@ class Feed extends Component {
                     xl={6}
                     style={{padding:'0px', margin:'0px', width:'100%'}}
                 >
-                    <Taskbar createPost={createPost}/>
+                    <Taskbar createPost={createPost} filterPosts={filterPosts}/>
                 </Col>
                 <Col 
                     xs={12}

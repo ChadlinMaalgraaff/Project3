@@ -17,13 +17,13 @@ class Taskbar extends Component {
     }
 
     check = (e) => {
-        console.log(e.target.id);
 
         if (e.target.id === 'check-most-liked') {
             if (this.state.checkMostLiked == false) {
                 this.setState({
                     checkMostLiked: true
                 })
+                this.props.filterPosts('most-liked');
             }else {
                 this.setState({
                     checkMostLiked: false
@@ -34,6 +34,7 @@ class Taskbar extends Component {
                 this.setState({
                     checkMostReposted: true
                 })
+                this.props.filterPosts('most-reposted');
             }else {
                 this.setState({
                     checkMostReposted: false
@@ -44,6 +45,7 @@ class Taskbar extends Component {
                 this.setState({
                     checkMostRecent: true
                 })
+                this.props.filterPosts('most-recent');
             }else {
                 this.setState({
                     checkMostRecent: false
@@ -54,6 +56,7 @@ class Taskbar extends Component {
                 this.setState({
                     checkFriends: true
                 })
+                this.props.filterPosts('friends');
             }else {
                 this.setState({
                     checkFriends: false
@@ -64,6 +67,7 @@ class Taskbar extends Component {
                 this.setState({
                     checkFollowers: true
                 })
+                this.props.filterPosts('followers');
             }else {
                 this.setState({
                     checkFollowers: false
@@ -74,6 +78,7 @@ class Taskbar extends Component {
                 this.setState({
                     checkTime: true
                 })
+                this.props.filterPosts('time');
             }else {
                 this.setState({
                     checkTime: false
@@ -120,7 +125,6 @@ class Taskbar extends Component {
             const content = document.getElementById('toggle-content');
             const items = content.getElementsByClassName('content-item');
             const menuBtn = document.getElementById('menu-btn');
-            console.log('clicked')
 
             if(!menuOpen) {
                 menuBtn.classList.add('open');

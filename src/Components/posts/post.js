@@ -11,7 +11,7 @@ class Post extends Component {
     open: 'true',
     pp: this.props.pp,
     heartPost: 'false',
-    likes: 1068,
+    likes: 1069,
     reposts: 10,
     time: this.props.time,
     date: this.props.date,
@@ -19,7 +19,8 @@ class Post extends Component {
     postText: this.props.postText,
     postPersonName: this.props.postPersonName,
     postPersonTag: this.props.postPersonTag,
-    postPersonID: this.props.postPersonID
+    postPersonID: this.props.id,
+    followerIDs: this.props.followerIDs
   }
 
   render() {
@@ -31,6 +32,23 @@ class Post extends Component {
       })
       comment.value = '';
     }
+
+    const follow = () => {
+
+      if (this.state.followerIDs.includes(this.state.postPersonID) && (this.state.postPersonID != null)) {
+        var i = this.state.followerIDs.indexOf(this.state.postPersonID);
+        if (i > -1) {
+          this.setState({
+            followerIDs: this.state.followerIDs.filter(item => item != this.state.followerIDs[i])
+          })
+        }
+      }else if ((this.state.postPersonID != null) && (!this.state.followerIDs.includes(this.state.postPersonID))) {
+        this.setState({
+          followerIDs: [...this.state.followerIDs, this.state.postPersonID]
+        });
+      }
+    }
+
     const openBottom = () => {
       const bottom = document.getElementById(rando); 
   
@@ -109,7 +127,9 @@ class Post extends Component {
               </p>
             </div>
             <div style={{display:'inline-block', marginLeft:'auto'}}>
-              <p><Button className='follow-button'>follow</Button></p>
+              <p><Button className='follow-button' onClick={follow}>
+                {this.state.followerIDs.includes(this.state.postPersonID) ? ('unfollow'):('follow')}
+              </Button></p>
             </div>
           </Col>
           <Col
@@ -196,7 +216,7 @@ class Post extends Component {
                 placement={'top'}
                 overlay={
                   <Tooltip id={`tooltip-${'top'}`}>
-                    Send Friend request
+                    Send Friend request to {this.state.postPersonName}
                   </Tooltip>
                 }
               >
