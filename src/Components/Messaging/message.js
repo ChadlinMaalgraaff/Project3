@@ -4,6 +4,7 @@ class Message extends Component {
   state = {
     time: this.props.time,
     text: this.props.text,
+    id: this.props.id
   };
 
   render() {
