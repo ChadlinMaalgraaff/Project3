@@ -68,7 +68,9 @@ class Chat extends Component {
               }}
             >
               {this.state.messages.map(message => (
-                        message
+                      <div className='message' style={{ marginLeft: message.props["personId"] == this.state.personId ? ('0px'):('auto') }}>
+                        { message }
+                      </div>
                     ))}
             </div>
           </Col>

@@ -5,15 +5,15 @@ class Message extends Component {
   state = {
     time: this.props.time,
     text: this.props.text,
-    id: this.props.id
+    personId: this.props.personId
   };
 
   render() {
     return (
-      <div className='message'>
+      <>
         <p className="message-text">{this.state.text}</p>
         <p className="message-time">{this.state.time}</p>
-      </div>
+      </>
     );
   }
 }
