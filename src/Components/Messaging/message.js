@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import './messaging.css';
 
 class Message extends Component {
   state = {
@@ -9,7 +10,7 @@ class Message extends Component {
 
   render() {
     return (
-      <div>
+      <div className='message'>
         <p className="message-text">{this.state.text}</p>
         <p className="message-time">{this.state.time}</p>
       </div>

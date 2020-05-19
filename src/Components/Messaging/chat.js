@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Container, Col, Row, Button, Form } from "react-bootstrap";
 import Message from './message';
+import './messaging.css';
 
 class Chat extends Component {
   state={
