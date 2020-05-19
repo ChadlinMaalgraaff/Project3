@@ -1,32 +1,65 @@
 import React, { Component } from "react";
 import { Container, Col, Row, Button, Form } from "react-bootstrap";
-import Message from './message';
-import './messaging.css';
+import Message from "./message";
+import "./messaging.css";
 
 class Chat extends Component {
-  state={
+  state = {
     personId: 1,
+    personId2: 2,
     messages: [],
-    time: 'eh-time',
-    i: 0
-  }
+    time: "eh-time",
+    i: 0,
+  };
 
   render() {
     const message = () => {
-      const messageText = document.getElementById('my-message').value;
+      const messageText = document.getElementById("my-message").value;
       const messageId = Math.random();
 
       this.setState({
-        messages: [...this.state.messages, <Message time={this.state.time} personId={this.state.id} messageId={messageId} text={messageText}/>]
+        messages: [
+          ...this.state.messages,
+          <Message
+            time={this.state.time}
+            personId={this.state.personId}
+            messageId={messageId}
+            text={messageText}
+          />,
+        ],
       });
 
       if (this.state.messages.length > 0) {
         console.log(this.state.messages[this.state.i]);
         this.setState({
-          i: this.state.i + 1
+          i: this.state.i + 1,
         });
       }
-    }
+    };
+
+    const message2 = () => {
+      const messageText = document.getElementById("my-message2").value;
+      const messageId = Math.random();
+
+      this.setState({
+        messages: [
+          ...this.state.messages,
+          <Message
+            time={this.state.time}
+            personId={this.state.personId2}
+            messageId={messageId}
+            text={messageText}
+          />,
+        ],
+      });
+
+      if (this.state.messages.length > 0) {
+        console.log(this.state.messages[this.state.i]);
+        this.setState({
+          i: this.state.i + 1,
+        });
+      }
+    };
 
     return (
       <Container style={{ position: "relative", minHeight: "100vh" }}>
@@ -37,7 +70,7 @@ class Chat extends Component {
             md={12}
             lg={12}
             xl={12}
-            style={{ height: "10vh" }}
+            style={{ height: "20vh" }}
           >
             <div
               style={{
@@ -46,7 +79,19 @@ class Chat extends Component {
                 backgroundColor: "green",
               }}
             >
-              Top
+              <h3>Other Person: </h3><br/>
+              <Form.Control
+                type="text"
+                placeholder="Type a message..."
+                id="my-message2"
+              />
+              <Button
+                variant="dark"
+                style={{ marginTop: "5px" }}
+                onClick={message2}
+              >
+                send
+              </Button>
             </div>
           </Col>
         </Row>
@@ -57,21 +102,29 @@ class Chat extends Component {
             md={12}
             lg={12}
             xl={12}
-            style={{ height: "70vh"}}
+            style={{ height: "60vh" }}
           >
             <div
               style={{
                 height: "100%",
                 width: "100%",
                 backgroundColor: "yellow",
-                overflowY:'scroll'
+                overflowY: "scroll",
               }}
             >
-              {this.state.messages.map(message => (
-                      <div className='message' style={{ marginLeft: message.props["personId"] == this.state.personId ? ('0px'):('auto') }}>
-                        { message }
-                      </div>
-                    ))}
+              {this.state.messages.map((message) => (
+                <div
+                  className="message"
+                  style={{
+                    marginLeft:
+                      message.props["personId"] == this.state.personId
+                        ? "auto"
+                        : "0px",
+                  }}
+                >
+                  {message}
+                </div>
+              ))}
             </div>
           </Col>
         </Row>
@@ -92,8 +145,17 @@ class Chat extends Component {
             <div
               style={{ height: "100%", width: "100%", backgroundColor: "red" }}
             >
-              <Form.Control type="text" placeholder="Type a message..." id='my-message'/>
-              <Button variant="dark" style={{ marginTop: "5px" }} onClick={message}>
+              <h3>Me: </h3><br/>
+              <Form.Control
+                type="text"
+                placeholder="Type a message..."
+                id="my-message"
+              />
+              <Button
+                variant="dark"
+                style={{ marginTop: "5px" }}
+                onClick={message}
+              >
                 send
               </Button>
             </div>

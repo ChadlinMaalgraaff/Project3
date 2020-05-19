@@ -10,10 +10,10 @@ class Message extends Component {
 
   render() {
     return (
-      <>
+      <div className='message-inner'>
         <p className="message-text">{this.state.text}</p>
         <p className="message-time">{this.state.time}</p>
-      </>
+      </div>
     );
   }
 }
