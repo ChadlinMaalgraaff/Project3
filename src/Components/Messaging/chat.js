@@ -4,11 +4,15 @@ import Message from "./message";
 import "./messaging.css";
 import '../sidepanel/style.css';
 import pp from '../../Images/pp1.jpg';
+import pp2 from '../../Images/pp2.jpg';
+import Person from './person';
 
 class Chat extends Component {
   state = {
     personId: 1,
     personId2: 2,
+    personName: 'My Name is...',
+    personPP: pp2,
     messages: [],
     time: "eh-time",
     i: 0,
@@ -19,6 +23,27 @@ class Chat extends Component {
   };
 
   render() {
+    let menuOpen = false;
+
+    const toggle = () => {
+        const content = document.getElementById('toggle-content');
+        const items = content.getElementsByClassName('content-item');
+        const menuBtn = document.getElementById('menu-btn');
+
+        if(!menuOpen) {
+            menuBtn.classList.add('open');
+            menuOpen = true;
+          } else {
+            menuBtn.classList.remove('open');
+            menuOpen = false;
+        } 
+
+        content.classList.toggle("open");
+        for (var i = 0; i < items.length; i++) {
+            items[i].classList.toggle("fade");
+        }
+    }
+
     const message = () => {
       const messageText = document.getElementById("my-message").value;
       const messageId = Math.random();
@@ -67,25 +92,31 @@ class Chat extends Component {
       }
     };
 
-    let menuOpen = false;
+    const newChat = () => {
+      const chatID = Math.random();
+      const rando = Math.random();
+      const messages = ['awe'];
+      const people = [
+      <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>,
+      <Person personId={rando} personName={'Bot' + rando} personPP={pp}/>
+    ]
 
-    const toggle = () => {
-        const content = document.getElementById('toggle-content');
-        const items = content.getElementsByClassName('content-item');
-        const menuBtn = document.getElementById('menu-btn');
+    this.setState({
+      chats: [...this.state.chats, [chatID, people, messages]]
+    });
 
-        if(!menuOpen) {
-            menuBtn.classList.add('open');
-            menuOpen = true;
-          } else {
-            menuBtn.classList.remove('open');
-            menuOpen = false;
-        } 
+      if (this.state.chats.length > 0) {
+          console.log(this.state.chats[0]);
+          this.setState({
+            activeChat: this.state.chats[0][2],
+            activeChatName: this.state.chats[0][1][1].props.personName,
+            activeChatPP: this.state.chats[0][1][1].props.personPP,
+          });
+      }
+    }
 
-        content.classList.toggle("open");
-        for (var i = 0; i < items.length; i++) {
-            items[i].classList.toggle("fade");
-        }
+    const setActive = () => {
+
     }
 
     return (
@@ -100,7 +131,7 @@ class Chat extends Component {
 
                   <div className='toggle-content' id='toggle-content'>
                       <div className='content-item' id='content-item'>
-                          Content item
+                          <Button onClick={newChat}>New Chat</Button>
                       </div>
                   </div>
 
