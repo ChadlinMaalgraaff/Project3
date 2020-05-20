@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Container, Col, Row, Button, Form } from "react-bootstrap";
 import Message from "./message";
 import "./messaging.css";
+import '../sidepanel/style.css';
 
 class Chat extends Component {
   state = {
@@ -61,104 +62,147 @@ class Chat extends Component {
       }
     };
 
+    let menuOpen = false;
+
+    const toggle = () => {
+        const content = document.getElementById('toggle-content');
+        const items = content.getElementsByClassName('content-item');
+        const menuBtn = document.getElementById('menu-btn');
+
+        if(!menuOpen) {
+            menuBtn.classList.add('open');
+            menuOpen = true;
+          } else {
+            menuBtn.classList.remove('open');
+            menuOpen = false;
+        } 
+
+        content.classList.toggle("open");
+        for (var i = 0; i < items.length; i++) {
+            items[i].classList.toggle("fade");
+        }
+    }
+
     return (
-      <Container style={{ position: "relative", minHeight: "100vh" }}>
-        <Row>
-          <Col
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            xl={12}
-            style={{ height: "20vh" }}
-          >
-            <div
-              style={{
-                height: "100%",
-                width: "100%",
-                backgroundColor: "green",
-              }}
-            >
-              <h3>Other Person: </h3><br/>
-              <Form.Control
-                type="text"
-                placeholder="Type a message..."
-                id="my-message2"
-              />
-              <Button
-                variant="dark"
-                style={{ marginTop: "5px" }}
-                onClick={message2}
-              >
-                send
-              </Button>
+      <Container fluid style={{ position: "relative", minHeight: "100vh", margin:'0px', padding:'0px' }}>
+        <Row style={{margin:'0px', padding:'0px'}}>
+          <Col xs={0} sm={0} md={6} lg={6} xl={6} style={{margin:'0px', padding:'0px'}}>
+            <div className='toggle'>
+                <div className="menu-btn" id='menu-btn' onClick={toggle}>
+                    <div className="menu-btn__burger"></div>
+                </div>
+                <div className='toggle-content' id='toggle-content'>
+                    <div className='content-item' id='content-item'>
+                        Content item
+                    </div>
+                </div>
             </div>
           </Col>
-        </Row>
-        <Row>
-          <Col
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            xl={12}
-            style={{ height: "60vh" }}
-          >
-            <div
-              style={{
-                height: "100%",
-                width: "100%",
-                backgroundColor: "yellow",
-                overflowY: "scroll",
-              }}
-            >
-              {this.state.messages.map((message) => (
+          <Col xs={12} sm={12} md={6} lg={6} xl={6} style={{margin:'0px', padding:'0px'}}>
+            <Row style={{margin:'0px', padding:'0px'}}>
+              <Col
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                style={{ height: "20vh" }}
+              >
                 <div
-                  className="message"
                   style={{
-                    marginLeft:
-                      message.props["personId"] == this.state.personId
-                        ? "auto"
-                        : "0px",
+                    height: "100%",
+                    width: "100%",
+                    backgroundColor: "green",
                   }}
                 >
-                  {message}
+                  <h3>Other Person: </h3>
+                  <br />
+                  <Form.Control
+                    type="text"
+                    placeholder="Type a message..."
+                    id="my-message2"
+                  />
+                  <Button
+                    variant="dark"
+                    style={{ marginTop: "5px" }}
+                    onClick={message2}
+                  >
+                    send
+                  </Button>
                 </div>
-              ))}
-            </div>
-          </Col>
-        </Row>
-        <Row>
-          <Col
-            xs={12}
-            sm={12}
-            md={12}
-            lg={12}
-            xl={12}
-            style={{
-              position: "absolute",
-              bottom: "0px",
-              width: "100%",
-              height: "20vh",
-            }}
-          >
-            <div
-              style={{ height: "100%", width: "100%", backgroundColor: "red" }}
-            >
-              <h3>Me: </h3><br/>
-              <Form.Control
-                type="text"
-                placeholder="Type a message..."
-                id="my-message"
-              />
-              <Button
-                variant="dark"
-                style={{ marginTop: "5px" }}
-                onClick={message}
+              </Col>
+            </Row>
+            <Row style={{margin:'0px', padding:'0px'}}>
+              <Col
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                style={{ height: "60vh" }}
               >
-                send
-              </Button>
-            </div>
+                <div
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    backgroundColor: "yellow",
+                    overflowY: "scroll",
+                  }}
+                >
+                  {this.state.messages.map((message) => (
+                    <div
+                      className="message"
+                      style={{
+                        marginLeft:
+                          message.props["personId"] == this.state.personId
+                            ? "auto"
+                            : "0px",
+                      }}
+                    >
+                      {message}
+                    </div>
+                  ))}
+                </div>
+              </Col>
+            </Row>
+            <Row style={{margin:'0px', padding:'0px'}}>
+              <Col
+                xs={12}
+                sm={12}
+                md={12}
+                lg={12}
+                xl={12}
+                style={{
+                  position: "absolute",
+                  bottom: "0px",
+                  width: "100%",
+                  height: "20vh",
+                }}
+              >
+                <div
+                  style={{
+                    height: "100%",
+                    width: "100%",
+                    backgroundColor: "red",
+                  }}
+                >
+                  <h3>Me: </h3>
+                  <br />
+                  <Form.Control
+                    type="text"
+                    placeholder="Type a message..."
+                    id="my-message"
+                  />
+                  <Button
+                    variant="dark"
+                    style={{ marginTop: "5px" }}
+                    onClick={message}
+                  >
+                    send
+                  </Button>
+                </div>
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Container>

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col, Image } from "react-bootstrap";
 import './messaging.css';
-import pp from '../../Images/pp1.jpg';
 
 class Person extends Component {
   state = {
@@ -21,7 +20,7 @@ class Person extends Component {
                 lg={1}
                 xl={1}
             >
-                <Image src={pp} className='message-pp'></Image>
+                <Image src={this.state.personPP} className='message-pp'></Image>
             </Col>
             <Col
                 xs={9}
@@ -34,7 +33,7 @@ class Person extends Component {
                 <p
                     style={{marginBottom:'0px', fontSize:'20px', marginLeft:'0px'}}
                 >
-                    Chadlin Maalgraaff
+                   {this.state.personName}
                 </p>
                 </div>
             </Col>

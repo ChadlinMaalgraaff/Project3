@@ -27,3 +27,7 @@
     background-color: orangered;
     padding: 10px;
 }
+
+.toggle {
+    z-index: 10;
+}
