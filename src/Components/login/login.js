@@ -1,9 +1,9 @@
 import React, { useState, Component } from "react";
 import {Container, Row, Col, Form, Button, FormGroup, FormControl} from "react-bootstrap";
-import img from "../Images/facebook-logo.png"
+import img from "../../Images/facebook-logo.png"
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import '../App.css';
+import '../../App.css';
 
 function Login() {
     const schema = Yup.object().shape({
