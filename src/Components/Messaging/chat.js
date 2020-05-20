@@ -25,10 +25,6 @@ class Chat extends Component {
 
   render() {
     let menuOpen = false;
-    let chats = [];
-    let activeChat = [];
-    let activeChatName = '';
-    let activeChatPP = '';
 
     const toggle = () => {
         const content = document.getElementById('toggle-content');
