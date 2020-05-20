@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Container, Col, Row, Button, Form } from "react-bootstrap";
+import { Container, Col, Row, Button, Form, Image } from "react-bootstrap";
 import Message from "./message";
 import "./messaging.css";
 import '../sidepanel/style.css';
+import pp from '../../Images/pp1.jpg';
 
 class Chat extends Component {
   state = {
@@ -11,6 +12,10 @@ class Chat extends Component {
     messages: [],
     time: "eh-time",
     i: 0,
+    activeChat: [],
+    activeChatName: 'Chadlin Maalgraaff',
+    activeChatPP: pp,
+    chats: []
   };
 
   render() {
@@ -87,16 +92,20 @@ class Chat extends Component {
       <Container fluid style={{ position: "relative", minHeight: "100vh", margin:'0px', padding:'0px' }}>
         <Row style={{margin:'0px', padding:'0px'}}>
           <Col xs={0} sm={0} md={6} lg={6} xl={6} style={{margin:'0px', padding:'0px'}}>
-            <div className='toggle'>
-                <div className="menu-btn" id='menu-btn' onClick={toggle}>
-                    <div className="menu-btn__burger"></div>
-                </div>
-                <div className='toggle-content' id='toggle-content'>
-                    <div className='content-item' id='content-item'>
-                        Content item
-                    </div>
-                </div>
-            </div>
+            <Row style={{margin:'0px', padding:'0px'}}>
+              <div className='toggle'>
+                  <div className="menu-btn" id='menu-btn' onClick={toggle}>
+                      <div className="menu-btn__burger"></div>
+                  </div>
+
+                  <div className='toggle-content' id='toggle-content'>
+                      <div className='content-item' id='content-item'>
+                          Content item
+                      </div>
+                  </div>
+
+              </div>
+            </Row>
           </Col>
           <Col xs={12} sm={12} md={6} lg={6} xl={6} style={{margin:'0px', padding:'0px'}}>
             <Row style={{margin:'0px', padding:'0px'}}>
@@ -108,15 +117,39 @@ class Chat extends Component {
                 xl={12}
                 style={{ height: "20vh" }}
               >
-                <div
+                <Row
                   style={{
                     height: "100%",
                     width: "100%",
                     backgroundColor: "green",
+                    margin:'0px'
                   }}
                 >
-                  <h3>Other Person: </h3>
-                  <br />
+                  <Col
+                      xs={3}
+                      sm={3}
+                      md={1}
+                      lg={1}
+                      xl={1}
+                  >
+                      <Image src={this.state.activeChatPP} className='message-pp'></Image>
+                  </Col>
+                  <Col
+                      xs={9}
+                      sm={9}
+                      md={11}
+                      lg={11}
+                      xl={11}
+                  >
+                      <div style={{display:'inline-block'}}>
+                      <p
+                          style={{marginBottom:'0px', fontSize:'20px', marginLeft:'0px'}}
+                      >
+                        {this.state.activeChatName}
+                      </p>
+                      </div>
+                  </Col>
+
                   <Form.Control
                     type="text"
                     placeholder="Type a message..."
@@ -129,7 +162,7 @@ class Chat extends Component {
                   >
                     send
                   </Button>
-                </div>
+                </Row>
               </Col>
             </Row>
             <Row style={{margin:'0px', padding:'0px'}}>
