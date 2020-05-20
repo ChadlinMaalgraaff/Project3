@@ -78,31 +78,32 @@ class Chat extends Component {
     const message2 = () => {
       const messageText = document.getElementById("my-message2").value;
       const messageId = Math.random();
+      const message = <Message time={this.state.time} personId={this.state.personId2} messageId={messageId} text={messageText} />
 
       this.setState({
-        messages: [
-          ...this.state.messages,
-          <Message
-            time={this.state.time}
-            personId={this.state.personId2}
-            messageId={messageId}
-            text={messageText}
-          />,
+        activeChat: [
+          ...this.state.activeChat,
+          message
         ],
       });
 
-      if (this.state.messages.length > 0) {
-        console.log(this.state.messages[this.state.i]);
-        this.setState({
-          i: this.state.i + 1,
-        });
+      var chat = this.state.chats.filter(chatObject => chatObject.props.chatId == this.state.activeChatId);
+
+      for (var i = 0; i < this.state.chats.length; i++) {
+        if (this.state.chats[i].props["chatId"] != null) {
+          if (this.state.chats[i].props["chatId"] == chat[0].props.chatId) {
+            var updatedChats = this.state.chats;
+            updatedChats[i] = <ChatObject chatId={updatedChats[i].props["chatId"]} people={updatedChats[i].props["people"]} messages={[...updatedChats[i].props["messages"], message]} />
+            this.setState({chats: updatedChats});
+            i = this.state.chats.length;
+          }
+        } 
       }
     };
 
     const setActive = (e) => {
       const chatId = e.target.id;
       const chat = this.state.chats.filter(chatObject => chatObject.props.chatId == chatId);
-      console.log(chat);
 
       this.setState({
         activeChat: chat[0].props["messages"],
