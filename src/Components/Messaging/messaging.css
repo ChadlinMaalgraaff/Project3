@@ -11,3 +11,19 @@
     border-radius: 5px;
     padding: 10px;
 }
+
+.message-time {
+    margin-bottom: 0px;
+}
+
+.message-pp {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    margin-right: 5px;
+}
+
+.person {
+    background-color: orangered;
+    padding: 10px;
+}
