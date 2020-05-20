@@ -6,6 +6,7 @@ import '../sidepanel/style.css';
 import pp from '../../Images/pp1.jpg';
 import pp2 from '../../Images/pp2.jpg';
 import Person from './person';
+import ChatObject from './chatObject';
 
 class Chat extends Component {
   state = {
@@ -13,17 +14,21 @@ class Chat extends Component {
     personId2: 2,
     personName: 'My Name is...',
     personPP: pp2,
-    messages: [],
     time: "eh-time",
     i: 0,
     activeChat: [],
     activeChatName: 'Chadlin Maalgraaff',
     activeChatPP: pp,
+    activeChatId: '',
     chats: []
   };
 
   render() {
     let menuOpen = false;
+    let chats = [];
+    let activeChat = [];
+    let activeChatName = '';
+    let activeChatPP = '';
 
     const toggle = () => {
         const content = document.getElementById('toggle-content');
@@ -47,24 +52,26 @@ class Chat extends Component {
     const message = () => {
       const messageText = document.getElementById("my-message").value;
       const messageId = Math.random();
+      const message = <Message time={this.state.time} personId={this.state.personId} messageId={messageId} text={messageText} />
 
       this.setState({
-        messages: [
-          ...this.state.messages,
-          <Message
-            time={this.state.time}
-            personId={this.state.personId}
-            messageId={messageId}
-            text={messageText}
-          />,
+        activeChat: [
+          ...this.state.activeChat,
+          message
         ],
       });
 
-      if (this.state.messages.length > 0) {
-        console.log(this.state.messages[this.state.i]);
-        this.setState({
-          i: this.state.i + 1,
-        });
+      var chat = this.state.chats.filter(chatObject => chatObject.props.chatId == this.state.activeChatId);
+
+      for (var i = 0; i < this.state.chats.length; i++) {
+        if (this.state.chats[i].props["chatId"] != null) {
+          if (this.state.chats[i].props["chatId"] == chat[0].props.chatId) {
+            var updatedChats = this.state.chats;
+            updatedChats[i] = <ChatObject chatId={updatedChats[i].props["chatId"]} people={updatedChats[i].props["people"]} messages={[...updatedChats[i].props["messages"], message]} />
+            this.setState({chats: updatedChats});
+            i = this.state.chats.length;
+          }
+        } 
       }
     };
 
@@ -93,26 +100,21 @@ class Chat extends Component {
     };
 
     const newChat = () => {
-      const chatID = Math.random();
+      const chatId = Math.random();
       const rando = Math.random();
-      const messages = ['awe'];
+      const messages = [];
       const people = [
-      <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>,
-      <Person personId={rando} personName={'Bot' + rando} personPP={pp}/>
-    ]
+        <Person personId={rando} personName={'Bot' + rando} personPP={pp}/>,
+        <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>
+      ];
 
-    this.setState({
-      chats: [...this.state.chats, [chatID, people, messages]]
-    });
-
-      if (this.state.chats.length > 0) {
-          console.log(this.state.chats[0]);
-          this.setState({
-            activeChat: this.state.chats[0][2],
-            activeChatName: this.state.chats[0][1][1].props.personName,
-            activeChatPP: this.state.chats[0][1][1].props.personPP,
-          });
-      }
+      this.setState({
+        chats: [...this.state.chats, <ChatObject chatId={chatId} people={people} messages={messages} />],
+        activeChat: messages,
+        activeChatId: chatId,
+        activeChatName: people[0].props.personName,
+        activeChatPP: people[0].props.personPP
+      });
     }
 
     const setActive = () => {
@@ -132,6 +134,11 @@ class Chat extends Component {
                   <div className='toggle-content' id='toggle-content'>
                       <div className='content-item' id='content-item'>
                           <Button onClick={newChat}>New Chat</Button>
+                      </div>
+                      <div className='content-item' id='content-item'>
+                        {this.state.chats.map(chat => (
+                          chat
+                        ))}
                       </div>
                   </div>
 
@@ -213,7 +220,7 @@ class Chat extends Component {
                     overflowY: "scroll",
                   }}
                 >
-                  {this.state.messages.map((message) => (
+                  {this.state.activeChat.map((message) => (
                     <div
                       className="message"
                       style={{
