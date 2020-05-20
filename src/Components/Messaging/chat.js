@@ -99,26 +99,36 @@ class Chat extends Component {
       }
     };
 
+    const setActive = (e) => {
+      const chatId = e.target.id;
+      const chat = this.state.chats.filter(chatObject => chatObject.props.chatId == chatId);
+      console.log(chat);
+
+      this.setState({
+        activeChat: chat[0].props["messages"],
+        activeChatId: chat[0].props["chatId"],
+        activeChatName: chat[0].props["people"][0].props["personName"],
+        activeChatPP: chat[0].props["people"][0].props["personPP"]
+      });
+
+    }
+
     const newChat = () => {
       const chatId = Math.random();
       const rando = Math.random();
       const messages = [];
       const people = [
-        <Person personId={rando} personName={'Bot' + rando} personPP={pp}/>,
+        <Person personId={rando} personName={'Bot' + rando} personPP={pp} id={chatId}/>,
         <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>
       ];
 
       this.setState({
-        chats: [...this.state.chats, <ChatObject chatId={chatId} people={people} messages={messages} />],
+        chats: [...this.state.chats, <ChatObject chatId={chatId} people={people} messages={messages}/>],
         activeChat: messages,
         activeChatId: chatId,
         activeChatName: people[0].props.personName,
         activeChatPP: people[0].props.personPP
       });
-    }
-
-    const setActive = () => {
-
     }
 
     return (
@@ -137,7 +147,39 @@ class Chat extends Component {
                       </div>
                       <div className='content-item' id='content-item'>
                         {this.state.chats.map(chat => (
-                          chat
+                            <div id={chat.props["chatId"]} onClick={setActive} style={{zIndex:'100'}}>
+                              <Container fluid id={chat.props["chatId"]}>
+                                <Row className='person' id={chat.props["chatId"]}>
+                                    <Col
+                                        xs={3}
+                                        sm={3}
+                                        md={1}
+                                        lg={1}
+                                        xl={1}
+                                        id={chat.props["chatId"]}
+                                    >
+                                        <Image id={chat.props["chatId"]} src={chat.props["people"][0].props["personPP"]} className='message-pp'></Image>
+                                    </Col>
+                                    <Col
+                                        xs={9}
+                                        sm={9}
+                                        md={11}
+                                        lg={11}
+                                        xl={11}
+                                        id={chat.props["chatId"]}
+                                    >
+                                        <div style={{display:'inline-block'}} id={chat.props["chatId"]}>
+                                        <p
+                                            style={{marginBottom:'0px', fontSize:'20px', marginLeft:'0px'}}
+                                            id={chat.props["chatId"]}
+                                        >
+                                          {chat.props["people"][0].props["personName"]}
+                                        </p>
+                                        </div>
+                                    </Col>
+                                </Row>
+                              </Container>
+                            </div>
                         ))}
                       </div>
                   </div>
