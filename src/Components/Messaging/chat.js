@@ -153,6 +153,7 @@ class Chat extends Component {
         this.setState({groupChat: false});
         this.setState({
           chats: [...this.state.chats, <ChatObject chatId={chatId} people={members} messages={messages} groupChat={true}/>],
+          /*groups need to be taken out here, once you can import the groups from the database. Only here so that you can test the join group function*/
           groups: [...this.state.groups, <ChatObject chatId={chatId} people={members} messages={messages} groupChat={true}/>]
         });
         console.log('groups: ');
