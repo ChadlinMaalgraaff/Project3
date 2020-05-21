@@ -10,24 +10,24 @@ import ChatObject from './chatObject';
 
 class Chat extends Component {
   state = {
-    personId: 1,
+    personId: 1, /* Id of logged in person */
     personId2: 2,
-    personName: 'My Name is...',
-    personPP: pp2,
+    personName: 'My Name is...', /* Name of logged in person */
+    personPP: pp2, /* Profile picture of logged in person */
     time: "eh-time",
-    activeChat: [],
-    activeChatName: 'Chadlin Maalgraaff',
-    activeChatPP: pp,
-    activeChatId: '',
-    chats: [],
-    people: [],
-    selectedPeople: [],
+    activeChat: [], /* Messages of the active chat */
+    activeChatName: 'Chadlin Maalgraaff', /* Name of person you're currently chatting to */
+    activeChatPP: pp, /* Profile Picture of person you're currently chatting to  */
+    activeChatId: '', /* Chat Id of active chat*/
+    chats: [], /* Chat history of logged in person */
+    people: [], /* People in the network(database) */
+    selectedPeople: [], 
     groupChat: false,
     selected: 0,
     selectedId: '',
     showGroup: false,
     selectedGroup: [],
-    groups: []
+    groups: [] /* Groups in the network(databse) */
   };
 
   render() {
