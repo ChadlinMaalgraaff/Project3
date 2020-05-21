@@ -12,9 +12,8 @@ function App() {
         <Chat />
       </div>
       /*<div className= "wrapper" >
-          <Register/>
-        </div>
-     */
+          <Login/>
+        </div>*/
     );
 }
 

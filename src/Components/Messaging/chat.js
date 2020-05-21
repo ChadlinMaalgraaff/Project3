@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Col, Row, Button, Form, Image } from "react-bootstrap";
+import { Container, Col, Row, Button, Form, Image, Modal, InputGroup } from "react-bootstrap";
 import Message from "./message";
 import "./messaging.css";
 import '../sidepanel/style.css';
@@ -15,16 +15,19 @@ class Chat extends Component {
     personName: 'My Name is...',
     personPP: pp2,
     time: "eh-time",
-    i: 0,
     activeChat: [],
     activeChatName: 'Chadlin Maalgraaff',
     activeChatPP: pp,
     activeChatId: '',
-    chats: []
+    chats: [],
+    people: [],
+    selectedPeople: []
   };
 
   render() {
     let menuOpen = false;
+    const handleClose = () => {this.setState({show:false})};
+    const handleShow = () => {this.setState({show:true})};
 
     const toggle = () => {
         const content = document.getElementById('toggle-content');
@@ -69,6 +72,11 @@ class Chat extends Component {
           }
         } 
       }
+
+      console.log('active chat state:');
+      console.log(this.state.activeChat);
+      console.log('chats:');
+      console.log(this.state.chats);
     };
 
     const message2 = () => {
@@ -107,10 +115,9 @@ class Chat extends Component {
         activeChatName: chat[0].props["people"][0].props["personName"],
         activeChatPP: chat[0].props["people"][0].props["personPP"]
       });
-
     }
 
-    const newChat = () => {
+    const newChat = () => { /* Starts a chat with a random bot */
       const chatId = Math.random();
       const rando = Math.random();
       const messages = [];
@@ -124,8 +131,47 @@ class Chat extends Component {
         activeChat: messages,
         activeChatId: chatId,
         activeChatName: people[0].props.personName,
-        activeChatPP: people[0].props.personPP
+        activeChatPP: people[0].props.personPP,
+        people: [...this.state.people, people[0]]
       });
+
+      console.log('people newchat:');
+      console.log(this.state.people);
+    }
+
+    const startChat = () => { /* Will be the actual function we use, instead of newchat */
+      const chatId = Math.random();
+      const messages = [];
+      const members = [...this.state.selectedPeople,
+        <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>
+      ];
+
+      this.setState({ /* The first object in members is used to display the Name and PP */
+        chats: [...this.state.chats, <ChatObject chatId={chatId} people={members} messages={messages}/>],
+        activeChat: messages,
+        activeChatId: chatId,
+        activeChatName: members[0].props["personName"],
+        activeChatPP: members[0].props["personPP"]
+      });
+
+      console.log('start chat members: ');
+      console.log(members);
+    }
+
+    const personSelect = (e) => {
+      console.log(e.target.id);
+
+      if (e.target.checked == true) {
+        this.setState({
+          selectedPeople: [...this.state.selectedPeople, this.state.people.filter(person => person.props["personId"] == e.target.id)[0]]
+        });
+      }else if (e.target.checked == false) {
+        this.setState({
+          selectedPeople: this.state.selectedPeople.filter(person => person.props["personId"] != e.target.id)
+        });
+      }
+      console.log('selected people:');
+      console.log(this.state.selectedPeople);
     }
 
     return (
@@ -140,7 +186,10 @@ class Chat extends Component {
 
                   <div className='toggle-content' id='toggle-content'>
                       <div className='content-item' id='content-item'>
-                          <Button onClick={newChat}>New Chat</Button>
+                        <Button onClick={newChat}>New Chat</Button>
+                        <Button variant="dark" onClick={handleShow} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                            New Chat
+                        </Button>
                       </div>
                       <div className='content-item' id='content-item'>
                         {this.state.chats.map(chat => (
@@ -315,6 +364,30 @@ class Chat extends Component {
             </Row>
           </Col>
         </Row>
+      {/* Modal used to type post */}
+        <Modal show={this.state.show} onHide={handleClose} centered>
+            <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
+                <Modal.Title style={{fontFamily:'Vision-Heavy', color:'#67a495'}}>You can contact us via:</Modal.Title>
+            </Modal.Header>
+            <Modal.Body style={{backgroundColor:'#ffffff'}}>
+                <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
+                  {this.state.people.map((person) => (
+                    <InputGroup className="mb-3">
+                      <InputGroup.Prepend>
+                        <InputGroup.Checkbox id={person.props["personId"]} onClick={personSelect} aria-label="Checkbox for following text input" />
+                      </InputGroup.Prepend>
+                      {person}
+                    </InputGroup>
+                  ))}
+                </div>
+            </Modal.Body>
+            <Modal.Footer style={{backgroundColor:'#faf6ee'}}>
+            <Button variant="primary" onClick={startChat}>
+                start chat
+            </Button>
+            </Modal.Footer>
+        </Modal>
+      {/* Modal used to type post */}
       </Container>
     );
   }
