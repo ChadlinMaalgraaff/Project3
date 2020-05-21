@@ -8,29 +8,30 @@ export default class Requests extends Component {
     render() {
         return (
             <div>
-            <Card>
-                <Card.Body>
-                    <Row>
-                        <Col xs={4} md={4}>
-                        <div className="image">
-                            <Image src={img} roundedCircle fluid />
-                        </div>
-                        </Col>
-                        <Col xs={4} md={4}>
-                            @username sent you a friend request
-                        </Col>
-                        <Col xs={4} md={4}>
-                            <Button variant="dark">
-                                Accept
-                            </Button>
-                            <Button variant="light">
-                                Reject
-                            </Button>
-                        </Col>
-                    </Row>
-                    
-                </Card.Body>
-            </Card>
+                <Container maxWidth='sm' fixed>
+                    <Card width='18rem'>
+                        <Card.Body>
+                            <Row>
+                                <Col xs={4} md={4}>
+                                <div className="image">
+                                    <Image src={img} roundedCircle fluid />
+                                </div>
+                                </Col>
+                                <Col xs={4} md={4}>
+                                    @username sent you a friend request
+                                </Col>
+                                <Col xs={4} md={4}>
+                                    <Button variant="dark">
+                                        Accept
+                                    </Button>
+                                    <Button variant="light">
+                                        Reject
+                                    </Button>
+                                </Col>
+                            </Row>
+                            
+                        </Card.Body>
+                    </Card>           
         <Card>
             <Card.Body>
                 <Row>
@@ -97,7 +98,8 @@ export default class Requests extends Component {
                 </Row>
             </Card.Body>
         </Card>
-        </div>
+        </Container>
+        </div> 
         );  
     }
     

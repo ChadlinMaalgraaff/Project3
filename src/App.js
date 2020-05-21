@@ -31,6 +31,7 @@ function App() {
               <Route exact path='/' component={Feed}/>
               <Route path='/login' component={Login}/>
               <Route path='/register' component={Register} />
+              <Route path='/requests' component={Request} />
             </Switch>
           </Router>
       </React.Fragment>

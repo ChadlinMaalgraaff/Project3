@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Nav, Navbar, NavDropdown, Card, ListGroup } from 'react-bootstrap';
+import Request from '../FriendRequests/requests';
 
 export default class Navigation extends Component {
     render () {
@@ -10,12 +11,20 @@ export default class Navigation extends Component {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="mr-auto">
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/login">Login</Nav.Link>
+              <Nav variant="tabs">
+              <Nav.Item>
+                <Nav.Link href="/">Home</Nav.Link>                
+              </Nav.Item>
+                <Nav.Item>
+                <Nav.Link href="/login">Login</Nav.Link>
+                </Nav.Item>
+              <Nav.Item>
               <Nav.Link href="/register">Register</Nav.Link>
-              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              </NavDropdown>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link href="/requests">Requests</Nav.Link>
+                </Nav.Item>
+              </Nav>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
