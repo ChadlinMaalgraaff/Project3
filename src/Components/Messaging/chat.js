@@ -117,22 +117,12 @@ class Chat extends Component {
       });
     }
 
-    const newChat = () => { /* Starts a chat with a random bot */
-      const chatId = Math.random();
+    const GenerateBots = () => { /* Generates a random bot and populates the people array with it */
       const rando = Math.random();
-      const messages = [];
-      const people = [
-        <Person personId={rando} personName={'Bot' + rando} personPP={pp} id={chatId}/>,
-        <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>
-      ];
+      const bot= <Person personId={rando} personName={'Bot' + rando} personPP={pp} id={rando}/>;
 
       this.setState({
-        chats: [...this.state.chats, <ChatObject chatId={chatId} people={people} messages={messages}/>],
-        activeChat: messages,
-        activeChatId: chatId,
-        activeChatName: people[0].props.personName,
-        activeChatPP: people[0].props.personPP,
-        people: [...this.state.people, people[0]]
+        people: [...this.state.people, bot]
       });
 
       console.log('people newchat:');
@@ -186,7 +176,7 @@ class Chat extends Component {
 
                   <div className='toggle-content' id='toggle-content'>
                       <div className='content-item' id='content-item'>
-                        <Button onClick={newChat}>New Chat</Button>
+                        <Button onClick={GenerateBots}>Generate Bots to chat to</Button>
                         <Button variant="dark" onClick={handleShow} style={{padding:'0px', margin:'0px', width:'100%'}}>
                             New Chat
                         </Button>
