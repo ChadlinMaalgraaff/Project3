@@ -21,7 +21,8 @@ class Chat extends Component {
     activeChatId: '',
     chats: [],
     people: [],
-    selectedPeople: []
+    selectedPeople: [],
+    groupChat: false
   };
 
   render() {
@@ -107,13 +108,13 @@ class Chat extends Component {
 
     const setActive = (e) => {
       const chatId = e.target.id;
-      const chat = this.state.chats.filter(chatObject => chatObject.props.chatId == chatId);
+      const chat = this.state.chats.filter(chatObject => chatObject.props.chatId == chatId)[0];
 
       this.setState({
-        activeChat: chat[0].props["messages"],
-        activeChatId: chat[0].props["chatId"],
-        activeChatName: chat[0].props["people"][0].props["personName"],
-        activeChatPP: chat[0].props["people"][0].props["personPP"]
+        activeChat: chat.props["messages"],
+        activeChatId: chat.props["chatId"],
+        activeChatName: chat.props["people"][0].props["personName"],
+        activeChatPP: chat.props["people"][0].props["personPP"]
       });
     }
 
@@ -132,9 +133,18 @@ class Chat extends Component {
     const startChat = () => { /* Will be the actual function we use, instead of newchat */
       const chatId = Math.random();
       const messages = [];
-      const members = [...this.state.selectedPeople,
+      var members = [...this.state.selectedPeople,
         <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>
       ];
+
+      if (this.state.groupChat == true) {
+        const groupName = document.getElementById('groupName');
+        const groupPP = document.getElementById('groupChat-pp');
+        const groupId = Math.random();
+        const groupChatObject = <Person personId={groupId} personName={groupName.value} personPP={groupPP.src}/>
+        members = [groupChatObject, ...members];
+        this.setState({groupChat: false});
+      }
 
       this.setState({ /* The first object in members is used to display the Name and PP */
         chats: [...this.state.chats, <ChatObject chatId={chatId} people={members} messages={messages}/>],
@@ -162,6 +172,18 @@ class Chat extends Component {
       }
       console.log('selected people:');
       console.log(this.state.selectedPeople);
+    }
+
+    const group = () => {
+      if (this.state.groupChat == false) {
+        this.setState({
+          groupChat: true
+        });
+      }else {
+        this.setState({
+          groupChat: false
+        });
+      }
     }
 
     return (
@@ -357,7 +379,18 @@ class Chat extends Component {
       {/* Modal used to type post */}
         <Modal show={this.state.show} onHide={handleClose} centered>
             <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
-                <Modal.Title style={{fontFamily:'Vision-Heavy', color:'#67a495'}}>You can contact us via:</Modal.Title>
+              <div className='groupChat'>
+                <InputGroup className="mb-3">
+                  <InputGroup.Prepend>
+                    <InputGroup.Checkbox id={'groupChat-check'} onClick={group} aria-label="Checkbox for following text input" />
+                  </InputGroup.Prepend>
+                  <Form.Label>Group chat</Form.Label>
+                </InputGroup>
+                <Form.Label>Group Name:</Form.Label>
+                <Form.Control type="text" id='groupName' placeholder="Group name..." />
+                <Form.Label>Group Display picture:</Form.Label>
+                <Image src={pp2} id='groupChat-pp' className='message-pp'></Image>
+              </div>
             </Modal.Header>
             <Modal.Body style={{backgroundColor:'#ffffff'}}>
                 <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
