@@ -2,16 +2,40 @@ import React, { useState, Component } from "react";
 import {Card, Image, Container, Row, Col, Form, Button, FormGroup, FormControl} from "react-bootstrap";
 import { render } from "@testing-library/react";
 import img from '../../Images/iu-8.jpeg';
-import styles from './mystyles.module.css';
+import '../../App.css';
 
-function Requests () {
-    return (
-        <div>
+export default class Requests extends Component {
+    render() {
+        return (
+            <div>
+            <Card>
+                <Card.Body>
+                    <Row>
+                        <Col xs={4} md={4}>
+                        <div className="image">
+                            <Image src={img} roundedCircle fluid />
+                        </div>
+                        </Col>
+                        <Col xs={4} md={4}>
+                            @username sent you a friend request
+                        </Col>
+                        <Col xs={4} md={4}>
+                            <Button variant="dark">
+                                Accept
+                            </Button>
+                            <Button variant="light">
+                                Reject
+                            </Button>
+                        </Col>
+                    </Row>
+                    
+                </Card.Body>
+            </Card>
         <Card>
             <Card.Body>
                 <Row>
                     <Col xs={4} md={4}>
-                    <div className={styles.image}>
+                    <div className="image">
                         <Image src={img} roundedCircle fluid />
                     </div>
                     </Col>
@@ -27,77 +51,54 @@ function Requests () {
                         </Button>
                     </Col>
                 </Row>
-                
             </Card.Body>
         </Card>
-    <Card>
-        <Card.Body>
-            <Row>
-                <Col xs={4} md={4}>
-                <div className={styles.image}>
-                    <Image src={img} roundedCircle fluid />
-                </div>
-                </Col>
-                <Col xs={4} md={4}>
-                    @username sent you a friend request
-                </Col>
-                <Col xs={4} md={4}>
-                    <Button variant="dark">
-                        Accept
-                    </Button>
-                    <Button variant="light">
-                        Reject
-                    </Button>
-                </Col>
-            </Row>
-        </Card.Body>
-    </Card>
-    <Card>
-        <Card.Body>
-            <Row>
-                <Col xs={4} md={4}>
-                <div className={styles.image}>
-                    <Image src={img} roundedCircle fluid />
-                </div>
-                </Col>
-                <Col xs={4} md={4}>
-                    @username sent you a friend request
-                </Col>
-                <Col xs={4} md={4}>
-                    <Button variant="dark">
-                        Accept
-                    </Button>
-                    <Button variant="light">
-                        Reject
-                    </Button>
-                </Col>
-            </Row>
-        </Card.Body>
-    </Card>
-    <Card>
-        <Card.Body>
-            <Row>
-                <Col xs={4} md={4}>
-                    <div className={styles.image}>
+        <Card>
+            <Card.Body>
+                <Row>
+                    <Col xs={4} md={4}>
+                    <div className="image">
                         <Image src={img} roundedCircle fluid />
                     </div>
-                </Col>
-                <Col xs={4} md={4}>
+                    </Col>
+                    <Col xs={4} md={4}>
                         @username sent you a friend request
-                </Col>
-                <Col xs={4} md={4}>
-                    <Button variant="dark">
+                    </Col>
+                    <Col xs={4} md={4}>
+                        <Button variant="dark">
                             Accept
-                    </Button>
-                    <Button variant="light">
+                        </Button>
+                        <Button variant="light">
                             Reject
-                    </Button>
-                </Col>
-            </Row>ia
-        </Card.Body>
-    </Card>
-    </div>
-    );  
+                        </Button>
+                    </Col>
+                </Row>
+            </Card.Body>
+        </Card>
+        <Card>
+            <Card.Body>
+                <Row>
+                    <Col xs={4} md={4}>
+                        <div className="image">
+                            <Image src={img} roundedCircle fluid />
+                        </div>
+                    </Col>
+                    <Col xs={4} md={4}>
+                            @username sent you a friend request
+                    </Col>
+                    <Col xs={4} md={4}>
+                        <Button variant="dark">
+                                Accept
+                        </Button>
+                        <Button variant="light">
+                                Reject
+                        </Button>
+                    </Col>
+                </Row>
+            </Card.Body>
+        </Card>
+        </div>
+        );  
+    }
+    
 }
-
-export default Requests;

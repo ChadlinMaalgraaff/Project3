@@ -1,9 +1,11 @@
 import React, { useState, Component } from "react";
-import {Container, Row, Col, Form, Button, FormGroup, FormControl} from "react-bootstrap";
+import { Row, Col, Form, Button, FormGroup, FormControl} from "react-bootstrap";
 import img from "../../Images/facebook-logo.png"
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import '../../App.css';
+import { CssBaseline, Container } from "@material-ui/core";
+import { BrowserRouter as Router, Switch, Route, Link, useHistory, useRouteMatch, Redirect } from 'react-router-dom';
 
 function Login() {
     const schema = Yup.object().shape({
@@ -14,16 +16,16 @@ function Login() {
     });
 
     return (
-      <Formik 
+      <React.Fragment>
+        <CssBaseline />
+        <Container maxWidth="sm" fixed>
+        <Formik 
         validationSchema={schema}
         validateOnBlur={false}
         onSubmit={(values, {setSubmitting, resetForm, validate}) => {
           validate(values)
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            resetForm();
-            setSubmitting(false);
-          }, 30000)
+          console.log("logged in");
+          return <Redirect to="/"/>
         }}
         initialValues={{ 
           email: '',
@@ -77,13 +79,18 @@ function Login() {
         <Button variant="dark" type="submit">
           Login
         </Button>
-        <div className="but">
-          <Button variant="link"> Don't have an account? Register</Button>
-        </div>
+        
+          <Link to="/register">
+          <div className="but">
+            <Button variant="link" on>Don't have an account? Register</Button>
+            </div>
+          </Link>
         
       </Form>
       )}
     </Formik>
+    </Container>
+    </React.Fragment>
     );
 }
 

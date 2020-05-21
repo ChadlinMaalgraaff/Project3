@@ -90,10 +90,11 @@ input {
 }
 
 .image {
+  width: 100px;
   align-items: center;
 }
 
-img {
+.img {
   height: 90%;
   width: 100%;
   align-items: center;
