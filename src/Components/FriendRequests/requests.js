@@ -93,7 +93,7 @@ function Requests () {
                             Reject
                     </Button>
                 </Col>
-            </Row>
+            </Row>ia
         </Card.Body>
     </Card>
     </div>
