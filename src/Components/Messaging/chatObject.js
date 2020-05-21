@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from 'react-bootstrap';
 import './messaging.css';
 
 class ChatObject extends Component {

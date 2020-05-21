@@ -24,13 +24,18 @@ class Chat extends Component {
     selectedPeople: [],
     groupChat: false,
     selected: 0,
-    selectedId: ''
+    selectedId: '',
+    showGroup: false,
+    selectedGroup: [],
+    groups: []
   };
 
   render() {
     let menuOpen = false;
     const handleClose = () => {this.setState({show:false})};
+    const handleCloseGroup = () => {this.setState({showGroup:false})};
     const handleShow = () => {this.setState({show:true})};
+    const handleShowGroup = () => {this.setState({showGroup:true})};
 
     const toggle = () => {
         const content = document.getElementById('toggle-content');
@@ -147,8 +152,11 @@ class Chat extends Component {
         members = [groupChatObject, ...members];
         this.setState({groupChat: false});
         this.setState({
-          chats: [...this.state.chats, <ChatObject chatId={chatId} people={members} messages={messages} groupChat={true}/>]
+          chats: [...this.state.chats, <ChatObject chatId={chatId} people={members} messages={messages} groupChat={true}/>],
+          groups: [...this.state.groups, <ChatObject chatId={chatId} people={members} messages={messages} groupChat={true}/>]
         });
+        console.log('groups: ');
+        console.log(this.state.groups);
       }else {
         this.setState({
           chats: [...this.state.chats, <ChatObject chatId={chatId} people={members} messages={messages} groupChat={false}/>]
@@ -201,6 +209,43 @@ class Chat extends Component {
       }
     }
 
+    const groupSelect = (e) => {
+      console.log(e.target.id);
+
+      if (e.target.checked == true) { /* Will need to change the chats to the variable that holds the groups */
+        this.setState({
+          selectedGroup: this.state.chats.filter(group => group.props["chatId"] == e.target.id)[0],
+          selected: 1,
+          selectedId: e.target.id
+        });
+      }else if (e.target.checked == false) {
+        this.setState({
+          selectedGroup: '',
+          selected: 0,
+          selectedId: ''
+        });
+      }
+    }
+
+    const joinGroup = () => {
+      if (this.state.selectedId != '') {
+        const group = this.state.groups.filter(group => group.props['chatId'] == this.state.selectedId)[0];
+        const me = <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>;
+        const updatedGroup = <ChatObject chatId={group.props["chatId"]} people={[...group.props["people"], me]} messages={group.props["messages"]} groupChat={true}/>;
+        this.setState({
+          groups: [...this.state.groups.filter(groupObject => groupObject.props["chatId"] != updatedGroup.props["chatId"]), updatedGroup],
+          chats: [...this.state.chats, updatedGroup],
+          showGroup: false,
+          groupChat: false,
+          selected: 0,
+          selectedId: ''
+        });
+        
+        console.log('updated group:');
+        console.log(updatedGroup);
+      }
+    }
+
     return (
       <Container fluid style={{ position: "relative", minHeight: "100vh", margin:'0px', padding:'0px' }}>
         <Row style={{margin:'0px', padding:'0px'}}>
@@ -216,6 +261,9 @@ class Chat extends Component {
                         <Button onClick={GenerateBots}>Generate Bots to chat to</Button>
                         <Button variant="dark" onClick={handleShow} style={{padding:'0px', margin:'0px', width:'100%'}}>
                             New Chat
+                        </Button>
+                        <Button variant="dark" onClick={handleShowGroup} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                            Join group
                         </Button>
                       </div>
                       <div className='content-item' id='content-item'>
@@ -426,6 +474,31 @@ class Chat extends Component {
             </Modal.Footer>
         </Modal>
       {/* Modal used to type post */}
+
+      {/* Modal used to join group */}
+      <Modal show={this.state.showGroup} onHide={handleCloseGroup} centered>
+            <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
+              Join group
+            </Modal.Header>
+            <Modal.Body style={{backgroundColor:'#ffffff'}}>
+                <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
+                  {this.state.groups.map((chat) => (
+                    <InputGroup className="mb-3">
+                      <InputGroup.Prepend>
+                        <InputGroup.Checkbox disabled={chat.props["chatId"] != this.state.selectedId && this.state.selected == 1} id={chat.props["chatId"]} onClick={groupSelect} aria-label="Checkbox for following text input" />
+                      </InputGroup.Prepend>
+                      {chat}
+                    </InputGroup>
+                  ))}
+                </div>
+            </Modal.Body>
+            <Modal.Footer style={{backgroundColor:'#faf6ee'}}>
+            <Button variant="primary" onClick={joinGroup}>
+                Join
+            </Button>
+            </Modal.Footer>
+        </Modal>
+      {/* Modal used to join group  */}
       </Container>
     );
   }
