@@ -22,7 +22,9 @@ class Chat extends Component {
     chats: [],
     people: [],
     selectedPeople: [],
-    groupChat: false
+    groupChat: false,
+    selected: 0,
+    selectedId: ''
   };
 
   render() {
@@ -169,11 +171,15 @@ class Chat extends Component {
 
       if (e.target.checked == true) {
         this.setState({
-          selectedPeople: [...this.state.selectedPeople, this.state.people.filter(person => person.props["personId"] == e.target.id)[0]]
+          selectedPeople: [...this.state.selectedPeople, this.state.people.filter(person => person.props["personId"] == e.target.id)[0]],
+          selected: 1,
+          selectedId: e.target.id
         });
       }else if (e.target.checked == false) {
         this.setState({
-          selectedPeople: this.state.selectedPeople.filter(person => person.props["personId"] != e.target.id)
+          selectedPeople: this.state.selectedPeople.filter(person => person.props["personId"] != e.target.id),
+          selected: 0,
+          selectedId: ''
         });
       }
       console.log('selected people:');
@@ -403,7 +409,7 @@ class Chat extends Component {
                   {this.state.people.map((person) => (
                     <InputGroup className="mb-3">
                       <InputGroup.Prepend>
-                        <InputGroup.Checkbox id={person.props["personId"]} onClick={personSelect} aria-label="Checkbox for following text input" />
+                        <InputGroup.Checkbox disabled={person.props["personId"] != this.state.selectedId && this.state.selected == 1 && this.state.groupChat == false} id={person.props["personId"]} onClick={personSelect} aria-label="Checkbox for following text input" />
                       </InputGroup.Prepend>
                       {person}
                     </InputGroup>
