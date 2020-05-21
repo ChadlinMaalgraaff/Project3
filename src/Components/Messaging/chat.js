@@ -159,7 +159,10 @@ class Chat extends Component {
         activeChat: messages,
         activeChatId: chatId,
         activeChatName: members[0].props["personName"],
-        activeChatPP: members[0].props["personPP"]
+        activeChatPP: members[0].props["personPP"],
+        selectedId: '',
+        selected: 0,
+        show: false
       });
 
       console.log('start chat members: ');
