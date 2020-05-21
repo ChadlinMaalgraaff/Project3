@@ -65,9 +65,9 @@ class Chat extends Component {
 
       for (var i = 0; i < this.state.chats.length; i++) {
         if (this.state.chats[i].props["chatId"] != null) {
-          if (this.state.chats[i].props["chatId"] == chat[0].props.chatId) {
+          if (this.state.chats[i].props["chatId"] == chat[0].props["chatId"]) {
             var updatedChats = this.state.chats;
-            updatedChats[i] = <ChatObject chatId={updatedChats[i].props["chatId"]} people={updatedChats[i].props["people"]} messages={[...updatedChats[i].props["messages"], message]} />
+            updatedChats[i] = <ChatObject chatId={updatedChats[i].props["chatId"]} groupChat={updatedChats[i].props["groupChat"]} people={updatedChats[i].props["people"]} messages={[...updatedChats[i].props["messages"], message]} />
             this.setState({chats: updatedChats});
             i = this.state.chats.length;
           }
@@ -98,7 +98,7 @@ class Chat extends Component {
         if (this.state.chats[i].props["chatId"] != null) {
           if (this.state.chats[i].props["chatId"] == chat[0].props.chatId) {
             var updatedChats = this.state.chats;
-            updatedChats[i] = <ChatObject chatId={updatedChats[i].props["chatId"]} people={updatedChats[i].props["people"]} messages={[...updatedChats[i].props["messages"], message]} />
+            updatedChats[i] = <ChatObject chatId={updatedChats[i].props["chatId"]} groupChat={updatedChats[i].props["groupChat"]} people={updatedChats[i].props["people"]} messages={[...updatedChats[i].props["messages"], message]} />
             this.setState({chats: updatedChats});
             i = this.state.chats.length;
           }
@@ -144,10 +144,16 @@ class Chat extends Component {
         const groupChatObject = <Person personId={groupId} personName={groupName.value} personPP={groupPP.src}/>
         members = [groupChatObject, ...members];
         this.setState({groupChat: false});
+        this.setState({
+          chats: [...this.state.chats, <ChatObject chatId={chatId} people={members} messages={messages} groupChat={true}/>]
+        });
+      }else {
+        this.setState({
+          chats: [...this.state.chats, <ChatObject chatId={chatId} people={members} messages={messages} groupChat={false}/>]
+        });
       }
 
       this.setState({ /* The first object in members is used to display the Name and PP */
-        chats: [...this.state.chats, <ChatObject chatId={chatId} people={members} messages={messages}/>],
         activeChat: messages,
         activeChatId: chatId,
         activeChatName: members[0].props["personName"],

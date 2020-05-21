@@ -5,7 +5,8 @@ class ChatObject extends Component {
   state = {
     people: this.props.people,
     messages: this.props.mesages,
-    chatId: this.props.chatId
+    chatId: this.props.chatId,
+    groupChat: this.props.groupChat
   };
 
   
