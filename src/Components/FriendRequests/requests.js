@@ -7,8 +7,7 @@ import '../../App.css';
 export default class Requests extends Component {
     render() {
         return (
-            <div>
-                <Container maxWidth='sm' fixed>
+                <Container maxWidth='xs' fixed>
                     <Card width='18rem'>
                         <Card.Body>
                             <Row>
@@ -98,8 +97,7 @@ export default class Requests extends Component {
                 </Row>
             </Card.Body>
         </Card>
-        </Container>
-        </div> 
+        </Container> 
         );  
     }
     

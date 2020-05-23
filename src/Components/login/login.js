@@ -18,7 +18,7 @@ function Login() {
     return (
       <React.Fragment>
         <CssBaseline />
-        <Container maxWidth="sm" fixed>
+        <Container maxWidth="xs" fixed>
         <Formik 
         validationSchema={schema}
         validateOnBlur={false}
