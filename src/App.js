@@ -36,7 +36,7 @@ function App() {
               <Route path='/requests' component={Request} />
               <Route path = "/profile" component = {Profile}/>
               <Route path = "/friends" component = {Friends} />
-
+              <Route path= "/messages" component={Chat} />
             </Switch>
           </Router>
       </React.Fragment>

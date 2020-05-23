@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Nav, Navbar, NavDropdown, Card, ListGroup } from 'react-bootstrap';
+import  HomeSharpIcon from '@material-ui/icons/HomeSharp';
+import  PersonSharpIcon from '@material-ui/icons/PersonSharp';
+import  ForumSharpIcon from '@material-ui/icons/ForumSharp';
+import PeopleAltSharpIcon from '@material-ui/icons/PeopleAltSharp';
 import Request from '../FriendRequests/requests';
 
 export default class Navigation extends Component {
@@ -10,19 +14,19 @@ export default class Navigation extends Component {
           <Navbar.Brand href="./home">Project 3</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
+            <Nav className="ml-auto">
               <Nav variant="tabs">
               <Nav.Item>
-                <Nav.Link href="/home">Home</Nav.Link>                
+                <Nav.Link href="/home"><HomeSharpIcon fontSize="medium" /></Nav.Link>                
               </Nav.Item>
                 <Nav.Item>
-                <Nav.Link href="/login">Login</Nav.Link>
+                <Nav.Link href="/messages"><ForumSharpIcon fontSize="medium" /></Nav.Link>
                 </Nav.Item>
               <Nav.Item>
-              <Nav.Link href="/register">Register</Nav.Link>
+              <Nav.Link href="/profile"><PersonSharpIcon fontSize="medium"/></Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link href="/requests">Requests</Nav.Link>
+                    <Nav.Link href="/requests"><PeopleAltSharpIcon fontSize="medium"/></Nav.Link>
                 </Nav.Item>
               </Nav>
             </Nav>

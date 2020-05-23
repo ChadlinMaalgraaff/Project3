@@ -7,28 +7,29 @@ import '../../App.css';
 import { CssBaseline, Container } from "@material-ui/core";
 import { BrowserRouter as Router, Switch, Route, Link, useHistory, useRouteMatch, Redirect } from 'react-router-dom';
 
-function Register() {
+class Register extends Component {
 
-    const initialValues = {
-        firstname:"",
-        lastname:"", 
-        email: '',
-        password:"", 
-        username: "",
-        confirm: ""
-    };
+    render() {
+        const initialValues = {
+          firstname:"",
+          lastname:"", 
+          email: '',
+          password:"", 
+          username: "",
+          confirm: ""
+      };
 
     
-    const schema = Yup.object().shape({
-      username: Yup.string().required("This field is required"),
-      firstname: Yup.string().required("This field is required"),
-      lastname: Yup.string().required("This field is required"),
-      email: Yup.string().email("Please enter a valid email address").required("This field is required"),
-      password: Yup.string().required("This field is required").min(8, "Password is too short - should be at least 8 characters")
-                            .matches(/(?=.*[0-9])/, "Password should contain at least one number"),
-      confirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords are not the same!')
-                    .required("This field is required")        
-    });
+      const schema = Yup.object().shape({
+        username: Yup.string().required("This field is required"),
+        firstname: Yup.string().required("This field is required"),
+        lastname: Yup.string().required("This field is required"),
+        email: Yup.string().email("Please enter a valid email address").required("This field is required"),
+        password: Yup.string().required("This field is required").min(8, "Password is too short - should be at least 8 characters")
+                              .matches(/(?=.*[0-9])/, "Password should contain at least one number"),
+        confirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords are not the same!')
+                      .required("This field is required")        
+      });
     return (
       <React.Fragment>
         <CssBaseline />
@@ -167,6 +168,8 @@ function Register() {
         </Container>
       </React.Fragment>
     );
+    }
+    
 }
 
 export default Register;
