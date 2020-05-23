@@ -36,8 +36,11 @@ function Register() {
         <Formik 
         validationSchema={schema}
         validateOnBlur={false}
-        onSubmit={(values, {setSubmitting, resetForm, validate}) => {
+        onSubmit={(values, {setSubmitting, isSubmitting, resetForm, validate}) => {
             validate(values);
+            if (isSubmitting) {
+              //history.push('/login');
+            }
        }}
         initialValues={initialValues}
       >

@@ -30,7 +30,7 @@ function App() {
         <Router>
           <Navigation/>
             <Switch>             
-              <Route exact path='/' component={Feed}/>
+              <Route exact path='/home' component={Feed}/>
               <Route path='/login' component={Login}/>
               <Route path='/register' component={Register} />
               <Route path='/requests' component={Request} />

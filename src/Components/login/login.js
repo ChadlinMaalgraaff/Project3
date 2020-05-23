@@ -14,7 +14,10 @@ function Login() {
                             .matches(/(?=.*[0-9])/, "Password should contain at least one number")
                   
     });
-
+    
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    
     return (
       <React.Fragment>
         <CssBaseline />
@@ -22,10 +25,11 @@ function Login() {
         <Formik 
         validationSchema={schema}
         validateOnBlur={false}
-        onSubmit={(values, {setSubmitting, resetForm, validate}) => {
-          validate(values)
-          console.log("logged in");
-          return <Redirect to="/"/>
+        onSubmit={(values, {setSubmitting,isSubmitting, resetForm, validate}) => {
+          //validate(values)
+          if (isSubmitting) {
+            console.log("logged in");
+          }
         }}
         initialValues={{ 
           email: '',
