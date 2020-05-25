@@ -20,7 +20,7 @@ class Post extends Component {
     postPersonName: this.props.postPersonName,
     postPersonTag: this.props.postPersonTag,
     postPersonID: this.props.id,
-    followerIDs: this.props.followerIDs
+    followerIDs: this.props.followerIds
   }
 
   render() {

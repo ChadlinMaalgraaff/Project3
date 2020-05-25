@@ -10,7 +10,7 @@ import Friends from './Components/Profile/friends';
 import './App.css';
 import { Container, CssBaseline } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import  Navigation from './Components/Navigation/Navigation';
+/*import  Navigation from './Components/Navigation/Navigation';*/
 
 function App() {
     return ( 
@@ -29,7 +29,7 @@ function App() {
           <Register/>
       </Container>
       </React.Fragment>*/
-      <React.Fragment>
+      /*<React.Fragment>
         <Router>
           <Navigation/>
             <Switch>             
@@ -42,7 +42,7 @@ function App() {
               <Route path= "/messages" component={Chat} />
             </Switch>
           </Router>
-      </React.Fragment>
+      </React.Fragment>*/
     );
 }
     
