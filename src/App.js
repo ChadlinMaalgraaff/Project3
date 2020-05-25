@@ -10,7 +10,7 @@ import { Container, CssBaseline } from '@material-ui/core';
 function App() {
     return ( 
       <div className = "App" style={{margin:'0px', padding:'0px', width:'100%'}}>
-        <Chat />
+        <Feed />
       </div> 
       /*<React.Fragment>
         <CssBaseline />

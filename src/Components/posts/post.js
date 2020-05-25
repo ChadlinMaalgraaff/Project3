@@ -123,7 +123,7 @@ class Post extends Component {
               <p
                 style={{marginBottom:'0px', fontSize:'13px', color:'grey', marginLeft:'5px'}}
               >
-                  {this.state.postPersonTag}
+                  {this.state.postPersonTag} id: {this.props.id}
               </p>
             </div>
             <div style={{display:'inline-block', marginLeft:'auto'}}>

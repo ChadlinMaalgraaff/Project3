@@ -23,96 +23,108 @@ class Taskbar extends Component {
                 this.setState({
                     checkMostLiked: true
                 })
-                this.props.filterPosts('most-liked');
+                this.props.filterPosts('most-liked', true);
             }else {
                 this.setState({
                     checkMostLiked: false
                 })
+                this.props.filterPosts('most-liked', false);
             }
         }else if (e.target.id === 'check-most-reposted') {
             if (this.state.checkMostReposted == false) {
                 this.setState({
                     checkMostReposted: true
                 })
-                this.props.filterPosts('most-reposted');
+                this.props.filterPosts('most-reposted', true);
             }else {
                 this.setState({
                     checkMostReposted: false
                 })
+                this.props.filterPosts('most-reposted', false);
             }
         }else if (e.target.id === 'check-most-recent') {
             if (this.state.checkMostRecent == false) {
                 this.setState({
                     checkMostRecent: true
                 })
-                this.props.filterPosts('most-recent');
+                this.props.filterPosts('most-recent', true);
             }else {
                 this.setState({
                     checkMostRecent: false
                 })
+                this.props.filterPosts('most-recent', false);
             }
         }else if (e.target.id === 'check-friends') {
             if (this.state.checkFriends == false) {
                 this.setState({
                     checkFriends: true
                 })
-                this.props.filterPosts('friends');
+                this.props.filterPosts('friends', true);
             }else {
                 this.setState({
                     checkFriends: false
                 })
+                this.props.filterPosts('friends', false);
             }
         }else if (e.target.id === 'check-followers') {
             if (this.state.checkFollowers == false) {
                 this.setState({
                     checkFollowers: true
                 })
-                this.props.filterPosts('followers');
+                this.props.filterPosts('followers', true);
             }else {
                 this.setState({
                     checkFollowers: false
                 })
+                this.props.filterPosts('followers', false);
             }
         }else if (e.target.id === 'check-time') {
             if (this.state.checkTime == false) {
                 this.setState({
                     checkTime: true
                 })
-                this.props.filterPosts('time');
+                this.props.filterPosts('time', true);
             }else {
                 this.setState({
                     checkTime: false
                 })
+                this.props.filterPosts('time', false);
             }
         }else if (e.target.id === 'check-location') {
             if (this.state.checkLocation == false) {
                 this.setState({
                     checkLocation: true
                 })
+                this.props.filterPosts('check-location', true);
             }else {
                 this.setState({
                     checkLocation: false
                 })
+                this.props.filterPosts('check-location', false);
             }
         }else if (e.target.id === 'check-category') {
             if (this.state.checkCategory == false) {
                 this.setState({
                     checkCategory: true
                 })
+                this.props.filterPosts('check-category', true);
             }else {
                 this.setState({
                     checkCategory: false
                 })
+                this.props.filterPosts('check-category', false);
             }
         }else if (e.target.id === 'check-user-group') {
             if (this.state.checkUserGroup == false) {
                 this.setState({
                     checkUserGroup: true
                 })
+                this.props.filterPosts('check-user-group', true);
             }else {
                 this.setState({
                     checkUserGroup: false
                 })
+                this.props.filterPosts('check-user-group', false);
             }
         }
 
@@ -249,11 +261,15 @@ class Taskbar extends Component {
                         <div className='icons text-center'>
                         <Form.Label>Enter post here</Form.Label>
                         <Form.Control type="text" placeholder="my post..." id='my-post'/>
+                        <Form.Control type="text" placeholder="my post2..." id='my-post2'/>
                         </div>
                     </Modal.Body>
                     <Modal.Footer style={{backgroundColor:'#faf6ee'}}>
                     <Button variant="primary" onClick={this.props.createPost}>
-                        Post
+                        Post 1
+                    </Button>
+                    <Button variant="primary" onClick={this.props.createPost2}>
+                        Post 2
                     </Button>
                     </Modal.Footer>
                 </Modal>
