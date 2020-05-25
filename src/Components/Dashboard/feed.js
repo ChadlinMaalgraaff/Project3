@@ -60,6 +60,8 @@ class Feed extends Component {
     const undo = (filter) => {
         if (filter == 'followers') {
             console.log('undo followers');
+            console.log('timeFilter:');
+            console.log(this.state.timeFilter);
             var t1 = [];
             for (var i = 0; i < this.state.posts.length; i++) {
                 t1.push(this.state.posts[i]);
@@ -88,7 +90,7 @@ class Feed extends Component {
                 postsTemp: t1
             });
 
-            if (this.state.followersFilter == true) {
+            if (this.state.followerFilter == true) {
                 this.setState({
                     postsTemp: this.state.postsTemp.filter(person => this.state.followerIds.includes(person.props["id"]))
                 })
@@ -100,16 +102,17 @@ class Feed extends Component {
             }
         }else if (filter == 'time') {
             console.log('undo time');
+            console.log('followersFilter:');
+            console.log(this.state.followerFilter);
             var t1 = [];
             for (var i = 0; i < this.state.posts.length; i++) {
                 t1.push(this.state.posts[i]);
             }
-
             this.setState({
                 postsTemp: t1
             });
 
-            if (this.state.followersFilter == true) {
+            if (this.state.followerFilter == true) {
                 this.setState({
                     postsTemp: this.state.postsTemp.filter(person => this.state.followerIds.includes(person.props["id"]))
                 })
