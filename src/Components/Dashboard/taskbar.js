@@ -18,43 +18,7 @@ class Taskbar extends Component {
 
     check = (e) => {
 
-        if (e.target.id === 'check-most-liked') {
-            if (this.state.checkMostLiked == false) {
-                this.setState({
-                    checkMostLiked: true
-                })
-                this.props.filterPosts('most-liked', true);
-            }else {
-                this.setState({
-                    checkMostLiked: false
-                })
-                this.props.filterPosts('most-liked', false);
-            }
-        }else if (e.target.id === 'check-most-reposted') {
-            if (this.state.checkMostReposted == false) {
-                this.setState({
-                    checkMostReposted: true
-                })
-                this.props.filterPosts('most-reposted', true);
-            }else {
-                this.setState({
-                    checkMostReposted: false
-                })
-                this.props.filterPosts('most-reposted', false);
-            }
-        }else if (e.target.id === 'check-most-recent') {
-            if (this.state.checkMostRecent == false) {
-                this.setState({
-                    checkMostRecent: true
-                })
-                this.props.filterPosts('most-recent', true);
-            }else {
-                this.setState({
-                    checkMostRecent: false
-                })
-                this.props.filterPosts('most-recent', false);
-            }
-        }else if (e.target.id === 'check-friends') {
+        if (e.target.id === 'check-friends') {
             if (this.state.checkFriends == false) {
                 this.setState({
                     checkFriends: true
@@ -208,15 +172,6 @@ class Taskbar extends Component {
                                     className='content-item' id='content-item'
                                 >
                                     <h3>Filter</h3>
-                                    <Form.Group controlId="formBasicCheckbox">
-                                        <Form.Check type="checkbox" label="Most Liked" id='check-most-liked' onClick={this.check}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="formBasicCheckbox">
-                                        <Form.Check type="checkbox" label="Most Reposted" id='check-most-reposted' onClick={this.check}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="formBasicCheckbox">
-                                        <Form.Check type="checkbox" label="Most Recent" id='check-most-recent' onClick={this.check}/>
-                                    </Form.Group>
                                     <Form.Group controlId="formBasicCheckbox">
                                         <Form.Check type="checkbox" label="Friends" id='check-friends' onClick={this.check}/>
                                     </Form.Group>

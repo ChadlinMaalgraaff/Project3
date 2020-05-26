@@ -5,8 +5,9 @@ import pp2 from '../../Images/pp2.jpg';
 
 class Post extends Component {
   state = {
-    commenterName: 'Barbossa',
-    commenterTag: '@Barbossa',
+    commenterName: 'Barbossa', /* this.props.LoggedInPersonName */
+    commenterTag: '@Barbossa', /* this.props.LoggedInPersonTag */
+    commenterId: this.props.LoggedInPersonId,
     comments: [],
     open: 'true',
     pp: this.props.pp,
@@ -28,23 +29,24 @@ class Post extends Component {
     const comment = () => {
       const comment = document.getElementById('my-comment' + rando);
       this.setState({
-        comments: [...this.state.comments, <Comment commentText={comment.value} commenterName={this.state.commenterName} commenterTag={this.state.commenterTag} pp={pp2} key={rando}/>]
+        comments: [...this.state.comments, <Comment commentText={comment.value} commenterName={this.state.commenterName} commenterTag={this.state.commenterTag} commenterId={this.state.LoggedInPersonId} pp={pp2} key={rando}/>]
       })
       comment.value = '';
     }
 
     const follow = () => {
-
-      if (this.state.followerIDs.includes(this.state.postPersonID) && (this.state.postPersonID != null)) {
-        var i = this.state.followerIDs.indexOf(this.state.postPersonID);
+      if (this.state.followerIDs.includes(this.props.LoggedInPersonId) && (this.props.LoggedInPersonId != null)) {
+        /* Unfollow */
+        var i = this.state.followerIDs.indexOf(this.props.LoggedInPersonId);
         if (i > -1) {
           this.setState({
             followerIDs: this.state.followerIDs.filter(item => item != this.state.followerIDs[i])
           })
         }
-      }else if ((this.state.postPersonID != null) && (!this.state.followerIDs.includes(this.state.postPersonID))) {
+      }else if ((this.props.LoggedInPersonId != null) && (!this.state.followerIDs.includes(this.props.LoggedInPersonId))) {
+        /* Follow */
         this.setState({
-          followerIDs: [...this.state.followerIDs, this.state.postPersonID]
+          followerIDs: [...this.state.followerIDs, this.props.LoggedInPersonId]
         });
       }
     }

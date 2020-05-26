@@ -6,21 +6,28 @@ import pp2 from '../../Images/pp2.jpg'
 import Taskbar from './taskbar';
 
 class Feed extends Component {
+/*
+    Before backend sends all of the posts to frontend, backend needs to modify the Post Objects
+    Set the following list of properties of each Post Object to the corresponding value of the person logging in:
+    - LoggedInPersonId
+    - LoggedInPersonName
+    - LoggedInPersonTag
+*/
+
     constructor(props) {
         super(props);
     
         this.state = {
             posts: [],
-            postsTemp: [],
-            postPersonName: 'Captain Jack Sparrow',
-            postPersonTag: '@CaptainJackSparrow',
-            geotag: 'Tortuga, England',
-            postPersonId: 1, /* Need to get a more reliable ID */
+            LoggedInPersonName: 'Captain Jack Sparrow',
+            LoggedInPersonTag: '@CaptainJackSparrow',
+            LoggedInGeotag: 'Tortuga, England',
+            LoggedInPersonId: 1, /* Need to get a more reliable ID */
             time: '11:57 PM',
             date: ' 13 March 2020',
-            personPP: pp1,
-            friendIds: [1, 2],
-            followerIds: [2],
+            LoggedInPersonPP: pp1,
+            LoggedInPersonFriendIds: [1, 2],
+            LoggedInPersonFollowerIds: [2],
             followerFilter: false,
             friendFilter: false,
             timeFilter: false,
@@ -31,7 +38,6 @@ class Feed extends Component {
             postPersonId2: 2,
             followerIds2: [1],
             friendIds2: []
-
         };
       }
 
@@ -61,22 +67,11 @@ class Feed extends Component {
         const post = document.getElementById('my-post');
         // Need to get a solid key value in the props
         this.setState({
-            posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.postPersonName} 
-                postPersonTag={this.state.postPersonTag} pp={this.state.personPP} geotag={this.state.geotag} id={this.state.postPersonId} key={Math.random()} 
-                date={this.state.date} time={1} followerIds={this.state.followerIds} friendIds={this.state.friendIds}/>]
+            posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.LoggedInPersonName} 
+                postPersonTag={this.state.LoggedInPersonTag} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInGeotag} id={this.state.LoggedInPersonId} key={Math.random()} 
+                date={this.state.date} time={1} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
+                LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag}/>]
         })
-        var t1 = [];
-        for (var i = 0; i < this.state.posts.length; i++) {
-            t1.push(this.state.posts[i]);
-        }
-        t1.push(
-            <Post postText={post.value} postPersonName={this.state.postPersonName} 
-                postPersonTag={this.state.postPersonTag} pp={this.state.personPP} geotag={this.state.geotag} id={this.state.postPersonId} key={Math.random()} 
-                date={this.state.date} time={1} followerIds={this.state.followerIds} friendIds={this.state.friendIds}/>
-        );
-        this.setState({
-            postsTemp: t1
-        });
     };
 
     const createPost2 = () => {
@@ -85,91 +80,9 @@ class Feed extends Component {
         this.setState({
             posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.postPersonName2} 
                 postPersonTag={this.state.postPersonTag2} pp={this.state.personPP2} geotag={this.state.geotag} id={this.state.postPersonId2} key={Math.random()} 
-                date={this.state.date} time={2} followerIds={this.state.followerIds2} friendIds={this.state.friendIds2}/>]
+                date={this.state.date} time={2} followerIds={this.state.followerIds2} friendIds={this.state.friendIds2} /*LoggedInPersonId*//>]
         })
-        var t1 = [];
-        for (var i = 0; i < this.state.posts.length; i++) {
-            t1.push(this.state.posts[i]);
-        }
-        t1.push(
-            <Post postText={post.value} postPersonName={this.state.postPersonName2} 
-                postPersonTag={this.state.postPersonTag2} pp={this.state.personPP2} geotag={this.state.geotag} id={this.state.postPersonId2} key={Math.random()} 
-                date={this.state.date} time={2} followerIds={this.state.followerIds2} friendIds={this.state.friendIds2}/>
-        );
-        this.setState({
-            postsTemp: t1
-        });
     };
-
-    const undo = (filter) => {
-        if (filter == 'followers') {
-            console.log('undo followers');
-            console.log('timeFilter:');
-            console.log(this.state.timeFilter);
-            var t1 = [];
-            for (var i = 0; i < this.state.posts.length; i++) {
-                t1.push(this.state.posts[i]);
-            }
-            this.setState({
-                postsTemp: t1
-            });
-
-            if (this.state.friendFilter == true) {
-                this.setState({
-                    postsTemp: this.state.postsTemp.filter(person => this.state.friendIds.includes(person.props["id"]))
-                })
-            }
-            if (this.state.timeFilter == true) {
-                this.setState({
-                    postsTemp: this.state.postsTemp.sort(((p1, p2) => (p1.props["time"] > p2.props.time ) ? 1 : -1))
-                })
-            }
-        }else if (filter == 'friends') {
-            console.log('undo freinds');
-            var t1 = [];
-            for (var i = 0; i < this.state.posts.length; i++) {
-                t1.push(this.state.posts[i]);
-            }
-            this.setState({
-                postsTemp: t1
-            });
-
-            if (this.state.followerFilter == true) {
-                this.setState({
-                    postsTemp: this.state.postsTemp.filter(person => this.state.followerIds.includes(person.props["id"]))
-                })
-            }
-            if (this.state.timeFilter == true) {
-                this.setState({
-                    postsTemp: this.state.postsTemp.sort(((p1, p2) => (p1.props["time"] > p2.props.time ) ? 1 : -1))
-                })
-            }
-        }else if (filter == 'time') {
-            console.log('undo time');
-            console.log('followersFilter:');
-            console.log(this.state.followerFilter);
-            var t1 = [];
-            for (var i = 0; i < this.state.posts.length; i++) {
-                t1.push(this.state.posts[i]);
-            }
-            this.setState({
-                postsTemp: t1
-            });
-
-            if (this.state.followerFilter == true) {
-                this.setState({
-                    postsTemp: this.state.postsTemp.filter(person => this.state.followerIds.includes(person.props["id"]))
-                })
-            }
-            if (this.state.friendFilter == true) {
-                this.setState({
-                    postsTemp: this.state.postsTemp.filter(person => this.state.friendIds.includes(person.props["id"]))
-                })
-            }
-        }
-        console.log('posts: ')
-        console.log(this.state.posts)
-    }
 
     const filterPosts = (filterType, on) =>{
         console.log('FilterType: ' + filterType);
@@ -177,38 +90,32 @@ class Feed extends Component {
         if (filterType === 'friends') {
             if (on) {
                 this.setState({
-                    /*postsTemp: this.state.postsTemp.filter(person => this.state.friendIds.includes(person.props["id"])),*/
                     friendFilter: true
                 });
             }else {
                 this.setState({
                     friendFilter: false
                 });
-                undo('friends');
             }
         }else if (filterType === 'followers') {
             if (on) {
                 this.setState({
-                    /*postsTemp: this.state.postsTemp.filter(person => this.state.followerIds.includes(person.props["id"])),*/
                     followerFilter: true
                 });
             }else {
                 this.setState({
                     followerFilter: false
                 });
-                /*undo('followers');*/
             }
         }else if (filterType === 'time') {
             if (on) {
                 this.setState({
-                    /*postsTemp: this.state.postsTemp.sort(((p1, p2) => (p1.props["time"] > p2.props.time ) ? 1 : -1)),*/
                     timeFilter: true
                 });
             }else {
                 this.setState({
                     timeFilter: false
                 });
-                undo('time');
             }
         }else if (filterType === 'check-location') {
             
@@ -261,8 +168,8 @@ class Feed extends Component {
                         >
                             {
                                 timeSort(
-                                (this.state.followerFilter == true ? (this.state.posts.filter(post => this.state.followerIds.includes(post.props["id"]))):(this.state.posts))
-                                .filter(this.state.friendFilter == true ? (post => this.state.friendIds.includes(post.props["id"])):(post => post))
+                                (this.state.followerFilter == true ? (this.state.posts.filter(post => this.state.LoggedInPersonFollowerIds.includes(post.props["id"]))):(this.state.posts))
+                                .filter(this.state.friendFilter == true ? (post => this.state.LoggedInPersonFriendIds.includes(post.props["id"])):(post => post))
                                 , this.state.timeFilter)
                                 .map(post => (
                                     post
