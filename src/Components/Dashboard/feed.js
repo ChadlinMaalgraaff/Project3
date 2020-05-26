@@ -21,7 +21,7 @@ class Feed extends Component {
             posts: [],
             LoggedInPersonName: 'Captain Jack Sparrow',
             LoggedInPersonTag: '@CaptainJackSparrow',
-            LoggedInGeotag: 'Tortuga, England',
+            LoggedInPersonGeotag: 'Tortuga, England',
             LoggedInPersonId: 1, /* Need to get a more reliable ID */
             time: '11:57 PM',
             date: ' 13 March 2020',
@@ -65,22 +65,24 @@ class Feed extends Component {
 
     const createPost = () => {
         const post = document.getElementById('my-post');
-        // Need to get a solid key value in the props
+        var today = new Date();
+        // Need to get a reliable key value in the props
         this.setState({
             posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.LoggedInPersonName} 
-                postPersonTag={this.state.LoggedInPersonTag} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInGeotag} id={this.state.LoggedInPersonId} key={Math.random()} 
-                date={this.state.date} time={1} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
+                postPersonTag={this.state.LoggedInPersonTag} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={this.state.LoggedInPersonId} key={Math.random()} 
+                date={today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()} time={today.getHours() + ":" + today.getMinutes()} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
                 LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag}/>]
         })
     };
 
     const createPost2 = () => {
         const post = document.getElementById('my-post2');
-        // Need to get a solid key value in the props
+        var today = new Date();
+        // Need to get a reliable key value in the props
         this.setState({
             posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.postPersonName2} 
-                postPersonTag={this.state.postPersonTag2} pp={this.state.personPP2} geotag={this.state.geotag} id={this.state.postPersonId2} key={Math.random()} 
-                date={this.state.date} time={2} followerIds={this.state.followerIds2} friendIds={this.state.friendIds2} /*LoggedInPersonId*//>]
+                postPersonTag={this.state.postPersonTag2} pp={this.state.personPP2} geotag={this.state.LoggedInPersonGeotag} id={this.state.postPersonId2} key={Math.random()} 
+                date={today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()} time={today.getHours() + ":" + today.getMinutes()} followerIds={this.state.followerIds2} friendIds={this.state.friendIds2} /*LoggedInPersonId*//>]
         })
     };
 
