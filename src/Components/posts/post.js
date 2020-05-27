@@ -157,7 +157,7 @@ class Post extends Component {
           >
             <div style={{width:'100%'}}>
               <p style={{fontSize:'11px', color:'grey', marginBottom:'0px', display:'inline-block'}} >
-                {this.state.time} - {this.state.date}
+                {this.state.time} {'   '}   {this.state.date}
               </p>
               <div>
               <p style={{fontSize:'11px'}}><i class="fas fa-map-marker-alt" style={{color:'#F83639'}}></i> {this.state.location}</p>

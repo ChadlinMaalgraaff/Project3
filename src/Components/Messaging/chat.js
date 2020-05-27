@@ -249,9 +249,8 @@ class Chat extends Component {
 
     return (
       <Container fluid style={{ position: "relative", minHeight: "100vh", margin:'0px', padding:'0px' }}>
-        <Row style={{margin:'0px', padding:'0px'}}>
-          <Col xs={0} sm={0} md={6} lg={6} xl={6} style={{margin:'0px', padding:'0px'}}>
-            <Row style={{margin:'0px', padding:'0px'}}>
+        <Row style={{margin:'0px', padding:'0px', minHeight: "100vh"}}>
+          <Col xs={0} sm={0} md={0} lg={0} xl={0} style={{margin:'0px', padding:'0px'}}>
               <div className='toggle'>
                   <div className="menu-btn" id='menu-btn' onClick={toggle}>
                       <div className="menu-btn__burger"></div>
@@ -307,7 +306,6 @@ class Chat extends Component {
                   </div>
 
               </div>
-            </Row>
           </Col>
           <Col xs={12} sm={12} md={6} lg={6} xl={6} style={{margin:'0px', padding:'0px'}}>
             <Row style={{margin:'0px', padding:'0px'}}>

@@ -15,7 +15,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 function App() {
     return ( 
       <div className = "App" style={{margin:'0px', padding:'0px', width:'100%'}}>
-        <Feed />
+        <Chat />
       </div> 
       /*<div className = "App" style={{margin:'0px', padding:'0px', width:'100%'}}>
         <Chat />
