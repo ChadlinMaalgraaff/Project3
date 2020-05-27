@@ -10,26 +10,11 @@ import Friends from './Components/Profile/friends';
 import './App.css';
 import { Container, CssBaseline } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-/*import  Navigation from './Components/Navigation/Navigation';*/
+import  Navigation from './Components/Navigation/Navigation';
 
 function App() {
     return ( 
-      <div className = "App" style={{margin:'0px', padding:'0px', width:'100%'}}>
-        <Chat />
-      </div> 
-      /*<div className = "App" style={{margin:'0px', padding:'0px', width:'100%'}}>
-        <Chat />
-      </div>*/
-      /*<div>
-        <Request/>
-      </div> */
-      /*<React.Fragment>
-        <CssBaseline />
-        <Container maxWidth="sm" fixed>
-          <Register/>
-      </Container>
-      </React.Fragment>*/
-      /*<React.Fragment>
+      <React.Fragment>
         <Router>
           <Navigation/>
             <Switch>             
@@ -42,7 +27,7 @@ function App() {
               <Route path= "/messages" component={Chat} />
             </Switch>
           </Router>
-      </React.Fragment>*/
+      </React.Fragment>
     );
 }
     

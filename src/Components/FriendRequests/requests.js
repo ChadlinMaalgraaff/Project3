@@ -5,7 +5,6 @@ import { render } from "@testing-library/react";
 import img from '../../Images/iu-8.jpeg';
 import '../../App.css';
 
-
 export default class Requests extends Component {
     constructor(props) {
         super(props);
@@ -58,14 +57,14 @@ export default class Requests extends Component {
                             <Col md="auto">
                                 <Avatar alt="person" src={img} />
                             </Col>
-                            <Col>
-                                @{username.name} sent a friend request
+                            <Col style={{alignContent: "center"}}>
+                                @{username.name}
                             </Col>
                             <Col>
-                                <Button variant="dark" onClick={() => this.removeItem(index)}>
+                                <Button variant="dark" size="sm" onClick={() => this.removeItem(index)}>
                                     Accept
                                 </Button>
-                                <Button variant="light" onClick={() => this.removeItem(index)}>
+                                <Button variant="light" size="sm" onClick={() => this.removeItem(index)}>
                                     Reject
                                 </Button>
                             </Col>
