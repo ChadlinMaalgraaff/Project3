@@ -1,9 +1,11 @@
 import React, { Component } from "react";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Modal, Form, FormControl, Button, InputGroup } from "react-bootstrap";
 import Post from '../posts/post';
 import pp1 from '../../Images/pp1.jpg';
-import pp2 from '../../Images/pp2.jpg'
+import pp2 from '../../Images/pp2.jpg';
+import pp3 from '../../Images/iu-2.png';
 import Taskbar from './taskbar';
+import Person from '../Messaging/person';
 
 class Feed extends Component {
 /*
@@ -18,6 +20,7 @@ class Feed extends Component {
         super(props);
     
         this.state = {
+            showGroup: false,
             posts: [],
             LoggedInPersonName: 'Captain Jack Sparrow',
             LoggedInPersonTag: '@CaptainJackSparrow',
@@ -26,7 +29,7 @@ class Feed extends Component {
             time: '11:57 PM',
             date: ' 13 March 2020',
             LoggedInPersonPP: pp1,
-            LoggedInPersonFriendIds: [1, 2],
+            LoggedInPersonFriendIds: [2, 3, 4, 5, 6, 7, 8],
             LoggedInPersonFollowerIds: [2],
             followerFilter: false,
             friendFilter: false,
@@ -37,7 +40,23 @@ class Feed extends Component {
             personPP2: pp2,
             postPersonId2: 2,
             followerIds2: [1],
-            friendIds2: []
+            friendIds2: [],
+            groups: [],
+            selectedPeople: [],
+            selected: 0,
+            selectedId: '',
+            personSearch: false,
+            personSearchInput: '',
+            people: [
+                <Person personId={1} key={1} personName={'Captan Jack Sparrow'} personPP={pp1}/>,
+                <Person personId={2} key={2} personName={'Captan Barbosa'} personPP={pp2}/>,
+                <Person personId={3} key={3} personName={'3'} personPP={pp3}/>,
+                <Person personId={4} key={4} personName={'4'} personPP={pp3}/>,
+                <Person personId={5} key={5} personName={'5'} personPP={pp3}/>,
+                <Person personId={6} key={6} personName={'6'} personPP={pp3}/>,
+                <Person personId={7} key={7} personName={'7'} personPP={pp3}/>,
+                <Person personId={8} key={8} personName={'8'} personPP={pp3}/>
+            ]
         };
     }
 
@@ -129,6 +148,57 @@ class Feed extends Component {
         console.log('posts: ')
         console.log(this.state.posts)
     }
+
+    const newGroup = () => {
+        const groupId = Math.random();
+        this.setState({
+            groups: [...this.state.groups, [groupId, this.state.selectedPeople]],
+            showGroup: false,
+            selectedPeople: [],
+        });
+
+        console.log('groups: ');
+        console.log(this.state.groups);
+    }
+
+    const personSearch = () => {
+        var searchInput = document.getElementById('personSearch').value;
+        console.log('search input:');
+        console.log(searchInput);
+  
+        if (searchInput != '') {
+          this.setState({
+            personSearch: true,
+            personSearchInput: searchInput
+          });
+        }else {
+          this.setState({
+            personSearch: false,
+            personSearchInput: searchInput
+          });
+        }
+    }
+
+    const personSelect = (e) => {
+        console.log(e.target.id);
+  
+        if (e.target.checked == true) {
+          this.setState({
+            selectedPeople: [...this.state.selectedPeople, this.state.people.filter(person => person.props["personId"] == e.target.id)[0]],
+            selected: 1,
+            selectedId: e.target.id
+          });
+        }else if (e.target.checked == false) {
+          this.setState({
+            selectedPeople: this.state.selectedPeople.filter(person => person.props["personId"] != e.target.id),
+            selected: 0,
+            selectedId: ''
+          });
+        }
+    }
+
+    const handleCloseGroup = () => {this.setState({showGroup:false})};
+    const handleShowGroup = () => {this.setState({showGroup:true})};
          
     return( 
         <Container fluid style={{padding:'0px', margin:'0px', width:'100%'}}>
@@ -141,7 +211,7 @@ class Feed extends Component {
                     xl={6}
                     style={{padding:'0px', margin:'0px', width:'100%'}}
                 >
-                    <Taskbar createPost={createPost} createPost2={createPost2} filterPosts={filterPosts}/>
+                    <Taskbar createPost={createPost} createPost2={createPost2} filterPosts={filterPosts} handleShowGroup={handleShowGroup}/>
                 </Col>
                 <Col 
                     xs={12}
@@ -189,6 +259,34 @@ class Feed extends Component {
                     </Row>
                 </Col>
             </Row>
+
+            {/* Modal used to create group */}
+            <Modal show={this.state.showGroup} onHide={handleCloseGroup} centered>
+                <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
+                    Create group
+                </Modal.Header>
+                <Modal.Body style={{backgroundColor:'#ffffff'}}>
+                    <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
+                        <input style={{width:'100%'}} id='personSearch' placeholder='search for a person...' onChange={personSearch}></input>
+                        {this.state.people.filter(person => this.state.LoggedInPersonFriendIds.includes(person.props['personId']))
+                        .filter(this.state.personSearch == true ? (p => p.props['personName'].toLowerCase().includes(this.state.personSearchInput.toLowerCase())):(p => p == p))
+                        .map((person) => (
+                            <InputGroup className="mb-3">
+                            <InputGroup.Prepend>
+                                <InputGroup.Checkbox aria-label="Checkbox for following text input" id={person.props['personId']} onClick={personSelect} />
+                            </InputGroup.Prepend>
+                            {person}
+                            </InputGroup>
+                        ))}
+                    </div>
+                </Modal.Body>
+                <Modal.Footer style={{backgroundColor:'#faf6ee'}}>
+                <Button variant="primary" onClick={newGroup}>
+                    Create group
+                </Button>
+                </Modal.Footer>
+            </Modal>
+            {/* Modal used to create group */}
         </Container>
     );
   }

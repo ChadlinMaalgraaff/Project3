@@ -136,7 +136,7 @@ class Chat extends Component {
 
     const GenerateBots = () => { /* Generates a random bot and populates the people array with it */
       const rando = Math.random();
-      const bot= <Person personId={rando} personName={'Bot' + rando} personPP={pp} id={rando}/>;
+      const bot= <Person personId={rando} key={rando} personName={'Bot' + rando} personPP={pp} id={rando}/>;
 
       this.setState({
         people: [...this.state.people, bot]
@@ -150,7 +150,7 @@ class Chat extends Component {
       var chatId = 0;
       const messages = [];
       var members = [...this.state.selectedPeople,
-        <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>
+        <Person personId={this.state.personId} key={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>
       ];
       for (var j = 0; j < members.length; j++) {
         chatId += members[j].props["personId"];
@@ -162,7 +162,7 @@ class Chat extends Component {
         const groupName = document.getElementById('groupName');
         const groupPP = document.getElementById('groupChat-pp');
         const groupId = Math.random();
-        const groupChatObject = <Person personId={groupId} personName={groupName.value} personPP={groupPP.src}/>
+        const groupChatObject = <Person personId={groupId} key={groupId} personName={groupName.value} personPP={groupPP.src}/>
         members = [groupChatObject, ...members];
         this.setState({groupChat: false});
         this.setState({
@@ -252,7 +252,7 @@ class Chat extends Component {
     const joinGroup = () => {
       if (this.state.selectedId != '') {
         const group = this.state.groups.filter(group => group.props['chatId'] == this.state.selectedId)[0];
-        const me = <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>;
+        const me = <Person personId={this.state.personId} key={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>;
         const updatedGroup = <ChatObject chatId={group.props["chatId"]} id={group.props["chatId"]} key={group.props["chatId"]} people={[...group.props["people"], me]} messages={group.props["messages"]} groupChat={true}/>;
         this.setState({
           groups: [...this.state.groups.filter(groupObject => groupObject.props["chatId"] != updatedGroup.props["chatId"]), updatedGroup],
@@ -577,10 +577,10 @@ class Chat extends Component {
         </Modal>
       {/* Modal used to join group  */}
 
-      {/* Modal used to join group */}
+      {/* Modal used to delete group */}
       <Modal show={this.state.showGroupAdmin} onHide={handleCloseGroupAdmin} centered>
             <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
-              Join group
+              Delete group
             </Modal.Header>
             <Modal.Body style={{backgroundColor:'#ffffff'}}>
                 <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
@@ -592,13 +592,8 @@ class Chat extends Component {
                   ))}
                 </div>
             </Modal.Body>
-            <Modal.Footer style={{backgroundColor:'#faf6ee'}}>
-            <Button variant="primary" onClick={joinGroup}>
-                Join
-            </Button>
-            </Modal.Footer>
         </Modal>
-      {/* Modal used to join group  */}
+      {/* Modal used to delete group  */}
       </Container>
     );
   }
