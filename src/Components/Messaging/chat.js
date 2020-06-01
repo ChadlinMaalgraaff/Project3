@@ -14,13 +14,13 @@ class Chat extends Component {
     personId2: 2,
     personName: 'My Name is...', /* Name of logged in person */
     personPP: pp2, /* Profile picture of logged in person */
-    time: "eh-time",
     activeChat: [], /* Messages of the active chat */
     activeChatName: 'Chadlin Maalgraaff', /* Name of person you're currently chatting to */
     activeChatPP: pp, /* Profile Picture of person you're currently chatting to  */
     activeChatId: '', /* Chat Id of active chat*/
     chats: [], /* Chat history of logged in person */
     people: [], /* People in the network(database) */
+    openChats: [],
     selectedPeople: [], 
     groupChat: false,
     selected: 0,
@@ -59,7 +59,8 @@ class Chat extends Component {
     const message = () => {
       const messageText = document.getElementById("my-message").value;
       const messageId = Math.random();
-      const message = <Message time={this.state.time} personId={this.state.personId} messageId={messageId} text={messageText} />
+      var today = new Date();
+      const message = <Message time={today.getHours() + ":" + today.getMinutes()} personId={this.state.personId} messageId={messageId} text={messageText} />
 
       this.setState({
         activeChat: [
@@ -90,7 +91,8 @@ class Chat extends Component {
     const message2 = () => {
       const messageText = document.getElementById("my-message2").value;
       const messageId = Math.random();
-      const message = <Message time={this.state.time} personId={this.state.personId2} messageId={messageId} text={messageText} />
+      var today = new Date();
+      const message = <Message time={today.getHours() + ":" + today.getMinutes()} personId={this.state.personId2} messageId={messageId} text={messageText} />
 
       this.setState({
         activeChat: [
@@ -138,11 +140,16 @@ class Chat extends Component {
     }
 
     const startChat = () => { /* Will be the actual function we use, instead of newchat */
-      const chatId = Math.random();
+      var chatId = 0;
       const messages = [];
       var members = [...this.state.selectedPeople,
         <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>
       ];
+      for (var j = 0; j < members.length; j++) {
+        chatId += members[j].props["personId"];
+      }
+      console.log('chatId: ');
+      console.log(chatId);
 
       if (this.state.groupChat == true) {
         const groupName = document.getElementById('groupName');
@@ -152,16 +159,25 @@ class Chat extends Component {
         members = [groupChatObject, ...members];
         this.setState({groupChat: false});
         this.setState({
-          chats: [...this.state.chats, <ChatObject chatId={chatId} people={members} messages={messages} groupChat={true}/>],
+          chats: [...this.state.chats, <ChatObject chatId={chatId} key={chatId} people={members} messages={messages} groupChat={true}/>],
           /*groups need to be taken out here, once you can import the groups from the database. Only here so that you can test the join group function*/
-          groups: [...this.state.groups, <ChatObject chatId={chatId} people={members} messages={messages} groupChat={true}/>]
+          groups: [...this.state.groups, <ChatObject chatId={chatId} key={chatId}  people={members} messages={messages} groupChat={true}/>],
+          openChats: [...this.state.openChats, <ChatObject chatId={chatId} key={chatId}  people={members} messages={messages} groupChat={true}/>]
         });
         console.log('groups: ');
         console.log(this.state.groups);
       }else {
-        this.setState({
-          chats: [...this.state.chats, <ChatObject chatId={chatId} people={members} messages={messages} groupChat={false}/>]
-        });
+        var chatIds = [];
+        for (var i = 0; i < this.state.chats.length; i++) { chatIds.push(this.state.chats[i].props["chatId"]) };
+
+        if (!chatIds.includes(chatId)) {
+          this.setState({
+            chats: [...this.state.chats, <ChatObject chatId={chatId} key={chatId}  people={members} messages={messages} groupChat={false}/>],
+            openChats: [...this.state.openChats, <ChatObject chatId={chatId} key={chatId}  people={members} messages={messages} groupChat={true}/>]
+          });
+        }else {
+          alert('Chat already open');
+        }
       }
 
       this.setState({ /* The first object in members is used to display the Name and PP */
@@ -171,11 +187,11 @@ class Chat extends Component {
         activeChatPP: members[0].props["personPP"],
         selectedId: '',
         selected: 0,
+        selectedPeople: [],
         show: false
       });
-
-      console.log('start chat members: ');
-      console.log(members);
+      console.log('start chats: ');
+      console.log(this.state.chats);
     }
 
     const personSelect = (e) => {
@@ -232,7 +248,7 @@ class Chat extends Component {
       if (this.state.selectedId != '') {
         const group = this.state.groups.filter(group => group.props['chatId'] == this.state.selectedId)[0];
         const me = <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>;
-        const updatedGroup = <ChatObject chatId={group.props["chatId"]} people={[...group.props["people"], me]} messages={group.props["messages"]} groupChat={true}/>;
+        const updatedGroup = <ChatObject chatId={group.props["chatId"]} key={group.props["chatId"]} people={[...group.props["people"], me]} messages={group.props["messages"]} groupChat={true}/>;
         this.setState({
           groups: [...this.state.groups.filter(groupObject => groupObject.props["chatId"] != updatedGroup.props["chatId"]), updatedGroup],
           chats: [...this.state.chats, updatedGroup],
@@ -438,7 +454,7 @@ class Chat extends Component {
             </Row>
           </Col>
         </Row>
-      {/* Modal used to type post */}
+      {/* Modal used to start a chat */}
         <Modal show={this.state.show} onHide={handleClose} centered>
             <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
               <div className='groupChat'>
@@ -472,7 +488,7 @@ class Chat extends Component {
             </Button>
             </Modal.Footer>
         </Modal>
-      {/* Modal used to type post */}
+      {/* Modal used to start a chat */}
 
       {/* Modal used to join group */}
       <Modal show={this.state.showGroup} onHide={handleCloseGroup} centered>

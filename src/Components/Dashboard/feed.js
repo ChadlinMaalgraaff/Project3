@@ -39,7 +39,7 @@ class Feed extends Component {
             followerIds2: [1],
             friendIds2: []
         };
-      }
+    }
 
   render() {
     const timeSort = (array, filterOn) => {
