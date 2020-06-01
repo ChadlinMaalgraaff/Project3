@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Modal, Form, FormControl, Button, InputGroup } from "react-bootstrap";
+import { Container, Row, Col, Modal, Form, FormControl, Button, InputGroup, Image } from "react-bootstrap";
 import Post from '../posts/post';
 import pp1 from '../../Images/pp1.jpg';
 import pp2 from '../../Images/pp2.jpg';
 import pp3 from '../../Images/iu-2.png';
+import pp4 from '../../Images/iu-8.jpeg';
 import Taskbar from './taskbar';
 import Person from '../Messaging/person';
 
@@ -21,6 +22,7 @@ class Feed extends Component {
     
         this.state = {
             showGroup: false,
+            showGroupDelete: false,
             posts: [],
             LoggedInPersonName: 'Captain Jack Sparrow',
             LoggedInPersonTag: '@CaptainJackSparrow',
@@ -151,22 +153,28 @@ class Feed extends Component {
 
     const newGroup = () => {
         const groupId = Math.random();
+        const groupName = document.getElementById('groupName').value;
+        const groupPP = document.getElementById('groupPP');
 
         /**
          * List of 2d group arrays
          * the first index contains the group id
          * the second index contains an array of the group admin Ids
-         * the third index contains an array of the people in the group
+         * the third index contains an array of the people in the group,
+         * the fourth index contains the group name
+         * the fifth index contains the group image src
          */
 
         this.setState({
-            groups: [...this.state.groups, [groupId, [this.LoggedInPersonId], this.state.selectedPeople]],
+            groups: [...this.state.groups, [groupId, [this.state.LoggedInPersonId], this.state.selectedPeople, groupName, groupPP]],
             showGroup: false,
             selectedPeople: [],
         });
 
-        console.log('groups: ');
-        console.log(this.state.groups);
+        if (this.state.groups.length > 0) {
+            console.log('group[0] image: ');
+            console.log(this.state.groups[0][4]);
+        }
     }
 
     const personSearch = () => {
@@ -205,8 +213,23 @@ class Feed extends Component {
         }
     }
 
+    const removeGroup = (e) => {
+        /**
+         * The backend needs to delete this groupchat from the
+         * chat histories of everyone that is on this group
+         * 
+         * Do this before removing the chat from the admin's chat
+         */
+
+        this.setState({
+            groups: this.state.groups.filter(group => group[0] != e.target.id)
+        });
+    }
+
     const handleCloseGroup = () => {this.setState({showGroup:false})};
     const handleShowGroup = () => {this.setState({showGroup:true})};
+    const handleCloseGroupDelete = () => {this.setState({showGroupDelete:false})};
+    const handleShowGroupDelete = () => {this.setState({showGroupDelete:true})};
          
     return( 
         <Container fluid style={{padding:'0px', margin:'0px', width:'100%'}}>
@@ -219,7 +242,7 @@ class Feed extends Component {
                     xl={6}
                     style={{padding:'0px', margin:'0px', width:'100%'}}
                 >
-                    <Taskbar createPost={createPost} createPost2={createPost2} filterPosts={filterPosts} handleShowGroup={handleShowGroup}/>
+                    <Taskbar createPost={createPost} createPost2={createPost2} filterPosts={filterPosts} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete}/>
                 </Col>
                 <Col 
                     xs={12}
@@ -272,6 +295,12 @@ class Feed extends Component {
             <Modal show={this.state.showGroup} onHide={handleCloseGroup} centered>
                 <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
                     Create group
+                    <div className='groupChat'>
+                        <Form.Label>Group Name:</Form.Label>
+                        <Form.Control type="text" id='groupName' placeholder="Group name..." />
+                        <Form.Label>Group Display picture:</Form.Label>
+                        <Image src={pp4} id='groupPP' className='message-pp'></Image>
+                    </div>
                 </Modal.Header>
                 <Modal.Body style={{backgroundColor:'#ffffff'}}>
                     <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
@@ -295,6 +324,51 @@ class Feed extends Component {
                 </Modal.Footer>
             </Modal>
             {/* Modal used to create group */}
+
+            {/* Modal used to delete group */}
+            <Modal show={this.state.showGroupDelete} onHide={handleCloseGroupDelete} centered>
+                    <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
+                        Delete group
+                    </Modal.Header>
+                    <Modal.Body style={{backgroundColor:'#ffffff'}}>
+                        <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
+                        {this.state.groups.filter(group => group[1].includes(this.state.LoggedInPersonId)).map((group) => (
+                            <div key={group[0]}>
+                                <Container fluid>
+                                    <Row className='person'>
+                                        <Col
+                                            xs={3}
+                                            sm={3}
+                                            md={1}
+                                            lg={1}
+                                            xl={1}
+                                        >
+                                            <Image src={pp4} className='message-pp'></Image>
+                                        </Col>
+                                        <Col
+                                            xs={9}
+                                            sm={9}
+                                            md={11}
+                                            lg={11}
+                                            xl={11}
+                                        >
+                                            <div style={{display:'inline-block'}}>
+                                            <p
+                                                style={{marginBottom:'0px', fontSize:'20px', marginLeft:'0px'}}
+                                            >
+                                            {group[3]}
+                                            </p>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Container>
+                                <Button style={{width:'100%'}} id={group[0]} onClick={removeGroup}>Delete</Button>
+                            </div>
+                        ))}
+                        </div>
+                    </Modal.Body>
+                </Modal>
+            {/* Modal used to delete group  */}
         </Container>
     );
   }

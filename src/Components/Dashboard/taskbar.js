@@ -152,6 +152,9 @@ class Taskbar extends Component {
                                     <Button variant="dark" onClick={this.props.handleShowGroup} style={{padding:'0px', margin:'0px', width:'100%'}}>
                                         Create new group
                                     </Button>
+                                    <Button variant="dark" onClick={this.props.handleShowGroupDelete} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                                        Delete group
+                                    </Button>
                                 </Col>
                                 <Col
                                     xs={12}
