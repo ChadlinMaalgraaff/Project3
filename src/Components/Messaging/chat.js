@@ -28,7 +28,9 @@ class Chat extends Component {
     showGroupAdmin: false,
     selectedGroup: [],
     removeGroupIds: [],
-    groups: [] /* Groups in the network(databse) */
+    groups: [], /* Groups in the network(databse) */
+    personSearch: false,
+    personSearchInput: ''
   };
 
   render() {
@@ -278,6 +280,24 @@ class Chat extends Component {
       });
     }
 
+    const personSearch = () => {
+      var searchInput = document.getElementById('chatSearch').value;
+      console.log('search input:');
+      console.log(searchInput);
+
+      if (searchInput != '') {
+        this.setState({
+          personSearch: true,
+          personSearchInput: searchInput
+        });
+      }else {
+        this.setState({
+          personSearch: false,
+          personSearchInput: searchInput
+        });
+      }
+    }
+
     return (
       <Container fluid style={{ position: "relative", minHeight: "100vh", margin:'0px', padding:'0px' }}>
         <Row style={{margin:'0px', padding:'0px', minHeight: "100vh"}}>
@@ -490,7 +510,9 @@ class Chat extends Component {
             </Modal.Header>
             <Modal.Body style={{backgroundColor:'#ffffff'}}>
                 <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
-                  {this.state.people.map((person) => (
+                <input style={{width:'100%'}} id='chatSearch' placeholder='search for a person...' onChange={personSearch}></input>
+                  {this.state.people.filter(this.state.personSearch == true ? (p => p.props['personName'].toLowerCase().includes(this.state.personSearchInput.toLowerCase())):(p => p == p))
+                  .map((person) => (
                     <InputGroup className="mb-3">
                       <InputGroup.Prepend>
                         <InputGroup.Checkbox disabled={person.props["personId"] != this.state.selectedId && this.state.selected == 1 && this.state.groupChat == false} id={person.props["personId"]} onClick={personSelect} aria-label="Checkbox for following text input" />
