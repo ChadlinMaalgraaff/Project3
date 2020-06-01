@@ -48,6 +48,8 @@ class Feed extends Component {
             selected: 0,
             selectedId: '',
             personSearch: false,
+            groupSearch: false,
+            groupSearchInput: '',
             personSearchInput: '',
             people: [
                 <Person personId={1} key={1} personName={'Captan Jack Sparrow'} personPP={pp1}/>,
@@ -172,8 +174,8 @@ class Feed extends Component {
         });
 
         if (this.state.groups.length > 0) {
-            console.log('group[0] image: ');
-            console.log(this.state.groups[0][4]);
+            console.log('group[0] name: ');
+            console.log(this.state.groups[0][2]);
         }
     }
 
@@ -194,6 +196,24 @@ class Feed extends Component {
           });
         }
     }
+
+    const groupSearch = () => {
+        var searchInput = document.getElementById('groupSearch').value;
+        console.log('search input:');
+        console.log(searchInput);
+  
+        if (searchInput != '') {
+          this.setState({
+            groupSearch: true,
+            groupSearchInput: searchInput
+          });
+        }else {
+          this.setState({
+            groupSearch: false,
+            groupSearchInput: searchInput
+          });
+        }
+      }
 
     const personSelect = (e) => {
         console.log(e.target.id);
@@ -332,7 +352,10 @@ class Feed extends Component {
                     </Modal.Header>
                     <Modal.Body style={{backgroundColor:'#ffffff'}}>
                         <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
-                        {this.state.groups.filter(group => group[1].includes(this.state.LoggedInPersonId)).map((group) => (
+                        <input style={{width:'100%'}} id='groupSearch' placeholder='search for a group...' onChange={groupSearch}></input>
+                        {this.state.groups.filter(group => group[1].includes(this.state.LoggedInPersonId))
+                        .filter(this.state.groupSearch == true ? (g => g[3].toLowerCase().includes(this.state.groupSearchInput.toLowerCase())):(g => g == g))
+                        .map((group) => (
                             <div key={group[0]}>
                                 <Container fluid>
                                     <Row className='person'>
