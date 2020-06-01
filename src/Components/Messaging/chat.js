@@ -20,13 +20,14 @@ class Chat extends Component {
     activeChatId: '', /* Chat Id of active chat*/
     chats: [], /* Chat history of logged in person */
     people: [], /* People in the network(database) */
-    openChats: [],
     selectedPeople: [], 
     groupChat: false,
     selected: 0,
     selectedId: '',
     showGroup: false,
+    showGroupAdmin: false,
     selectedGroup: [],
+    removeGroupIds: [],
     groups: [] /* Groups in the network(databse) */
   };
 
@@ -34,8 +35,10 @@ class Chat extends Component {
     let menuOpen = false;
     const handleClose = () => {this.setState({show:false})};
     const handleCloseGroup = () => {this.setState({showGroup:false})};
+    const handleCloseGroupAdmin = () => {this.setState({showGroupAdmin:false})};
     const handleShow = () => {this.setState({show:true})};
     const handleShowGroup = () => {this.setState({showGroup:true})};
+    const handleShowGroupAdmin = () => {this.setState({showGroupAdmin:true})};
 
     const toggle = () => {
         const content = document.getElementById('toggle-content');
@@ -75,7 +78,7 @@ class Chat extends Component {
         if (this.state.chats[i].props["chatId"] != null) {
           if (this.state.chats[i].props["chatId"] == chat[0].props["chatId"]) {
             var updatedChats = this.state.chats;
-            updatedChats[i] = <ChatObject chatId={updatedChats[i].props["chatId"]} groupChat={updatedChats[i].props["groupChat"]} people={updatedChats[i].props["people"]} messages={[...updatedChats[i].props["messages"], message]} />
+            updatedChats[i] = <ChatObject chatId={updatedChats[i].props["chatId"]} id={updatedChats[i].props["chatId"]} groupChat={updatedChats[i].props["groupChat"]} people={updatedChats[i].props["people"]} messages={[...updatedChats[i].props["messages"], message]} />
             this.setState({chats: updatedChats});
             i = this.state.chats.length;
           }
@@ -107,7 +110,7 @@ class Chat extends Component {
         if (this.state.chats[i].props["chatId"] != null) {
           if (this.state.chats[i].props["chatId"] == chat[0].props.chatId) {
             var updatedChats = this.state.chats;
-            updatedChats[i] = <ChatObject chatId={updatedChats[i].props["chatId"]} groupChat={updatedChats[i].props["groupChat"]} people={updatedChats[i].props["people"]} messages={[...updatedChats[i].props["messages"], message]} />
+            updatedChats[i] = <ChatObject chatId={updatedChats[i].props["chatId"]} id={updatedChats[i].props["chatId"]} groupChat={updatedChats[i].props["groupChat"]} people={updatedChats[i].props["people"]} messages={[...updatedChats[i].props["messages"], message]} />
             this.setState({chats: updatedChats});
             i = this.state.chats.length;
           }
@@ -159,10 +162,9 @@ class Chat extends Component {
         members = [groupChatObject, ...members];
         this.setState({groupChat: false});
         this.setState({
-          chats: [...this.state.chats, <ChatObject chatId={chatId} key={chatId} people={members} messages={messages} groupChat={true}/>],
+          chats: [...this.state.chats, <ChatObject adminIds={[this.state.personId]} id={chatId} chatId={chatId} key={chatId} people={members} messages={messages} groupChat={true}/>],
           /*groups need to be taken out here, once you can import the groups from the database. Only here so that you can test the join group function*/
-          groups: [...this.state.groups, <ChatObject chatId={chatId} key={chatId}  people={members} messages={messages} groupChat={true}/>],
-          openChats: [...this.state.openChats, <ChatObject chatId={chatId} key={chatId}  people={members} messages={messages} groupChat={true}/>]
+          groups: [...this.state.groups, <ChatObject adminIds={[this.state.personId]} id={chatId} chatId={chatId} key={chatId}  people={members} messages={messages} groupChat={true}/>]
         });
         console.log('groups: ');
         console.log(this.state.groups);
@@ -172,8 +174,7 @@ class Chat extends Component {
 
         if (!chatIds.includes(chatId)) {
           this.setState({
-            chats: [...this.state.chats, <ChatObject chatId={chatId} key={chatId}  people={members} messages={messages} groupChat={false}/>],
-            openChats: [...this.state.openChats, <ChatObject chatId={chatId} key={chatId}  people={members} messages={messages} groupChat={true}/>]
+            chats: [...this.state.chats, <ChatObject chatId={chatId} id={chatId} key={chatId}  people={members} messages={messages} groupChat={false}/>]
           });
         }else {
           alert('Chat already open');
@@ -248,7 +249,7 @@ class Chat extends Component {
       if (this.state.selectedId != '') {
         const group = this.state.groups.filter(group => group.props['chatId'] == this.state.selectedId)[0];
         const me = <Person personId={this.state.personId} personName={this.state.personName} personPP={this.state.personPP}/>;
-        const updatedGroup = <ChatObject chatId={group.props["chatId"]} key={group.props["chatId"]} people={[...group.props["people"], me]} messages={group.props["messages"]} groupChat={true}/>;
+        const updatedGroup = <ChatObject chatId={group.props["chatId"]} id={group.props["chatId"]} key={group.props["chatId"]} people={[...group.props["people"], me]} messages={group.props["messages"]} groupChat={true}/>;
         this.setState({
           groups: [...this.state.groups.filter(groupObject => groupObject.props["chatId"] != updatedGroup.props["chatId"]), updatedGroup],
           chats: [...this.state.chats, updatedGroup],
@@ -261,6 +262,20 @@ class Chat extends Component {
         console.log('updated group:');
         console.log(updatedGroup);
       }
+    }
+
+    const removeGroup = (e) => {
+      /**
+       * The backend needs to delete this groupchat from the
+       * chat histories of everyone that is on this group
+       * 
+       * Do this before removing the chat from the admin's chat
+       */
+
+      this.setState({
+        chats: this.state.chats.filter(chat => chat.props['chatId'] != e.target.id),
+        groups: this.state.groups.filter(group => group.props['chatId'] != e.target.id)
+      });
     }
 
     return (
@@ -280,6 +295,9 @@ class Chat extends Component {
                         </Button>
                         <Button variant="dark" onClick={handleShowGroup} style={{padding:'0px', margin:'0px', width:'100%'}}>
                             Join group
+                        </Button>
+                        <Button variant="dark" onClick={handleShowGroupAdmin} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                            Delete group
                         </Button>
                       </div>
                       <div className='content-item' id='content-item'>
@@ -504,6 +522,29 @@ class Chat extends Component {
                       </InputGroup.Prepend>
                       {chat}
                     </InputGroup>
+                  ))}
+                </div>
+            </Modal.Body>
+            <Modal.Footer style={{backgroundColor:'#faf6ee'}}>
+            <Button variant="primary" onClick={joinGroup}>
+                Join
+            </Button>
+            </Modal.Footer>
+        </Modal>
+      {/* Modal used to join group  */}
+
+      {/* Modal used to join group */}
+      <Modal show={this.state.showGroupAdmin} onHide={handleCloseGroupAdmin} centered>
+            <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
+              Join group
+            </Modal.Header>
+            <Modal.Body style={{backgroundColor:'#ffffff'}}>
+                <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
+                  {this.state.groups.filter(chat => chat.props['adminIds'].includes(this.state.personId)).map((chat) => (
+                      <div key={chat.props['chatId']}>
+                        {chat}
+                        <Button style={{width:'100%'}} id={chat.props["id"]} onClick={removeGroup}>Delete</Button>
+                      </div>
                   ))}
                 </div>
             </Modal.Body>
