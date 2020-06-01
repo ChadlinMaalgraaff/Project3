@@ -151,8 +151,16 @@ class Feed extends Component {
 
     const newGroup = () => {
         const groupId = Math.random();
+
+        /**
+         * List of 2d group arrays
+         * the first index contains the group id
+         * the second index contains an array of the group admin Ids
+         * the third index contains an array of the people in the group
+         */
+
         this.setState({
-            groups: [...this.state.groups, [groupId, this.state.selectedPeople]],
+            groups: [...this.state.groups, [groupId, [this.LoggedInPersonId], this.state.selectedPeople]],
             showGroup: false,
             selectedPeople: [],
         });
