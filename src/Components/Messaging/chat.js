@@ -30,7 +30,9 @@ class Chat extends Component {
     removeGroupIds: [],
     groups: [], /* Groups in the network(databse) */
     personSearch: false,
-    personSearchInput: ''
+    personSearchInput: '',
+    groupSearch: false,
+    groupSearchInput: ''
   };
 
   render() {
@@ -298,6 +300,24 @@ class Chat extends Component {
       }
     }
 
+    const groupSearch = () => {
+      var searchInput = document.getElementById('groupSearch').value;
+      console.log('search input:');
+      console.log(searchInput);
+
+      if (searchInput != '') {
+        this.setState({
+          groupSearch: true,
+          groupSearchInput: searchInput
+        });
+      }else {
+        this.setState({
+          groupSearch: false,
+          groupSearchInput: searchInput
+        });
+      }
+    }
+
     return (
       <Container fluid style={{ position: "relative", minHeight: "100vh", margin:'0px', padding:'0px' }}>
         <Row style={{margin:'0px', padding:'0px', minHeight: "100vh"}}>
@@ -510,7 +530,7 @@ class Chat extends Component {
             </Modal.Header>
             <Modal.Body style={{backgroundColor:'#ffffff'}}>
                 <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
-                <input style={{width:'100%'}} id='chatSearch' placeholder='search for a person...' onChange={personSearch}></input>
+                  <input style={{width:'100%'}} id='chatSearch' placeholder='search for a person...' onChange={personSearch}></input>
                   {this.state.people.filter(this.state.personSearch == true ? (p => p.props['personName'].toLowerCase().includes(this.state.personSearchInput.toLowerCase())):(p => p == p))
                   .map((person) => (
                     <InputGroup className="mb-3">
@@ -537,7 +557,9 @@ class Chat extends Component {
             </Modal.Header>
             <Modal.Body style={{backgroundColor:'#ffffff'}}>
                 <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
-                  {this.state.groups.map((chat) => (
+                  <input style={{width:'100%'}} id='groupSearch' placeholder='search for a person...' onChange={groupSearch}></input>
+                  {this.state.groups.filter(this.state.groupSearch == true ? (g => g.props['people'][0].props['personName'].toLowerCase().includes(this.state.groupSearchInput.toLowerCase())):(g => g == g))
+                  .map((chat) => (
                     <InputGroup className="mb-3">
                       <InputGroup.Prepend>
                         <InputGroup.Checkbox disabled={chat.props["chatId"] != this.state.selectedId && this.state.selected == 1} id={chat.props["chatId"]} onClick={groupSelect} aria-label="Checkbox for following text input" />
