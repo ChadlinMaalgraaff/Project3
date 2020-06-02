@@ -24,6 +24,7 @@ class Feed extends Component {
             showGroup: false,
             showGroupDelete: false,
             showGroupFilter: false,
+            showGroupJoin: false,
             posts: [],
             LoggedInPersonName: 'Captain Jack Sparrow',
             LoggedInPersonTag: '@CaptainJackSparrow',
@@ -185,7 +186,7 @@ class Feed extends Component {
          */
 
         this.setState({
-            groups: [...this.state.groups, [groupId, [this.state.LoggedInPersonId], this.state.selectedPeople, groupName, groupPP]],
+            groups: [...this.state.groups, [groupId, [this.state.LoggedInPersonId], [...this.state.selectedPeople, <Person personId={this.state.LoggedInPersonId} key={this.state.LoggedInPersonId} personName={this.state.LoggedInPersonName} personPP={this.state.LoggedInPersonPP}/>], groupName, groupPP]],
             showGroup: false,
             selectedPeople: [],
         });
@@ -259,8 +260,33 @@ class Feed extends Component {
          */
 
         this.setState({
-            groups: this.state.groups.filter(group => group[0] != e.target.id)
+            groups: this.state.groups.filter(group => group[0] != e.target.id),
+            groupSearch: false
         });
+    }
+
+    const joinGroup = (e) => {
+        var group = this.state.groups.filter(group => group[0] == e.target.id)[0];
+        console.log('group:');
+        console.log(group);
+        var groupMemberIds = [];
+        for (var i = 0; i < group[2].length; i++) {
+            groupMemberIds.push(group[2][i].props['personId']);
+        }
+
+        if (!groupMemberIds.includes(this.state.LoggedInPersonId)) {
+            var updatedGroup = this.state.groups.filter(group => group[0] == e.target.id)[0];
+            console.log('updatedGroup:');
+            console.log(updatedGroup);
+            updatedGroup[2] = [...updatedGroup[2], <Person personId={this.state.LoggedInPersonId} key={this.state.LoggedInPersonId} personName={this.state.LoggedInPersonName} personPP={this.state.LoggedInPersonPP}/>]
+
+            this.setState({
+                groups: [...this.state.groups.filter(group => group[0] != e.target.id), updatedGroup],
+                groupSearch: false
+            });
+        }else {
+            alert('You are already in this group.');
+        }
     }
 
     const filterGroup = (e) => {
@@ -288,12 +314,14 @@ class Feed extends Component {
         console.log(groupMemberIds);
     }
 
-    const handleCloseGroup = () => {this.setState({showGroup:false})};
-    const handleShowGroup = () => {this.setState({showGroup:true})};
-    const handleCloseGroupDelete = () => {this.setState({showGroupDelete:false})};
-    const handleShowGroupDelete = () => {this.setState({showGroupDelete:true})};
-    const handleCloseGroupFilter = () => {this.setState({showGroupFilter:false})};
-    const handleShowGroupFilter = () => {this.setState({showGroupFilter:true})};
+    const handleCloseGroup = () => {this.setState({showGroup:false, groupSearch: false})};
+    const handleShowGroup = () => {this.setState({showGroup:true, groupSearch: false})};
+    const handleCloseGroupDelete = () => {this.setState({showGroupDelete:false, groupSearch: false})};
+    const handleShowGroupDelete = () => {this.setState({showGroupDelete:true, groupSearch: false})};
+    const handleCloseGroupFilter = () => {this.setState({showGroupFilter:false, groupSearch: false})};
+    const handleShowGroupFilter = () => {this.setState({showGroupFilter:true, groupSearch: false})};
+    const handleCloseGroupJoin = () => {this.setState({showGroupJoin:false, groupSearch: false})};
+    const handleShowGroupJoin = () => {this.setState({showGroupJoin:true, groupSearch: false})};
          
     return( 
         <Container fluid style={{padding:'0px', margin:'0px', width:'100%'}}>
@@ -306,7 +334,7 @@ class Feed extends Component {
                     xl={6}
                     style={{padding:'0px', margin:'0px', width:'100%'}}
                 >
-                    <Taskbar createPost={createPost} createPost2={createPost2} filterPosts={filterPosts} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete} handleShowGroupFilter={handleShowGroupFilter}/>
+                    <Taskbar createPost={createPost} createPost2={createPost2} filterPosts={filterPosts} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete} handleShowGroupFilter={handleShowGroupFilter} handleShowGroupJoin={handleShowGroupJoin}/>
                 </Col>
                 <Col 
                     xs={12}
@@ -437,6 +465,54 @@ class Feed extends Component {
                     </Modal.Body>
                 </Modal>
             {/* Modal used to delete group  */}
+
+            {/* Modal used to join group */}
+            <Modal show={this.state.showGroupJoin} onHide={handleCloseGroupJoin} centered>
+                    <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
+                        Join group
+                    </Modal.Header>
+                    <Modal.Body style={{backgroundColor:'#ffffff'}}>
+                        <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
+                        <input style={{width:'100%'}} id='groupSearch' placeholder='search for a group...' onChange={groupSearch}></input>
+                        {this.state.groups.filter(group => group[1].includes(this.state.LoggedInPersonId))
+                        .filter(this.state.groupSearch == true ? (g => g[3].toLowerCase().includes(this.state.groupSearchInput.toLowerCase())):(g => g == g))
+                        .map((group) => (
+                            <div key={group[0]}>
+                                <Container fluid>
+                                    <Row className='person'>
+                                        <Col
+                                            xs={3}
+                                            sm={3}
+                                            md={1}
+                                            lg={1}
+                                            xl={1}
+                                        >
+                                            <Image src={pp4} className='message-pp'></Image>
+                                        </Col>
+                                        <Col
+                                            xs={9}
+                                            sm={9}
+                                            md={11}
+                                            lg={11}
+                                            xl={11}
+                                        >
+                                            <div style={{display:'inline-block'}}>
+                                            <p
+                                                style={{marginBottom:'0px', fontSize:'20px', marginLeft:'0px'}}
+                                            >
+                                            {group[3]}
+                                            </p>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Container>
+                                <Button style={{width:'100%'}} id={group[0]} onClick={joinGroup}>Join</Button>
+                            </div>
+                        ))}
+                        </div>
+                    </Modal.Body>
+                </Modal>
+            {/* Modal used to join group  */}
 
             {/* Modal used to filter by a group */}
             <Modal show={this.state.showGroupFilter} onHide={handleCloseGroupFilter} centered>
