@@ -71,7 +71,9 @@ class Feed extends Component {
             categories: ['a', 'b', 'c', 'd', 'e'],
             categoryFilter: false,
             categoryFilterText: '',
-            selectedCategory: ''
+            selectedCategory: '',
+            postSearch: false,
+            postSearchText: ''
         };
     }
 
@@ -383,6 +385,21 @@ class Feed extends Component {
         });
     }
 
+    const postSearch = (e, inputedText) => {
+        console.log(inputedText.value);
+        if (inputedText.value != '') {
+            this.setState({
+                postSearch: true,
+                postSearchText: inputedText.value
+            })
+        }else {
+            this.setState({
+                postSearch: false,
+                postSearchText: ''
+            })
+        }
+    }
+
     const handleCloseGroup = () => {this.setState({showGroup:false, groupSearch: false})};
     const handleShowGroup = () => {this.setState({showGroup:true, groupSearch: false})};
     const handleCloseGroupDelete = () => {this.setState({showGroupDelete:false, groupSearch: false})};
@@ -407,7 +424,7 @@ class Feed extends Component {
                     xl={6}
                     style={{padding:'0px', margin:'0px', width:'100%'}}
                 >
-                    <Taskbar filterPosts={filterPosts} handleShow={handleShow} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete} handleShowGroupFilter={handleShowGroupFilter} handleShowGroupJoin={handleShowGroupJoin} handleShowCategoryFilter={handleShowCategoryFilter}/>
+                    <Taskbar filterPosts={filterPosts} postSearch={postSearch} handleShow={handleShow} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete} handleShowGroupFilter={handleShowGroupFilter} handleShowGroupJoin={handleShowGroupJoin} handleShowCategoryFilter={handleShowCategoryFilter}/>
                 </Col>
                 <Col 
                     xs={12}
@@ -440,6 +457,7 @@ class Feed extends Component {
                                 .filter(this.state.groupFilter == true ? (post => this.state.selectedGroupMemberIds.includes(post.props['id'])):(post => post))
                                 .filter(this.state.friendFilter == true ? (post => this.state.LoggedInPersonFriendIds.includes(post.props["id"])):(post => post))
                                 .filter(this.state.categoryFilter == true ? (post => post.props['category'] == this.state.categoryFilterText):(post => post))
+                                .filter(this.state.postSearch == true ? (post => post.props['postPersonName'].toLowerCase().includes(this.state.postSearchText.toLowerCase()) || post.props['postText'].toLowerCase().includes(this.state.postSearchText.toLowerCase())):(post => post))
                                 , this.state.timeFilter)
                                 .map(post => (
                                     post

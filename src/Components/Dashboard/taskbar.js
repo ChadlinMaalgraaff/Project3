@@ -13,7 +13,8 @@ class Taskbar extends Component {
         checkTime: false,
         checkLocation: false,
         checkCategory: false,
-        checkUserGroup: false
+        checkUserGroup: false,
+        searchInput: ''
     }
 
     check = (e) => {
@@ -116,6 +117,13 @@ class Taskbar extends Component {
             }
         }
 
+        const searchInput = () => {
+            var textValue = document.getElementById('searchInput')
+            this.setState({
+                searchInput: textValue
+            })
+        }
+
         return(
             <Container style={{padding:'0px', margin:'0px', width:'100%'}}>
                 <Row  style={{padding:'0px', margin:'0px', width:'100%'}}>
@@ -165,8 +173,8 @@ class Taskbar extends Component {
                                     style={{padding:'0px', margin:'0px', width:'100%'}}
                                     className='content-item' id='content-item'
                                 >
-                                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                                    <Button variant="outline-light" style={{width:'100%'}}>Search</Button>
+                                    <FormControl type="text" placeholder="Search by person name or post text" className="mr-sm-2" id='searchInput' onChange={searchInput}/>
+                                    <Button variant="outline-light" style={{width:'100%'}} onClick={e => this.props.postSearch(e, this.state.searchInput)}>Search</Button>
                                 </Col>
                                 <Col
                                     xs={12}
