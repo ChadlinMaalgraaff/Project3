@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, Button, Modal, Form, FormControl } from 'react-bootstrap';
+import { Container, Row, Col, Button, Modal, Form, FormControl, InputGroup } from 'react-bootstrap';
 import '../sidepanel/style.css';
 import './feed.css';
 
@@ -151,8 +151,14 @@ class Taskbar extends Component {
                                     xl={12}
                                     className='content-item' id='content-item'
                                 >
-                                    <FormControl type="text" placeholder="Search by name or text" className="search text-center" id='searchInput' onChange={searchInput}/>
-                                    <Button variant="outline-light" style={{width:'100%'}} onClick={e => this.props.postSearch(e, this.state.searchInput)}>Search</Button>
+                                    <InputGroup className="mb-3">
+                                        <FormControl type="text" placeholder="Search by name or text" className="search text-center" id='searchInput' onChange={searchInput}/>
+                                        <InputGroup.Append>
+                                        <Button variant="outline-light" style={{width:'100%', borderTopRightRadius:'1.5rem', borderBottomRightRadius:'1.5rem'}} onClick={e => this.props.postSearch(e, this.state.searchInput)}>
+                                        <i className="fa fa-search icon" style={{color:'black', width:'30px'}}></i>
+                                        </Button>
+                                        </InputGroup.Append>
+                                    </InputGroup>
                                 </Col>
                             </Row>
                             <Row  style={{padding:'0px', margin:'0px', marginBottom:'20px'}}>
