@@ -25,6 +25,7 @@ class Feed extends Component {
             showGroup: false,
             showGroupDelete: false,
             showGroupFilter: false,
+            showCategoryFilter: false,
             showGroupJoin: false,
             posts: [],
             LoggedInPersonName: 'Captain Jack Sparrow',
@@ -69,6 +70,7 @@ class Feed extends Component {
             groupFilter: false,
             categories: ['a', 'b', 'c', 'd', 'e'],
             categoryFilter: false,
+            categoryFilterText: '',
             selectedCategory: ''
         };
     }
@@ -126,11 +128,11 @@ class Feed extends Component {
         console.log(this.state.posts);
     };
 
-    const createPost2 = () => { /** Category might not work for this method after the first createpost button is clicked */
+    const createPost2 = () => {
         const post = document.getElementById('my-post2');
         var today = new Date();
         var otherCategory = document.getElementById('otherCategoryText').value;
-        console.log('otherCategory:');
+        console.log('otherCategory2:');
         console.log(otherCategory);
 
         // Need to get a reliable key value in the props
@@ -141,13 +143,14 @@ class Feed extends Component {
                 followerIds={this.state.followerIds2} friendIds={this.state.friendIds2} /*LoggedInPersonId*/ category={this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory)}/>]
         })
 
-        if (this.state.selectCategory == 'Other') {
+        if (this.state.selectedCategory == 'Other') {
             this.setState({
                 categories: [...this.state.categories.filter(category => category != otherCategory), otherCategory]
             })
         }
         this.setState({
             selectedCategory: '',
+            show: false
         })
     };
 
@@ -187,7 +190,19 @@ class Feed extends Component {
         }else if (filterType === 'check-location') {
             
         }else if (filterType === 'check-category') {
-            
+            if (on) {
+                this.setState({
+                    categoryFilter: true,
+                    showCategoryFilter: true,
+                    categoryFilterText: ''
+                });
+            }else {
+                this.setState({
+                    categoryFilter: false,
+                    showCategoryFilter: false,
+                    categoryFilterText: ''
+                });
+            }
         }else if (filterType === 'check-user-group') {
             if (on) {
                 this.setState({
@@ -361,12 +376,21 @@ class Feed extends Component {
         console.log(groupMemberIds);
     }
 
+    const filterCategory = (e) => {
+        this.setState({
+            categoryFilterText: e.target.id,
+            showCategoryFilter: false
+        });
+    }
+
     const handleCloseGroup = () => {this.setState({showGroup:false, groupSearch: false})};
     const handleShowGroup = () => {this.setState({showGroup:true, groupSearch: false})};
     const handleCloseGroupDelete = () => {this.setState({showGroupDelete:false, groupSearch: false})};
     const handleShowGroupDelete = () => {this.setState({showGroupDelete:true, groupSearch: false})};
     const handleCloseGroupFilter = () => {this.setState({showGroupFilter:false, groupSearch: false})};
     const handleShowGroupFilter = () => {this.setState({showGroupFilter:true, groupSearch: false})};
+    const handleCloseCategoryFilter = () => {this.setState({showCategoryFilter:false})};
+    const handleShowCategoryFilter = () => {this.setState({showCategoryFilter:true})};
     const handleCloseGroupJoin = () => {this.setState({showGroupJoin:false, groupSearch: false})};
     const handleShowGroupJoin = () => {this.setState({showGroupJoin:true, groupSearch: false})};
     const handleClose = () => {this.setState({show:false})};
@@ -383,7 +407,7 @@ class Feed extends Component {
                     xl={6}
                     style={{padding:'0px', margin:'0px', width:'100%'}}
                 >
-                    <Taskbar filterPosts={filterPosts} handleShow={handleShow} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete} handleShowGroupFilter={handleShowGroupFilter} handleShowGroupJoin={handleShowGroupJoin}/>
+                    <Taskbar filterPosts={filterPosts} handleShow={handleShow} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete} handleShowGroupFilter={handleShowGroupFilter} handleShowGroupJoin={handleShowGroupJoin} handleShowCategoryFilter={handleShowCategoryFilter}/>
                 </Col>
                 <Col 
                     xs={12}
@@ -415,6 +439,7 @@ class Feed extends Component {
                                 (this.state.followerFilter == true ? (this.state.posts.filter(post => this.state.LoggedInPersonFollowerIds.includes(post.props["id"]))):(this.state.posts))
                                 .filter(this.state.groupFilter == true ? (post => this.state.selectedGroupMemberIds.includes(post.props['id'])):(post => post))
                                 .filter(this.state.friendFilter == true ? (post => this.state.LoggedInPersonFriendIds.includes(post.props["id"])):(post => post))
+                                .filter(this.state.categoryFilter == true ? (post => post.props['category'] == this.state.categoryFilterText):(post => post))
                                 , this.state.timeFilter)
                                 .map(post => (
                                     post
@@ -610,6 +635,26 @@ class Feed extends Component {
                     </Modal.Body>
                 </Modal>
             {/* Modal used to filter by a group  */}
+
+            {/* Modal used to filter by a category */}
+            <Modal show={this.state.showCategoryFilter} onHide={handleCloseCategoryFilter} centered>
+                    <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
+                        Filter posts by category
+                    </Modal.Header>
+                    <Modal.Body style={{backgroundColor:'#ffffff'}}>
+                        <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
+                        {/*<input style={{width:'100%'}} id='groupSearch' placeholder='search for a group...' onChange={groupSearch}></input>*/}
+                        {this.state.categories
+                        /*.filter(this.state.groupSearch == true ? (g => g[3].toLowerCase().includes(this.state.groupSearchInput.toLowerCase())):(g => g == g))*/
+                        .map((category) => (
+                            <div key={category}>
+                                <Button style={{width:'100%'}} id={category} onClick={filterCategory}>{category}</Button>
+                            </div>
+                        ))}
+                        </div>
+                    </Modal.Body>
+                </Modal>
+            {/* Modal used to filter by a category*/}
 
             {/* Modal used to type post */}
             <Modal show={this.state.show} onHide={handleClose} centered>
