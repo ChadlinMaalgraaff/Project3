@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Modal, Form, FormControl, Button, InputGroup, Image } from "react-bootstrap";
+import { Container, Row, Col, Modal, Form, FormControl, Button, InputGroup, Image, ListGroup, DropdownButton, Dropdown } from "react-bootstrap";
 import Post from '../posts/post';
 import pp1 from '../../Images/pp1.jpg';
 import pp2 from '../../Images/pp2.jpg';
@@ -21,6 +21,7 @@ class Feed extends Component {
         super(props);
     
         this.state = {
+            show: false,
             showGroup: false,
             showGroupDelete: false,
             showGroupFilter: false,
@@ -65,7 +66,10 @@ class Feed extends Component {
             ],
             selectedGroup: [],
             selectedGroupMemberIds: [],
-            groupFilter: false
+            groupFilter: false,
+            categories: ['a', 'b', 'c', 'd', 'e'],
+            categoryFilter: false,
+            selectedCategory: ''
         };
     }
 
@@ -94,23 +98,56 @@ class Feed extends Component {
     const createPost = () => {
         const post = document.getElementById('my-post');
         var today = new Date();
+        var otherCategory = document.getElementById('otherCategoryText').value;
+        console.log('otherCategory:');
+        console.log(otherCategory);
+        
         // Need to get a reliable key value in the props
         this.setState({
             posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.LoggedInPersonName} 
                 postPersonTag={this.state.LoggedInPersonTag} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={this.state.LoggedInPersonId} key={Math.random()} 
                 date={today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()} time={today.getHours() + ":" + today.getMinutes()} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
-                LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag}/>]
+                LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory)}/>]
         })
+
+        if (this.state.selectedCategory == 'Other') {
+            this.setState({
+                categories: [...this.state.categories.filter(category => category != otherCategory), otherCategory]
+            })
+        }
+        this.setState({
+            selectedCategory: '',
+            show: false
+        })
+
+        console.log('categories:')
+        console.log(this.state.categories);
+        console.log('posts: ');
+        console.log(this.state.posts);
     };
 
-    const createPost2 = () => {
+    const createPost2 = () => { /** Category might not work for this method after the first createpost button is clicked */
         const post = document.getElementById('my-post2');
         var today = new Date();
+        var otherCategory = document.getElementById('otherCategoryText').value;
+        console.log('otherCategory:');
+        console.log(otherCategory);
+
         // Need to get a reliable key value in the props
         this.setState({
             posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.postPersonName2} 
                 postPersonTag={this.state.postPersonTag2} pp={this.state.personPP2} geotag={this.state.LoggedInPersonGeotag} id={this.state.postPersonId2} key={Math.random()} 
-                date={today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()} time={today.getHours() + ":" + today.getMinutes()} followerIds={this.state.followerIds2} friendIds={this.state.friendIds2} /*LoggedInPersonId*//>]
+                date={today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()} time={today.getHours() + ":" + today.getMinutes()} 
+                followerIds={this.state.followerIds2} friendIds={this.state.friendIds2} /*LoggedInPersonId*/ category={this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory)}/>]
+        })
+
+        if (this.state.selectCategory == 'Other') {
+            this.setState({
+                categories: [...this.state.categories.filter(category => category != otherCategory), otherCategory]
+            })
+        }
+        this.setState({
+            selectedCategory: '',
         })
     };
 
@@ -169,6 +206,16 @@ class Feed extends Component {
         }
         console.log('posts: ')
         console.log(this.state.posts)
+    }
+
+    const selectCategory = (e) => {
+        var selected = e.target.id;
+        console.log('selected');
+        console.log(selected);
+
+        this.setState({
+            selectedCategory: selected
+        });
     }
 
     const newGroup = () => {
@@ -322,6 +369,8 @@ class Feed extends Component {
     const handleShowGroupFilter = () => {this.setState({showGroupFilter:true, groupSearch: false})};
     const handleCloseGroupJoin = () => {this.setState({showGroupJoin:false, groupSearch: false})};
     const handleShowGroupJoin = () => {this.setState({showGroupJoin:true, groupSearch: false})};
+    const handleClose = () => {this.setState({show:false})};
+    const handleShow = () => {this.setState({show:true})};
          
     return( 
         <Container fluid style={{padding:'0px', margin:'0px', width:'100%'}}>
@@ -334,7 +383,7 @@ class Feed extends Component {
                     xl={6}
                     style={{padding:'0px', margin:'0px', width:'100%'}}
                 >
-                    <Taskbar createPost={createPost} createPost2={createPost2} filterPosts={filterPosts} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete} handleShowGroupFilter={handleShowGroupFilter} handleShowGroupJoin={handleShowGroupJoin}/>
+                    <Taskbar filterPosts={filterPosts} handleShow={handleShow} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete} handleShowGroupFilter={handleShowGroupFilter} handleShowGroupJoin={handleShowGroupJoin}/>
                 </Col>
                 <Col 
                     xs={12}
@@ -561,6 +610,69 @@ class Feed extends Component {
                     </Modal.Body>
                 </Modal>
             {/* Modal used to filter by a group  */}
+
+            {/* Modal used to type post */}
+            <Modal show={this.state.show} onHide={handleClose} centered>
+                    <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
+                        <Modal.Title style={{fontFamily:'Vision-Heavy', color:'#67a495'}}>You can contact us via:</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body style={{backgroundColor:'#ffffff'}}>
+                        <div className='icons text-center'>
+                        <Form.Label>Enter post here</Form.Label>
+                        <Form.Control type="text" placeholder="my post..." id='my-post'/>
+                        <Form.Control type="text" placeholder="my post2..." id='my-post2'/>
+                        </div>
+                        <Form.Group>
+                            <InputGroup>
+                                <DropdownButton
+                                    as={InputGroup.Prepend}
+                                    variant='outline-secondary'
+                                    title='Post Category'
+                                >
+                                    <Dropdown.Item id={'Other'} onClick={selectCategory}>
+                                        Other
+                                    </Dropdown.Item>
+                                    <div
+                                    style={{
+                                        height: '100px',
+                                        width: '100%',
+                                        overflowY: 'scroll'
+                                    }}
+                                    >
+                                        {this.state.categories.map( (category) => (
+                                            <Dropdown.Item id={category} onClick={selectCategory}>
+                                                {category}
+                                            </Dropdown.Item>
+                                        ))}
+                                    </div>
+                                </DropdownButton>
+                                <Form.Control
+                                    placeholder="Enter other category..."
+                                    type='text'
+                                    value={this.state.selectedCategory}
+                                    disabled
+                                />
+                            </InputGroup>
+                            <Form.Control
+                                id='otherCategoryText'
+                                style={{
+                                    display: this.state.selectedCategory == 'Other' ? 'block' : 'none'
+                                }}
+                                type='text'
+                                placeholder='Insert category here'
+                            />
+                        </Form.Group>
+                    </Modal.Body>
+                    <Modal.Footer style={{backgroundColor:'#faf6ee'}}>
+                    <Button variant="primary" onClick={createPost}>
+                        Post 1
+                    </Button>
+                    <Button variant="primary" onClick={createPost2}>
+                        Post 2
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
+            {/* Modal used to type post */}
         </Container>
     );
   }

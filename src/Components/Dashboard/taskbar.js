@@ -116,9 +116,6 @@ class Taskbar extends Component {
             }
         }
 
-        const handleClose = () => {this.setState({show:false})};
-        const handleShow = () => {this.setState({show:true})};
-
         return(
             <Container style={{padding:'0px', margin:'0px', width:'100%'}}>
                 <Row  style={{padding:'0px', margin:'0px', width:'100%'}}>
@@ -146,7 +143,7 @@ class Taskbar extends Component {
                                     style={{padding:'0px', margin:'0px', width:'100%'}}
                                     className='content-item' id='content-item'
                                 >
-                                    <Button variant="dark" onClick={handleShow} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                                    <Button variant="dark" onClick={this.props.handleShow} style={{padding:'0px', margin:'0px', width:'100%'}}>
                                         Create new post
                                     </Button>
                                     <Button variant="dark" onClick={this.props.handleShowGroup} style={{padding:'0px', margin:'0px', width:'100%'}}>
@@ -216,28 +213,7 @@ class Taskbar extends Component {
                     </div>
                 </Row>
             
-            {/* Modal used to type post */}
-                <Modal show={this.state.show} onHide={handleClose} centered>
-                    <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
-                        <Modal.Title style={{fontFamily:'Vision-Heavy', color:'#67a495'}}>You can contact us via:</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body style={{backgroundColor:'#ffffff'}}>
-                        <div className='icons text-center'>
-                        <Form.Label>Enter post here</Form.Label>
-                        <Form.Control type="text" placeholder="my post..." id='my-post'/>
-                        <Form.Control type="text" placeholder="my post2..." id='my-post2'/>
-                        </div>
-                    </Modal.Body>
-                    <Modal.Footer style={{backgroundColor:'#faf6ee'}}>
-                    <Button variant="primary" onClick={this.props.createPost}>
-                        Post 1
-                    </Button>
-                    <Button variant="primary" onClick={this.props.createPost2}>
-                        Post 2
-                    </Button>
-                    </Modal.Footer>
-                </Modal>
-            {/* Modal used to type post */}
+    
             </Container>
         );
     }
