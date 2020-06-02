@@ -7,6 +7,7 @@ import pp3 from '../../Images/iu-2.png';
 import pp4 from '../../Images/iu-8.jpeg';
 import Taskbar from './taskbar';
 import Person from '../Messaging/person';
+import './feed.css';
 
 class Feed extends Component {
 /*

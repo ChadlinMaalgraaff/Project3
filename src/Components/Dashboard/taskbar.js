@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, Button, Modal, Form, FormControl } from 'react-bootstrap';
 import '../sidepanel/style.css';
+import './feed.css';
 
 class Taskbar extends Component {
     state = {
@@ -141,28 +142,88 @@ class Taskbar extends Component {
                             lg={12}
                             xl={12}
                         >
-                            <Row  style={{padding:'0px', margin:'0px', width:'100%'}}>
+                            <Row  style={{padding:'0px', margin:'0px', marginBottom:'10px', marginTop:'50px'}}>
                                 <Col
                                     xs={12}
                                     sm={12}
                                     md={12}
                                     lg={12}
                                     xl={12}
-                                    style={{padding:'0px', margin:'0px', width:'100%'}}
+                                    className='content-item' id='content-item'
+                                >
+                                    <FormControl type="text" placeholder="Search by name or text" className="search text-center" id='searchInput' onChange={searchInput}/>
+                                    <Button variant="outline-light" style={{width:'100%'}} onClick={e => this.props.postSearch(e, this.state.searchInput)}>Search</Button>
+                                </Col>
+                            </Row>
+                            <Row  style={{padding:'0px', margin:'0px', marginBottom:'20px'}}>
+                                <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={6}
+                                    lg={6}
+                                    xl={6}
                                     className='content-item' id='content-item'
                                 >
                                     <Button variant="dark" onClick={this.props.handleShow} style={{padding:'0px', margin:'0px', width:'100%'}}>
                                         Create new post
                                     </Button>
+                                </Col>
+                                <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={6}
+                                    lg={6}
+                                    xl={6}
+                                    className='content-item' id='content-item'
+                                >
                                     <Button variant="dark" onClick={this.props.handleShowGroup} style={{padding:'0px', margin:'0px', width:'100%'}}>
                                         Create new group
                                     </Button>
+                                </Col>
+                                <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={6}
+                                    lg={6}
+                                    xl={6}
+                                    className='content-item' id='content-item'
+                                >
                                     <Button variant="dark" onClick={this.props.handleShowGroupDelete} style={{padding:'0px', margin:'0px', width:'100%'}}>
                                         Delete group
                                     </Button>
+                                </Col><Col
+                                    xs={12}
+                                    sm={12}
+                                    md={6}
+                                    lg={6}
+                                    xl={6}
+                                    className='content-item' id='content-item'
+                                >
                                     <Button variant="dark" onClick={this.props.handleShowGroupJoin} style={{padding:'0px', margin:'0px', width:'100%'}}>
                                         Join group
                                     </Button>
+                                </Col>
+                            </Row>
+                            <Row  style={{padding:'0px', margin:'0px'}}>
+                                <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    xl={12}
+                                    className='content-item' id='content-item'
+                                >
+                                    <div style={{width:'200px', margin:'0px', margin:'auto'}}>
+                                        <h3>Filter Posts</h3>
+                                        <div style={{width:'150px', margin:'0px', margin:'auto'}}>
+                                            <Form.Group controlId="formBasicCheckbox">
+                                                <Form.Check type="checkbox" label="Friends" id='check-friends' onClick={this.check}/>
+                                            </Form.Group>
+                                            <Form.Group controlId="formBasicCheckbox">
+                                                <Form.Check type="checkbox" label="Followers" id='check-followers' onClick={this.check}/>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
                                 </Col>
                                 <Col
                                     xs={12}
@@ -170,51 +231,25 @@ class Taskbar extends Component {
                                     md={12}
                                     lg={12}
                                     xl={12}
-                                    style={{padding:'0px', margin:'0px', width:'100%'}}
                                     className='content-item' id='content-item'
                                 >
-                                    <FormControl type="text" placeholder="Search by person name or post text" className="mr-sm-2" id='searchInput' onChange={searchInput}/>
-                                    <Button variant="outline-light" style={{width:'100%'}} onClick={e => this.props.postSearch(e, this.state.searchInput)}>Search</Button>
-                                </Col>
-                                <Col
-                                    xs={12}
-                                    sm={12}
-                                    md={6}
-                                    lg={6}
-                                    xl={6}
-                                    style={{padding:'0px', margin:'0px', width:'100%'}}
-                                    className='content-item' id='content-item'
-                                >
-                                    <h3>Filter</h3>
-                                    <Form.Group controlId="formBasicCheckbox">
-                                        <Form.Check type="checkbox" label="Friends" id='check-friends' onClick={this.check}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="formBasicCheckbox">
-                                        <Form.Check type="checkbox" label="Followers" id='check-followers' onClick={this.check}/>
-                                    </Form.Group>
-                                </Col>
-                                <Col
-                                    xs={12}
-                                    sm={12}
-                                    md={6}
-                                    lg={6}
-                                    xl={6}
-                                    style={{padding:'0px', margin:'0px', width:'100%'}}
-                                    className='content-item' id='content-item'
-                                >
-                                    <h3>Sort</h3>
-                                    <Form.Group controlId="formBasicCheckbox">
-                                        <Form.Check type="checkbox" label="Time" id='check-time' onClick={this.check}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="formBasicCheckbox">
-                                        <Form.Check type="checkbox" label="Location" id='check-location' onClick={this.check}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="formBasicCheckbox">
-                                        <Form.Check type="checkbox" label="Category" id='check-category' onClick={this.check}/>
-                                    </Form.Group>
-                                    <Form.Group controlId="formBasicCheckbox">
-                                        <Form.Check type="checkbox" label="User/Group" id='check-user-group' onClick={this.check}/>
-                                    </Form.Group>
+                                    <div style={{width:'200px', margin:'0px', margin:'auto'}}>
+                                        <h3>Sort Posts By</h3>
+                                        <div style={{width:'150px', margin:'0px', margin:'auto'}}>
+                                            <Form.Group controlId="formBasicCheckbox">
+                                                <Form.Check type="checkbox" label="Time" id='check-time' onClick={this.check}/>
+                                            </Form.Group>
+                                            <Form.Group controlId="formBasicCheckbox">
+                                                <Form.Check type="checkbox" label="Location" id='check-location' onClick={this.check}/>
+                                            </Form.Group>
+                                            <Form.Group controlId="formBasicCheckbox">
+                                                <Form.Check type="checkbox" label="Category" id='check-category' onClick={this.check}/>
+                                            </Form.Group>
+                                            <Form.Group controlId="formBasicCheckbox">
+                                                <Form.Check type="checkbox" label="User/Group" id='check-user-group' onClick={this.check}/>
+                                            </Form.Group>
+                                        </div>
+                                    </div>
                                 </Col>
                             </Row>
                         </Col>
