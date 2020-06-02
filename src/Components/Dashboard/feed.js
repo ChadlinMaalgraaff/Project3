@@ -23,6 +23,7 @@ class Feed extends Component {
         this.state = {
             showGroup: false,
             showGroupDelete: false,
+            showGroupFilter: false,
             posts: [],
             LoggedInPersonName: 'Captain Jack Sparrow',
             LoggedInPersonTag: '@CaptainJackSparrow',
@@ -60,7 +61,10 @@ class Feed extends Component {
                 <Person personId={6} key={6} personName={'6'} personPP={pp3}/>,
                 <Person personId={7} key={7} personName={'7'} personPP={pp3}/>,
                 <Person personId={8} key={8} personName={'8'} personPP={pp3}/>
-            ]
+            ],
+            selectedGroup: [],
+            selectedGroupMemberIds: [],
+            groupFilter: false
         };
     }
 
@@ -147,7 +151,20 @@ class Feed extends Component {
         }else if (filterType === 'check-category') {
             
         }else if (filterType === 'check-user-group') {
-            
+            if (on) {
+                this.setState({
+                    groupFilter: true,
+                    showGroupFilter: true
+                });
+            }else {
+                this.setState({
+                    groupFilter: false,
+                    showGroupFilter: false,
+                    groupFilter: false,
+                    selectedGroupMemberIds: [],
+                    selectedGroup: []
+                });
+            }
         }
         console.log('posts: ')
         console.log(this.state.posts)
@@ -246,10 +263,37 @@ class Feed extends Component {
         });
     }
 
+    const filterGroup = (e) => {
+        var group = [];
+        var groupMemberIds = [];
+        for (var i = 0; i < this.state.groups.length; i++) {
+            if (this.state.groups[i][0] == e.target.id) {
+                group = this.state.groups[i];
+                i = this.state.groups.length;
+            }
+        }
+        if (group.length > 0) {
+            for (var j = 0; j < group[2].length; j++) {
+                groupMemberIds.push(group[2][j].props['personId']);
+            }
+        }
+
+        this.setState({
+            selectedGroup: group,
+            selectedGroupMemberIds: groupMemberIds,
+            showGroupFilter: false
+        })
+
+        console.log('selected group member Ids: ');
+        console.log(groupMemberIds);
+    }
+
     const handleCloseGroup = () => {this.setState({showGroup:false})};
     const handleShowGroup = () => {this.setState({showGroup:true})};
     const handleCloseGroupDelete = () => {this.setState({showGroupDelete:false})};
     const handleShowGroupDelete = () => {this.setState({showGroupDelete:true})};
+    const handleCloseGroupFilter = () => {this.setState({showGroupFilter:false})};
+    const handleShowGroupFilter = () => {this.setState({showGroupFilter:true})};
          
     return( 
         <Container fluid style={{padding:'0px', margin:'0px', width:'100%'}}>
@@ -262,7 +306,7 @@ class Feed extends Component {
                     xl={6}
                     style={{padding:'0px', margin:'0px', width:'100%'}}
                 >
-                    <Taskbar createPost={createPost} createPost2={createPost2} filterPosts={filterPosts} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete}/>
+                    <Taskbar createPost={createPost} createPost2={createPost2} filterPosts={filterPosts} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete} handleShowGroupFilter={handleShowGroupFilter}/>
                 </Col>
                 <Col 
                     xs={12}
@@ -292,6 +336,7 @@ class Feed extends Component {
                             {
                                 timeSort(
                                 (this.state.followerFilter == true ? (this.state.posts.filter(post => this.state.LoggedInPersonFollowerIds.includes(post.props["id"]))):(this.state.posts))
+                                .filter(this.state.groupFilter == true ? (post => this.state.selectedGroupMemberIds.includes(post.props['id'])):(post => post))
                                 .filter(this.state.friendFilter == true ? (post => this.state.LoggedInPersonFriendIds.includes(post.props["id"])):(post => post))
                                 , this.state.timeFilter)
                                 .map(post => (
@@ -392,6 +437,54 @@ class Feed extends Component {
                     </Modal.Body>
                 </Modal>
             {/* Modal used to delete group  */}
+
+            {/* Modal used to filter by a group */}
+            <Modal show={this.state.showGroupFilter} onHide={handleCloseGroupFilter} centered>
+                    <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
+                        Filter posts by group
+                    </Modal.Header>
+                    <Modal.Body style={{backgroundColor:'#ffffff'}}>
+                        <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
+                        <input style={{width:'100%'}} id='groupSearch' placeholder='search for a group...' onChange={groupSearch}></input>
+                        {this.state.groups
+                        .filter(this.state.groupSearch == true ? (g => g[3].toLowerCase().includes(this.state.groupSearchInput.toLowerCase())):(g => g == g))
+                        .map((group) => (
+                            <div key={group[0]}>
+                                <Container fluid>
+                                    <Row className='person'>
+                                        <Col
+                                            xs={3}
+                                            sm={3}
+                                            md={1}
+                                            lg={1}
+                                            xl={1}
+                                        >
+                                            <Image src={pp4} className='message-pp'></Image>
+                                        </Col>
+                                        <Col
+                                            xs={9}
+                                            sm={9}
+                                            md={11}
+                                            lg={11}
+                                            xl={11}
+                                        >
+                                            <div style={{display:'inline-block'}}>
+                                            <p
+                                                style={{marginBottom:'0px', fontSize:'20px', marginLeft:'0px'}}
+                                            >
+                                            {group[3]}
+                                            </p>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </Container>
+                                <Button style={{width:'100%'}} id={group[0]} onClick={filterGroup}>Select</Button>
+                            </div>
+                        ))}
+                        </div>
+                    </Modal.Body>
+                </Modal>
+            {/* Modal used to filter by a group  */}
         </Container>
     );
   }
