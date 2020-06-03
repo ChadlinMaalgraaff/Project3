@@ -54,3 +54,11 @@
     height: 400px;
     overflow-y: scroll;
 }
+
+.chat-backdrop {
+    background-color: white;
+    background-image: url('../../Images//chat-backdrop.png');
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+}

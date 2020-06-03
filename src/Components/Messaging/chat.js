@@ -389,7 +389,7 @@ class Chat extends Component {
                 md={12}
                 lg={12}
                 xl={12}
-                style={{ height: "20vh" }}
+                style={{ height: "150px" }}
               >
                 <Row
                   style={{
@@ -446,14 +446,14 @@ class Chat extends Component {
                 md={12}
                 lg={12}
                 xl={12}
-                style={{ height: "60vh" }}
+                style={{ height: "400px" }}
               >
                 <div
+                className='chat-backdrop'
                   style={{
                     height: "100%",
                     width: "100%",
-                    backgroundColor: "yellow",
-                    overflowY: "scroll",
+                    overflowY: "scroll"
                   }}
                 >
                   {this.state.activeChat.map((message) => (
@@ -483,7 +483,7 @@ class Chat extends Component {
                   position: "absolute",
                   bottom: "0px",
                   width: "100%",
-                  height: "20vh",
+                  height: "50px",
                 }}
               >
                 <div
@@ -494,20 +494,21 @@ class Chat extends Component {
                     borderBottomRightRadius: '20px'
                   }}
                 >
-                  <h3>Me: </h3>
-                  <br />
-                  <Form.Control
-                    type="text"
-                    placeholder="Type a message..."
-                    id="my-message"
-                  />
-                  <Button
-                    variant="dark"
-                    style={{ marginTop: "5px" }}
-                    onClick={message}
-                  >
-                    send
-                  </Button>
+                  <InputGroup className="mb-3">
+                    <Form.Control
+                      type="text"
+                      placeholder="Type a message..."
+                      id="my-message"
+                    />
+                    <InputGroup.Append>
+                      <Button
+                        variant="dark"
+                        onClick={message}
+                      >
+                        <i className="fa fa-paper-plane icon" style={{color:'white', width:'30px'}}></i>
+                      </Button>
+                    </InputGroup.Append>
+                  </InputGroup>
                 </div>
               </Col>
             </Row>
