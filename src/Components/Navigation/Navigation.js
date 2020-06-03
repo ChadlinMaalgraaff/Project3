@@ -11,15 +11,14 @@ import img from '../../Images/iu.jpeg';
 export default class Navigation extends Component {
     render () {
         return (
-          <Navbar bg="dark" variant="dark" expand="sm" style={{width:'100%', position:'fixed', zIndex:'999'}}>
+          <Navbar bg="dark" variant="dark" expand="sm">
           <Navbar.Brand href="./home">
-            <img src={img} width="30" height="30"/>
+            <img src="https://www.gravatar.com/avatar/2b3dedd1282b8980095c5c5ca3d1a1a7" width="30" height="30"/>
           </Navbar.Brand>
           <Navbar.Brand href="./home">Project 3</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
-              <Nav variant="tabs">
               <Nav.Item>
                 <OverlayTrigger
                     trigger="click"
@@ -50,7 +49,6 @@ export default class Navigation extends Component {
                 <Nav.Link href="/profile"><PersonSharpIcon fontSize="medium"/></Nav.Link>
                 </Nav.Item>
               </Nav>
-            </Nav>
           </Navbar.Collapse>
         </Navbar>
     );
