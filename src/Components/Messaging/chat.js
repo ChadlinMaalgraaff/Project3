@@ -389,14 +389,16 @@ class Chat extends Component {
                 md={12}
                 lg={12}
                 xl={12}
-                style={{ height: "150px" }}
+                style={{ height: "100px" }}
               >
                 <Row
+                  className='chatBorder'
                   style={{
                     height: "100%",
                     width: "100%",
-                    backgroundColor: "green",
-                    margin:'0px', borderTopRightRadius:'20px'
+                    backgroundColor: "#9CC3D5FF",
+                    margin:'0px', 
+                    borderTopRightRadius:'20px',
                   }}
                 >
                   <Col
@@ -422,20 +424,22 @@ class Chat extends Component {
                         {this.state.activeChatName}
                       </p>
                       </div>
+                      <InputGroup className="mb-3">
+                        <Form.Control
+                          type="text"
+                          placeholder="Type a message..."
+                          id="my-message2"
+                        />
+                        <InputGroup.Append>
+                          <Button
+                            variant="dark"
+                            onClick={message2}
+                          >
+                            <i className="fa fa-paper-plane icon" style={{color:'white', width:'30px'}}></i>
+                          </Button>
+                        </InputGroup.Append>
+                    </InputGroup>
                   </Col>
-
-                  <Form.Control
-                    type="text"
-                    placeholder="Type a message..."
-                    id="my-message2"
-                  />
-                  <Button
-                    variant="dark"
-                    style={{ marginTop: "5px" }}
-                    onClick={message2}
-                  >
-                    send
-                  </Button>
                 </Row>
               </Col>
             </Row>
@@ -446,7 +450,7 @@ class Chat extends Component {
                 md={12}
                 lg={12}
                 xl={12}
-                style={{ height: "400px" }}
+                style={{ height: "430px" }}
               >
                 <div
                 className='chat-backdrop'
@@ -463,7 +467,11 @@ class Chat extends Component {
                         marginLeft:
                           message.props["personId"] == this.state.personId
                             ? "auto"
-                            : "0px",
+                            : "5px",
+                          backgroundColor:
+                          message.props["personId"] == this.state.personId
+                          ? '#0063B2FF'
+                          : '#9CC3D5FF',
                       }}
                     >
                       {message}
@@ -483,15 +491,17 @@ class Chat extends Component {
                   position: "absolute",
                   bottom: "0px",
                   width: "100%",
-                  height: "50px",
+                  height: "70px",
                 }}
               >
                 <div
+                  className='chatBorder'
                   style={{
                     height: "100%",
                     width: "100%",
-                    backgroundColor: "red",
-                    borderBottomRightRadius: '20px'
+                    backgroundColor: "#0063B2FF",
+                    borderBottomRightRadius: '20px',
+                    padding: '15px'
                   }}
                 >
                   <InputGroup className="mb-3">
@@ -499,11 +509,13 @@ class Chat extends Component {
                       type="text"
                       placeholder="Type a message..."
                       id="my-message"
+                      style={{borderTopLeftRadius:'1.5rem', borderBottomLeftRadius:'1.5rem'}}
                     />
                     <InputGroup.Append>
                       <Button
                         variant="dark"
                         onClick={message}
+                        style={{borderTopRightRadius:'1.5rem', borderBottomRightRadius:'1.5rem'}}
                       >
                         <i className="fa fa-paper-plane icon" style={{color:'white', width:'30px'}}></i>
                       </Button>

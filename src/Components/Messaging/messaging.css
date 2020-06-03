@@ -1,14 +1,20 @@
 .message {
     padding: 5px;
     width:300px;
-    margin-top: 5px;
+    margin: 5px;
+    border-radius: 5px;
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
+}
+
+.chatBorder {
+    border-color: black;
+    border-width: 1px;
+    border-style: solid;
 }
 
 .message-inner {
-    border-width: 1px;
-    border-style: solid;
-    border-color: black;
-    border-radius: 5px;
     padding: 10px;
 }
 
