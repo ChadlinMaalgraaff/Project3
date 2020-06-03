@@ -499,7 +499,7 @@ class Chat extends Component {
                   style={{
                     height: "100%",
                     width: "100%",
-                    backgroundColor: "#0063B2FF",
+                    backgroundColor: "#9CC3D5FF",
                     borderBottomRightRadius: '20px',
                     padding: '15px'
                   }}
