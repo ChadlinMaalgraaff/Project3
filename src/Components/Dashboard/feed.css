@@ -1,3 +1,92 @@
 .search {
     border-radius: 1.5rem;
 }
+
+.search-button {
+    border-color: red;
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.search-button:hover {
+    border-color: red;
+    background-color: rgba(255, 0, 0, 0.5);
+    border-style: solid;
+    border-width: 1px;
+    transition: ease-in-out 0.2s;
+}
+
+.search-button:focus {
+    border-color: red;
+    background-color: white;
+    border-style: solid;
+    border-width: 1px;
+    outline-color: transparent;
+}
+
+.center { 
+    height: 100vh;
+    position: relative;
+}
+
+.centerMe {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.shadow {
+    box-shadow: 200px 100px 100px black;
+}
+
+.feed-button {
+    border-radius: 1.5rem;
+    background-color: #9CC3D5FF;
+    border-color: white;
+    color: white;
+    outline: none;
+    outline-color: transparent;
+}
+
+.feed-button:hover {
+    border-radius: 1.5rem;
+    background-color: #9CC3D5FF;
+    border-color: white;
+    color: white;
+    outline: none;
+    outline-color: transparent;
+}
+
+.feed-button:active {
+    border-radius: 1.5rem;
+    background-color: #9CC3D5FF;
+    border-color: white;
+    color: white;
+    outline: none;
+    outline-color: transparent;
+}
+
+.feed-button:focus {
+    border-radius: 1.5rem;
+    background-color: #9CC3D5FF;
+    border-color: white;
+    color: white;
+    outline: none;
+    outline-color: transparent;
+}
+
+.backdrop {
+    /*background-image: url('../../Images/backdrop.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;*/
+    background-color: white;
+}
+
+.check-text {
+    color: white;
+}

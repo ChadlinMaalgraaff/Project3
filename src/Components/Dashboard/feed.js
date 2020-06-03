@@ -415,67 +415,77 @@ class Feed extends Component {
     const handleShow = () => {this.setState({show:true})};
          
     return( 
-        <Container fluid style={{padding:'0px', margin:'0px', width:'100%'}}>
-            <Row style={{padding:'0px', margin:'0px', width:'100%'}}>
-                <Col
-                    xs={0}
-                    sm={0}
-                    md={6}
-                    lg={6}
-                    xl={6}
-                    style={{padding:'0px', margin:'0px', width:'100%'}}
-                >
-                    <Taskbar filterPosts={filterPosts} postSearch={postSearch} handleShow={handleShow} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete} handleShowGroupFilter={handleShowGroupFilter} handleShowGroupJoin={handleShowGroupJoin} handleShowCategoryFilter={handleShowCategoryFilter}/>
-                </Col>
-                <Col 
-                    xs={12}
-                    sm={12}
-                    md={6}
-                    lg={6}
-                    xl={6}
-                    style={{padding:'0px', margin:'0px', height:'100vh', overflowY:'scroll'}}
-                >
-                    <Row style={{padding:'0px', margin:'0px', width:'100%'}}>
-                        <Col
-                            xs={0}
-                            sm={0}
-                            md={0}
-                            lg={1}
-                            xl={1}
-                            style={{padding:'5px', margin:'0px', width:'100%'}}
-                        ></Col>
-                        <Col
-                            xs={12}
-                            sm={12}
-                            md={12}
-                            lg={10}
-                            xl={10}
-                            style={{padding:'5px', margin:'0px', width:'100%'}}
-                        >
-                            {
-                                timeSort(
-                                (this.state.followerFilter == true ? (this.state.posts.filter(post => this.state.LoggedInPersonFollowerIds.includes(post.props["id"]))):(this.state.posts))
-                                .filter(this.state.groupFilter == true ? (post => this.state.selectedGroupMemberIds.includes(post.props['id'])):(post => post))
-                                .filter(this.state.friendFilter == true ? (post => this.state.LoggedInPersonFriendIds.includes(post.props["id"])):(post => post))
-                                .filter(this.state.categoryFilter == true ? (post => post.props['category'] == this.state.categoryFilterText):(post => post))
-                                .filter(this.state.postSearch == true ? (post => post.props['postPersonName'].toLowerCase().includes(this.state.postSearchText.toLowerCase()) || post.props['postText'].toLowerCase().includes(this.state.postSearchText.toLowerCase())):(post => post))
-                                , this.state.timeFilter)
-                                .map(post => (
-                                    post
-                                ))
-                            }
-                        </Col>
-                        <Col
-                            xs={0}
-                            sm={0}
-                            md={0}
-                            lg={1}
-                            xl={1}
-                            style={{padding:'5px', margin:'0px', width:'100%'}}
-                        ></Col>
-                    </Row>
-                </Col>
-            </Row>
+        <Container fluid className='backdrop center' style={{padding:'0px', margin:'0px', width:'100%', height:'100vh'}}>
+            <Col
+                xs={12}
+                sm={12}
+                md={10}
+                lg={10}
+                xl={10}
+                style={{margin:'auto', minHeight:'600px'}}
+                className='centerMe'
+            >
+                <Row className='shadow' style={{padding:'0px', margin:'0px', width:'100%', backgroundColor:'#9CC3D5FF', borderRadius:'20px'}}>
+                    <Col
+                        xs={0}
+                        sm={0}
+                        md={6}
+                        lg={6}
+                        xl={6}
+                        style={{padding:'0px', margin:'0px', width:'100%'}}
+                    >
+                        <Taskbar filterPosts={filterPosts} postSearch={postSearch} handleShow={handleShow} handleShowGroup={handleShowGroup} handleShowGroupDelete={handleShowGroupDelete} handleShowGroupFilter={handleShowGroupFilter} handleShowGroupJoin={handleShowGroupJoin} handleShowCategoryFilter={handleShowCategoryFilter}/>
+                    </Col>
+                    <Col 
+                        xs={12}
+                        sm={12}
+                        md={6}
+                        lg={6}
+                        xl={6}
+                        style={{padding:'0px', margin:'0px', borderRadius:'20px', minHeight:'600px', height:'600px'}}
+                    >
+                        <Row style={{padding:'0px', margin:'0px', width:'100%', minHeight:'600px', height:'600px', overflowY:'scroll'}}>
+                            <Col
+                                xs={0}
+                                sm={0}
+                                md={0}
+                                lg={1}
+                                xl={1}
+                                style={{padding:'5px', margin:'0px', width:'100%', backgroundColor:'transparent'}}
+                            ></Col>
+                            <Col
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={10}
+                                xl={10}
+                                style={{padding:'5px', margin:'0px', width:'100%', backgroundColor:'transparent'}}
+                            >
+                                {
+                                    timeSort(
+                                    (this.state.followerFilter == true ? (this.state.posts.filter(post => this.state.LoggedInPersonFollowerIds.includes(post.props["id"]))):(this.state.posts))
+                                    .filter(this.state.groupFilter == true ? (post => this.state.selectedGroupMemberIds.includes(post.props['id'])):(post => post))
+                                    .filter(this.state.friendFilter == true ? (post => this.state.LoggedInPersonFriendIds.includes(post.props["id"])):(post => post))
+                                    .filter(this.state.categoryFilter == true ? (post => post.props['category'] == this.state.categoryFilterText):(post => post))
+                                    .filter(this.state.postSearch == true ? (post => post.props['postPersonName'].toLowerCase().includes(this.state.postSearchText.toLowerCase()) || post.props['postText'].toLowerCase().includes(this.state.postSearchText.toLowerCase())):(post => post))
+                                    , this.state.timeFilter)
+                                    .map(post => (
+                                        post
+                                    ))
+                                }
+                            </Col>
+                            <Col
+                                xs={0}
+                                sm={0}
+                                md={0}
+                                lg={1}
+                                xl={1}
+                                style={{padding:'5px', margin:'0px', width:'100%', backgroundColor:'transparent'}}
+                            ></Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Col>
 
             {/* Modal used to create group */}
             <Modal show={this.state.showGroup} onHide={handleCloseGroup} centered>

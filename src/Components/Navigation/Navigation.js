@@ -11,7 +11,7 @@ import img from '../../Images/iu.jpeg';
 export default class Navigation extends Component {
     render () {
         return (
-          <Navbar bg="dark" variant="dark" expand="sm">
+          <Navbar bg="dark" variant="dark" expand="sm" style={{width:'100%', position:'fixed', zIndex:'999'}}>
           <Navbar.Brand href="./home">
             <img src={img} width="30" height="30"/>
           </Navbar.Brand>
