@@ -425,11 +425,11 @@ class Feed extends Component {
                 style={{margin:'auto', minHeight:'600px'}}
                 className='centerMe'
             >
-                <Row className='shadow' style={{padding:'0px', margin:'0px', width:'100%', backgroundColor:'#9CC3D5FF', borderRadius:'20px'}}>
+                <Row className='shadow center-row' style={{padding:'0px', margin:'0px', width:'100%', backgroundColor:'#9CC3D5FF', borderRadius:'20px'}}>
                     <Col
                         xs={0}
                         sm={0}
-                        md={6}
+                        md={0}
                         lg={6}
                         xl={6}
                         style={{padding:'0px', margin:'0px', width:'100%'}}
@@ -439,12 +439,13 @@ class Feed extends Component {
                     <Col 
                         xs={12}
                         sm={12}
-                        md={6}
+                        md={12}
                         lg={6}
                         xl={6}
-                        style={{padding:'0px', margin:'0px', borderRadius:'20px', minHeight:'600px', height:'600px'}}
+                        className='post-panel'
+                        style={{padding:'0px', margin:'0px', borderRadius:'20px'}}
                     >
-                        <Row style={{padding:'0px', margin:'0px', width:'100%', minHeight:'600px', height:'600px', overflowY:'scroll'}}>
+                        <Row className='post-panel-posts' style={{padding:'0px', margin:'0px', width:'100%'}}>
                             <Col
                                 xs={0}
                                 sm={0}

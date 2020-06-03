@@ -127,8 +127,8 @@ class Taskbar extends Component {
 
         return(
             <Container style={{padding:'0px', margin:'0px', width:'100%', height:'100%', borderRadius:'20px'}}>
-                <Row  style={{padding:'0px', margin:'0px', width:'100%', height:'100%', borderRadius:'20px'}}>
-                    <div className='toggle' style={{zIndex:'100', borderTopLeftRadius:'20px', borderBottomLeftRadius:'20px'}}>
+                <Row className='taskbar-row' style={{padding:'0px', margin:'0px', width:'100%', height:'100%', borderRadius:'20px'}}>
+                    <div className='toggle' style={{zIndex:'100'}}>
                         <div className="menu-btn" id='menu-btn' onClick={clicked}>
                             <div className="menu-btn__burger"></div>
                         </div>
@@ -142,7 +142,7 @@ class Taskbar extends Component {
                             lg={12}
                             xl={12}
                         >
-                            <Row  style={{padding:'0px', margin:'0px', marginBottom:'10px', marginTop:'70px'}}>
+                            <Row  style={{padding:'0px', margin:'0px', marginBottom:'10px', marginTop:'80px'}}>
                                 <Col
                                     xs={12}
                                     sm={12}
