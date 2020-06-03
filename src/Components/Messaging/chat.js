@@ -319,70 +319,70 @@ class Chat extends Component {
     }
 
     return (
-      <Container fluid style={{ position: "relative", minHeight: "100vh", margin:'0px', padding:'0px' }}>
-        <Row style={{margin:'0px', padding:'0px', minHeight: "100vh"}}>
-          <Col xs={0} sm={0} md={0} lg={0} xl={0} style={{margin:'0px', padding:'0px'}}>
+      <Container className='center' style={{minHeight: "100vh"}}>
+        <Row className='centerMe chat-panel' style={{width:'100%'}}>
+          <Col xs={0} sm={0} md={3} lg={4} xl={4}>
               <div className='toggle'>
                   <div className="menu-btn" id='menu-btn' onClick={toggle}>
                       <div className="menu-btn__burger"></div>
                   </div>
-
-                  <div className='toggle-content' id='toggle-content'>
-                      <div className='content-item' id='content-item'>
-                        <Button onClick={GenerateBots}>Generate Bots to chat to</Button>
-                        <Button variant="dark" onClick={handleShow} style={{padding:'0px', margin:'0px', width:'100%'}}>
-                            New Chat
-                        </Button>
-                        <Button variant="dark" onClick={handleShowGroup} style={{padding:'0px', margin:'0px', width:'100%'}}>
-                            Join group
-                        </Button>
-                        <Button variant="dark" onClick={handleShowGroupAdmin} style={{padding:'0px', margin:'0px', width:'100%'}}>
-                            Delete group
-                        </Button>
-                      </div>
-                      <div className='content-item' id='content-item'>
-                        {this.state.chats.map(chat => (
-                            <div id={chat.props["chatId"]} onClick={setActive} style={{zIndex:'100'}}>
-                              <Container fluid id={chat.props["chatId"]}>
-                                <Row className='person' id={chat.props["chatId"]}>
-                                    <Col
-                                        xs={3}
-                                        sm={3}
-                                        md={1}
-                                        lg={1}
-                                        xl={1}
-                                        id={chat.props["chatId"]}
-                                    >
-                                        <Image id={chat.props["chatId"]} src={chat.props["people"][0].props["personPP"]} className='message-pp'></Image>
-                                    </Col>
-                                    <Col
-                                        xs={9}
-                                        sm={9}
-                                        md={11}
-                                        lg={11}
-                                        xl={11}
-                                        id={chat.props["chatId"]}
-                                    >
-                                        <div style={{display:'inline-block'}} id={chat.props["chatId"]}>
-                                        <p
-                                            style={{marginBottom:'0px', fontSize:'20px', marginLeft:'0px'}}
-                                            id={chat.props["chatId"]}
-                                        >
-                                          {chat.props["people"][0].props["personName"]}
-                                        </p>
-                                        </div>
-                                    </Col>
-                                </Row>
-                              </Container>
-                            </div>
-                        ))}
-                      </div>
-                  </div>
-
+                  <Col xs={12} sm={12} md={12} lg={12} xl={12}>
+                    <Row className='toggle-content' id='toggle-content' style={{margin:'auto', padding:'0px'}}>
+                        <Col xs={12} sm={12} md={12} lg={12} xl={12} className='content-item text-center' id='content-item' style={{margin:'auto', padding:'0px'}}>
+                          <Button onClick={GenerateBots} style={{width:'100%'}}>Generate Bots to chat to</Button>
+                          <Button variant="dark" onClick={handleShow} style={{width:'100%'}}>
+                              New Chat
+                          </Button>
+                          <Button variant="dark" onClick={handleShowGroup} style={{width:'100%'}}>
+                              Join group
+                          </Button>
+                          <Button variant="dark" onClick={handleShowGroupAdmin} style={{width:'100%'}}>
+                              Delete group
+                          </Button>
+                        </Col>
+                        <Col xs={12} sm={12} md={12} lg={12} xl={12} className='content-item chats-panel' id='content-item' style={{margin:'auto', padding:'0px'}}>
+                          {this.state.chats.map(chat => (
+                              <div id={chat.props["chatId"]} onClick={setActive} style={{zIndex:'100'}}>
+                                <Container fluid id={chat.props["chatId"]}>
+                                  <Row className='person' id={chat.props["chatId"]}>
+                                      <Col
+                                          xs={3}
+                                          sm={3}
+                                          md={1}
+                                          lg={1}
+                                          xl={1}
+                                          id={chat.props["chatId"]}
+                                      >
+                                          <Image id={chat.props["chatId"]} src={chat.props["people"][0].props["personPP"]} className='message-pp'></Image>
+                                      </Col>
+                                      <Col
+                                          xs={9}
+                                          sm={9}
+                                          md={11}
+                                          lg={11}
+                                          xl={11}
+                                          id={chat.props["chatId"]}
+                                      >
+                                          <div style={{display:'inline-block'}} id={chat.props["chatId"]}>
+                                          <p
+                                              style={{marginBottom:'0px', fontSize:'20px', marginLeft:'0px'}}
+                                              id={chat.props["chatId"]}
+                                          >
+                                            {chat.props["people"][0].props["personName"]}
+                                          </p>
+                                          </div>
+                                      </Col>
+                                  </Row>
+                                </Container>
+                              </div>
+                          ))}
+                        </Col>
+                    </Row>
+                  </Col>
               </div>
           </Col>
-          <Col xs={12} sm={12} md={6} lg={6} xl={6} style={{margin:'0px', padding:'0px'}}>
-            <Row style={{margin:'0px', padding:'0px'}}>
+          <Col xs={12} sm={12} md={9} lg={8} xl={8} style={{borderTopRightRadius:'20px', borderBottomRightRadius: '20px'}}>
+            <Row style={{borderTopRightRadius:'20px', borderBottomRightRadius: '20px'}}>
               <Col
                 xs={12}
                 sm={12}
@@ -396,7 +396,7 @@ class Chat extends Component {
                     height: "100%",
                     width: "100%",
                     backgroundColor: "green",
-                    margin:'0px'
+                    margin:'0px', borderTopRightRadius:'20px'
                   }}
                 >
                   <Col
@@ -439,7 +439,7 @@ class Chat extends Component {
                 </Row>
               </Col>
             </Row>
-            <Row style={{margin:'0px', padding:'0px'}}>
+            <Row>
               <Col
                 xs={12}
                 sm={12}
@@ -472,7 +472,7 @@ class Chat extends Component {
                 </div>
               </Col>
             </Row>
-            <Row style={{margin:'0px', padding:'0px'}}>
+            <Row>
               <Col
                 xs={12}
                 sm={12}
@@ -491,6 +491,7 @@ class Chat extends Component {
                     height: "100%",
                     width: "100%",
                     backgroundColor: "red",
+                    borderBottomRightRadius: '20px'
                   }}
                 >
                   <h3>Me: </h3>
