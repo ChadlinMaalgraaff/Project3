@@ -126,7 +126,7 @@ class Profile extends Component {
             
              <Gravatar email="gebengazizipho@gmail.com" className = 'profilepic' rating="pg" default="monsterid"  />
              <div className= 'middle'>
-             <div className= 'text'>Change profile picture</div>
+             <div className= 'text'>Change Profile picture</div>
              </div>
              </div>
           </Col>
