@@ -1,91 +1,117 @@
 import React,{ Component } from "react";
 import Profile from './profile';
-import { Container, Row, Col, Modal, Button, Form,Image } from "react-bootstrap";
+import { Card, Container, Row, Col, Modal, Button, Form,Image } from "react-bootstrap";
 import pp1 from '../../Images/pp1.jpg';
 import pp2 from '../../Images/pp2.jpg';
+import { Avatar } from '@material-ui/core';
+
 
 
 
 class Friends extends Component{
 
     state = {
-
-        friends:145,
-        unfriend:false,
-        text:"Unfriend"
-
+        usernames: [
+            {
+                name:'Fay-yaaz',
+                avatar: pp1, 
+                id: 1
+             }, 
+             {
+                 name: 'Thauren',
+                 avatar: pp2 ,
+                 id:2
+             }, 
+             {
+                 name: 'Barbra',
+                 avatar: pp1,
+                 id:3
+             }, 
+             {
+                 name: 'Zee',
+                 avatar: pp2 ,
+                 id:4
+             }, 
+             {
+                 name: 'Chadlin',
+                 avatar: pp1 ,
+                 id:5
+     
+             }
+         ],
+         followerIDs: [1,2,3,4,5],
+         profilePersonId: 6
+    
     }
-   
+  
+
+removeItem = index => {
+  this.setState(state => {
+      const usernames = this.state.usernames.filter((item, j) => index != j);
+
+      return {
+          usernames,
+      };
+  });
+}; 
+
+
+render() {
+  const handleClose = () => {this.setState({show:false})};
+  const handleShow = () => {this.setState({show:true})};
+  const handleYes = () => {
+        this.setState({show:false})
+}
+const follow = () => {
     
-    render(){
-
-      const createTable = () => {
-        let listP = []
-        let sources = [pp1,pp2,pp1,pp2]
-        let friendsL = ["Cebisa Jordaan","Zizipho Gebenga","Pinda Fortuin","Onele Gebenga"]
-        let tags = ["@CebisaJordaan","@ZiziphoGebenga","@PindaFortuin","@OneleGebenga"]
-    
-        for (let i = 0; i < friendsL.length; i++) {
-          listP.push( <Container className='post-container' >
-
-          <li style={{ overflowY:"scroll"}}>
-              <Row>
-
-                <Col
-                      xs={3}
-                      sm={3}
-                      md={3}
-                     lg={2}
-                     xl={2}
-                    >
-                  <Image src={sources[i]} className='post-pp'></Image>
-                </Col>
-                    <div style={{display:'inline-block'}}>
-                        <p
-                            style={{marginBottom:'0px', fontSize:'17px', marginLeft:'5px'}}
-                           >
-                              {friendsL[i]}
-                       </p>
-                           <p
-                             style={{marginBottom:'0px', fontSize:'13px', color:'grey', marginLeft:'5px', display:'inline-block'}}
-                              >
-                           {tags[i]}
-                        </p>
-                                       <Button onClick={unfriend} id = 'unf' style = {{display:'inline-block',marginLeft: '250px'}}>{this.state.text}</Button>
-
-
-                      </div>
-                </Row>
-
-             </li>
-          </Container>)
-        }
-        return listP
+    if ( (this.state.profilePersonId != null)) {
+      /* Unfollow */
+      var i = this.state.followerIDs.indexOf(this.state.usernames.id);
+      if (i > -1) {
+        this.setState({
+          followerIDs: this.state.followerIDs.filter(item => item == this.state.usernames.id[i])
+        })
       }
-        const unfriend = () => {
-            const icon = document.getElementById('unf');
-              this.setState({
-                
-                text: "Unfollowed",
-                friends:this.state.friends - 1
-              })
-              icon.style.backgroundColor = 'grey';
-            
-          }
-    return(
-        <div className = 'p'>
-        <div className='icon text-center' style={{fontFamily:'Vision-Heavy', fontSize:'30px',fontWeight:'bold'}}>
-
-            {this.props.PersonName}Zizipho's Friends
-            </div>
-        <div>
-           
-                {createTable()}
-        </div>
-        </div>
-        
-    );
+    }else if ((this.state.profilePersonId != null) ) {
+      /* Follow */
+     this.setState({
+        followerIDs: [...this.state.followerIDs,this.state.usernames.id]
+      });
     }
+  }
+
+return (
+    <div>
+        {this.state.usernames.map((username, index) => (
+        <Container maxWidth='xs' fixed>
+            <Card width='8rem'  >
+                <Card.Body className = 'cont' >
+                    <Row  >
+                        <Col md="auto">
+                            <Avatar alt="person" src={username.avatar} />
+                        </Col>
+                        <Col style={{alignContent: "center"}}>
+                            @{username.name}
+                        </Col>
+                        <Col> 
+                            
+                            <Button className='myButton' onClick = {follow } >
+                            {!(this.state.followerIDs.includes(username.id)) ? ('follow'):('Unfollow')}
+
+                            </Button>
+                            
+                               
+                            
+                        </Col>
+                    </Row>
+                </Card.Body>
+            </Card> 
+
+            
+        </Container>))}      
+    </div>
+)
+}
 }
 
 export default Friends;
