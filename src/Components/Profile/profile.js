@@ -12,8 +12,10 @@ class Profile extends Component {
   
   state = {
     show: false,
-    PersonName: 'Zizipho Gebenga',
-    PersonTag: '@ZeeGebenga',
+    PersonName: 'Zizipho ',
+    PersonLast: 'Gebenga',
+    Birthdate: '1999-03-25',
+    PersonTag: 'ZeeGebenga',
     geotag: 'Khayelitsha, Cape Town',
     personABout: "Goal Oriented person. Love Coding.",
     friends:145,
@@ -68,6 +70,8 @@ class Profile extends Component {
       const loc = document.getElementById('my-location');
       const about =document.getElementById('my-bio');
       const pic = document.getElementById('myInput');
+      const lastN = document.getElementById('my-lastname');
+      const birthD = document.getElementById('my-birthdate')
       
 
       this.setState({
@@ -80,6 +84,8 @@ class Profile extends Component {
           friends:145,
           unfriend:false,
           text:"Unfriend",
+          PersonLast: lastN.value,
+          Birthdate: birthD.value
 
 
         })
@@ -141,16 +147,19 @@ class Profile extends Component {
               <p
                 style={{marginBottom:'0px', fontSize:'17px', marginLeft:'5px'}}
               >
-                  {this.state.PersonName}
+                  {this.state.PersonName} {this.state.PersonLast}
               </p>
               <p
                 style={{marginBottom:'0px', fontSize:'13px', color:'grey', marginLeft:'5px'}}
               >
-                  {this.state.PersonTag}
+                  @{this.state.PersonTag}
               </p>
             </div>
             <div style={{display:'inline-block'}}>
               <p style={{fontSize:'13px'}}><i class="fas fa-map-marker-alt" style={{color:'#F83639'}}></i> {this.state.geotag}</p>
+            </div>
+            <div >
+              <p style={{fontSize:'13px'}}><i class="fa fa-calendar" style={{color:'#0063B2FF'}}></i> {this.state.Birthdate}</p>
             </div>
             <div>
             <p style={{fontSize:'13px'}}><i style={{color:'#F83639',marginBottom:'0px', fontSize:'17px', marginLeft:'5px'}}></i> {this.state.personABout}</p>
@@ -210,6 +219,14 @@ class Profile extends Component {
                 <div className='icons text-left'>
                 <Form.Label>Name</Form.Label>
                 <Form.Control type="text" placeholder="my name..." id='my-name'/>
+                </div>
+                <div className='icons text-left'>
+                <Form.Label>Last Name</Form.Label>
+                <Form.Control type="text" placeholder="my last name..." id='my-lastname'/>
+                </div>
+                <div className='icons text-left'>
+                <Form.Label>Birthdate</Form.Label>
+                <Form.Control type="date" placeholder="birth date..." id='my-birthdate'/>
                 </div>
                 <div className='icons text-left'>
                 <Form.Label>Bio</Form.Label>

@@ -170,8 +170,8 @@ body {
 }
 .profilepic {
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
+  width: 150px;
+  height: 150px;
   margin-right: 5px;
   opacity: 1;
   transition: .3s ease;
