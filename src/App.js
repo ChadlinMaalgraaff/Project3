@@ -11,6 +11,7 @@ import './App.css';
 import { Container, CssBaseline } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import  Navigation from './Components/Navigation/Navigation';
+import CreateUser from './Components/login/create';
 
 function App() {
     return ( 
@@ -19,7 +20,7 @@ function App() {
           <Navigation/>
             <Switch>             
               <Route exact path='/home' component={Feed}/>
-              <Route path='/login' component={Login}/>
+              <Route path='/login' component={CreateUser}/>
               <Route path='/register' component={Register} />
               <Route path='/requests' component={Request} />
               <Route path = "/profile" component = {Profile}/>
