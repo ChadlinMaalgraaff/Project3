@@ -40,7 +40,9 @@ class Friends extends Component{
              }
          ],
          followerIDs: [1,2,3,4,5],
-         profilePersonId: 6
+         profilePersonId: 6,
+         loggedInPerson: 'Zizipho'
+
     
     }
   
@@ -82,6 +84,9 @@ const follow = () => {
 
 return (
     <div>
+        <div className= ' text-center' style={{fontFamily:'Vision-Heavy', fontSize:'30px',fontWeight:'bold'}}>
+                {this.state.loggedInPerson}'s Friends
+            </div>
         {this.state.usernames.map((username, index) => (
         <Container maxWidth='xs' fixed>
             <Card width='8rem'  >
