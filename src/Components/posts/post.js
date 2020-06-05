@@ -239,13 +239,14 @@ class Post extends Component {
             lg={12}
             xl={12}
           >
-            <ul style={{maxHeight:'200px', overflowY:'scroll', width:'100%'}}>
+            <ul style={{maxHeight:'200px', padding:'0px', overflowY:'scroll', width:'100%'}}>
                 <Col
                   xs={12}
                   sm={12}
                   md={12}
                   lg={12}
                   xl={12}
+                  style={{margin:'0px', padding:'0px'}}
                 >
                     {this.state.comments.map(comment => (
                         comment
