@@ -12,149 +12,235 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import { TextField } from 'formik-material-ui';
 import img from "../../Images/facebook-logo.png";
+import axios from 'axios';
 
-function Login() {
-      const [email, password] = useState("");
-      
-      const schema = Yup.object().shape({
-        email: Yup.string().email("Please enter a valid email address").required("This field is required"),
-        password: Yup.string().required("This field is required").min(8, "Password is too short - should be at least 8 characters")
-                              .matches(/(?=.*[0-9])/, "Password should contain at least one number")
-                    
-      });
+const styles = theme => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+    width: theme.spacing(10),
+    height: theme.spacing(10),
+  },
+  form: {
+    width: '100%',
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+  image: {
+    width: 'auto',
+    height: 'auto'
+  }
+});      
 
-      const useStyles = makeStyles((theme) => ({
-        paper: {
-          marginTop: theme.spacing(8),
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        },
-        avatar: {
-          margin: theme.spacing(1),
-          backgroundColor: theme.palette.secondary.main,
-          width: theme.spacing(10),
-          height: theme.spacing(10),
-        },
-        form: {
-          width: '100%',
-          marginTop: theme.spacing(1),
-        },
-        submit: {
-          margin: theme.spacing(3, 0, 2),
-        },
-        image: {
-          width: 'auto',
-          height: 'auto'
-        }
-      }));      
-      const classes = useStyles();
-      return (
-        <Container component="main" maxWidth="xs">
-        <CssBaseline />
-          <Formik 
-          validationSchema={schema}
-          validateOnBlur={false}
-          validateOnChange={true}
-          onSubmit={(values, { setSubmitting }) => {
-            //validate(values)
-            setTimeout(() => {
-              setSubmitting(false);
-              alert(JSON.stringify(values, null, 2));
-            }, 500);
-          }}
-          initialValues={{ 
-            email: '',
-            password:"", 
-            }}
-        >
-          {({
-          handleSubmit,
-          handleChange,
-          handleBlur,
-          values,
-          touched,
-          isValid,
-          submitForm,
-          isSubmitting,
-          errors,
-        }) => (
-          <div className={classes.paper}>
-            <Avatar className={classes.avatar} >
-            <img src="https://www.gravatar.com/avatar/2b3dedd1282b8980095c5c5ca3d1a1a7"/>
-            </Avatar>
-            <Typography component="h1" variant="h5">
-              Sign in
-            </Typography>
-            <form className={classes.form} noValidate onSubmit={handleSubmit}>
-              <Field
-                component={TextField}
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                onChange={handleChange}
-                isInvalid={touched.email && !!errors.email}
-                isValid ={touched.email && !errors.email}
-                autoComplete="email"
-                autoFocus
-              />
-              <Field
-                component={TextField}
-                variant="outlined"
-                margin="normal"
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                onChange={handleChange}
-                isInvalid={touched.email && !!errors.email}
-                isValid ={touched.email && !errors.email}
-                autoComplete="current-password"
-              />
-              <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-              />
-              {isSubmitting && <LinearProgress />}
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                className={classes.submit}
-              >
-                Sign In
-              </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
-                <Grid item>
-                  <Link href="/register" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
-              </Grid>
-            </form>
-          </div>
-        )}
-      </Formik>
-      </Container> 
-      );
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.onChangePassword = this.onChangePassword.bind(this);
+    this.onChangeUserName = this.onChangeUserName.bind(this);
+
+    this.state = {
+      username: '',
+      password: ''
     }
-    
-export default Login;
+  };
 
+  onChangeUserName(e) {
+    this.setState({username: e})
+  }
+  onChangePassword(e) {
+    this.setState({password: e})
+  }
+
+  /*handleSubmit = event => {
+    console.log("username" + this.state.username + "password" + this.state.password);
+    //event.preventDefault();
+
+    const user = {
+      username: this.state.username, 
+      password: this.state.password
+    };
+      axios.post('http://156.155.137.75:8000/api/account/login', user)
+      .then(res => {
+        //this.history.push('/');
+        console.log(res);
+        console.log(res.data);
+      }).catch((error) => {
+        console.log(error)
+      })
+    }
+  }*/
+
+  
+  render() {
+    const schema = Yup.object().shape({
+      username: Yup.string().required("This field is required"),
+      password: Yup.string().required("This field is required")
+                  
+    });
+
+    
+    const { classes } = this.props;
+    return (
+      <Container component="main" maxWidth="xs">
+      <CssBaseline />
+        <Formik 
+        validationSchema={schema}
+        validateOnBlur={false}
+        validateOnChange={true}
+        onSubmit={(values, { setSubmitting }) => {
+          //validate(values)
+          //this.onChangePassword(values.password);
+          //this.onChangeUserName(values.username);
+          //this.handleSubmit();
+          /*let axiosConfig = {
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8',
+                "Access-Control-Allow-Origin": "*",
+            }
+          };
+          
+          var postData = {
+            username: values.username,
+            password: values.password
+          };
+
+          console.log(values.username)
+          console.log(values.password)
+            axios.post('http://156.155.137.75:8000/api/account/login', postData, axiosConfig)
+            .then(res => { //you just have to save and it'll change
+              //this.history.push('/');
+              console.log(res);
+              //console.log(res.data);
+            }).catch((error) => {
+              console.log(error)
+            })*/
+
+          /*const requestOptions = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify('{ \'username\':\''+values.username+'\',\'password\':\''+values.password+'\'}')
+            };
+            console.log(values.username)
+            console.log(values.password)
+            fetch('http://156.155.137.75:8000/api/account/login', requestOptions)
+            .then(function (response) {
+        
+              console.log(response.json());
+              //this.props.history.push('/home')
+            })
+            .catch(function (error) {
+              console.log("error")
+              console.log(error);
+            });*/
+          //setSubmitting(false);
+          setTimeout(() => {
+            setSubmitting(false);
+            console.log(values);
+            alert(JSON.stringify(values, null, 2));
+          }, 500);
+        }}
+        initialValues={{ 
+          username: '',
+          password:"", 
+          }}
+      >
+        {({
+        handleSubmit,
+        handleChange,
+        handleBlur,
+        values,
+        touched,
+        isValid,
+        submitForm,
+        isSubmitting,
+        errors,
+      }) => (
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar} >
+          <img src="https://www.gravatar.com/avatar/2b3dedd1282b8980095c5c5ca3d1a1a7"/>
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <form className={classes.form} noValidate onSubmit={handleSubmit}>
+            <Field
+              component={TextField}
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="username"
+              label="Username"
+              name="username"
+              onChange={handleChange}
+              isInvalid={touched.username && !!errors.username}
+              isValid ={touched.username && !errors.username}
+              autoComplete="username"
+              autoFocus
+            />
+            <Field
+              component={TextField}
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              onChange={handleChange}
+              isInvalid={touched.password && !!errors.password}
+              isValid ={touched.password && !errors.password}
+              autoComplete="current-password"
+            />
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            {isSubmitting && <LinearProgress />}
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item xs>
+                <Link href="#" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
+              <Grid item>
+                <Link href="/register" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </form>
+        </div>
+      )}
+    </Formik>
+    </Container> 
+    );
+  }
+}
+      
+export default withStyles(styles)(Login);
 /*import React, { useState, Component } from "react";
 import { Row, Col, Form, Button, FormGroup, FormControl} from "react-bootstrap";
 import img from "../../Images/facebook-logo.png";
