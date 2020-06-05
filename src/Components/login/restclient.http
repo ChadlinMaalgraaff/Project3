@@ -1,0 +1,25 @@
+POST http://3.209.12.36:8000/api/account/login
+Content-Type: application/json
+
+{
+    "username": "fayyaaz",
+    "password": "1234"
+}
+
+###
+
+GET http://3.209.12.36:8000/api/account/properties
+Content-Type: application/json
+Authorization: Token edeb37e8dbf86eaa841a0368a4e39ab5ab54ae38
+
+###
+
+POST http://3.209.12.36:8000/api/account/register
+Content-Type: application/json
+
+{
+    "username": "Kiara",
+    "email": "kiara@gmail.com",
+    "password": "12345",
+    "password2": "12345"
+}
