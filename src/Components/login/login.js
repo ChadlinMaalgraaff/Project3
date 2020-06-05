@@ -119,33 +119,31 @@ class Login extends Component {
           console.log(values.username)
           console.log(values.password)
             axios.post('http://156.155.137.75:8000/api/account/login', postData, axiosConfig)
-            .then(res => { //you just have to save and it'll change
+            .then(res => { 
               //this.history.push('/');
               console.log(res);
               //console.log(res.data);
             }).catch((error) => {
               console.log(error)
             })*/
-
-          /*const requestOptions = {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify('{ \'username\':\''+values.username+'\',\'password\':\''+values.password+'\'}')
+            const data = {
+              username: values.username,
+              password: values.password
             };
-            console.log(values.username)
-            console.log(values.password)
-            fetch('http://156.155.137.75:8000/api/account/login', requestOptions)
-            .then(function (response) {
-        
-              console.log(response.json());
-              //this.props.history.push('/home')
-            })
-            .catch(function (error) {
-              console.log("error")
-              console.log(error);
-            });*/
+            
+            const options = {
+              headers: {
+                  'Content-Type': 'application/json',
+              }
+            };
+            
+            axios.post('http://3.209.12.36:8000/api/account/login', data, options)
+             .then((res) => {
+               console.log("RESPONSE ==== : ", res);
+             })
+             .catch((err) => {
+               console.log("ERROR: ====", err);
+             })
           //setSubmitting(false);
           setTimeout(() => {
             setSubmitting(false);
