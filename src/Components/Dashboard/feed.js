@@ -388,16 +388,18 @@ class Feed extends Component {
 
     const postSearch = (e, inputedText) => {
         console.log(inputedText.value);
-        if (inputedText.value != '') {
-            this.setState({
-                postSearch: true,
-                postSearchText: inputedText.value
-            })
-        }else {
-            this.setState({
-                postSearch: false,
-                postSearchText: ''
-            })
+        if (inputedText != null && inputedText != '' && this.state.posts.length > 0) {
+            if (inputedText.value != '') {
+                this.setState({
+                    postSearch: true,
+                    postSearchText: inputedText.value
+                })
+            }else {
+                this.setState({
+                    postSearch: false,
+                    postSearchText: ''
+                })
+            }
         }
     }
 
