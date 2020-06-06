@@ -14,8 +14,7 @@ import axios from 'axios';
 import logo from '../../Images/twaddle_dark_blue_circle.png';
 import font from '../../fonts/hacked-font/Hacked-KerX.ttf';
 import './index.css';
-
-
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 function Navigation() {
   const [show, setShow] = useState(false);
@@ -123,7 +122,7 @@ function Navigation() {
                       style={{minWidth: "100px"}}>
                         <Popover.Content>
                           <Button variant='dark' size='sm' onClick={handleShow}>
-                            Logout
+                            <ExitToAppIcon/> Logout
                           </Button>
                           <Modal show={show} onHide={handleClose}>
                             <Modal.Header closeButton>
