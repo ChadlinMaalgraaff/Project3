@@ -57,7 +57,7 @@ function Navigation() {
           <Navbar.Brand href="/home">
             <img src={logo} width="50" height="50"/>
           </Navbar.Brand>
-          <Navbar.Brand href="/home" style={{fontFamily: 'MyFont', fontSize: '90px'}}>Twaddle</Navbar.Brand>
+          <Navbar.Brand href="/home" style={{fontFamily: 'MyFont', fontSize: '50px'}}>Twaddle</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
