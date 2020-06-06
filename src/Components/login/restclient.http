@@ -23,3 +23,9 @@ Content-Type: application/json
     "password": "12345",
     "password2": "12345"
 }
+
+###
+
+GET http://3.209.12.36:8000/logout
+Content-Type: application/json
+Authorization: Token 44fd62b5efa94830702617623ae71899e983c608
