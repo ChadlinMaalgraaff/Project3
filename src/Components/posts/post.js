@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Button, Form, Image, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Container, Row, Col, Button, Form, Image, Tooltip, OverlayTrigger, Spinner } from "react-bootstrap";
 import Comment from './comment';
 import pp2 from '../../Images/pp2.jpg';
 import axios from 'axios';
@@ -24,7 +24,8 @@ class Post extends Component {
     postPersonID: this.props.id,
     followerIDs: this.props.followerIds,
     commentDB: [],
-    token: '7ac7e8c9b85410ec2481f2c2c239a6037748f610'
+    token: '7ac7e8c9b85410ec2481f2c2c239a6037748f610',
+    loadComments: true
   }
 
  
@@ -49,6 +50,9 @@ class Post extends Component {
       };
 
       (async () => {
+          this.setState({
+            loadComments: true
+          })
           await axios.post('http://3.209.12.36:8000/api/comment/', data, options)
 
           axios.get('http://3.209.12.36:8000/api/comment', options)
@@ -64,7 +68,8 @@ class Post extends Component {
               console.log('comentComponents: ');
               console.log(commentComponents);
               this.setState({
-                  comments: commentComponents
+                  comments: commentComponents,
+                  loadComments: false
               })
           })
           .catch((err) => {
@@ -119,31 +124,37 @@ class Post extends Component {
         }
       };
       
-      axios.get('http://3.209.12.36:8000/api/comment', options)
-      .then((res) => {
-          console.log("RESPONSE ==== : ", res);
-          this.setState({
-              commentDB: res.data.results
-          })
-          console.log('commentDB:')
-          console.log(this.state.commentDB);
-  
-          var commentComponents = [];
-          for (var i = 0; i < res.data.results.length; i++) {
-            if (res.data.results[i].post == this.state.postPersonID) {
-              var comment = <Comment commentText={res.data.results[i].body} commenterName={res.data.results[i].author} commenterTag={res.data.results[i].author} commenterId={res.data.results[i].id} pp={pp2} key={Math.random()}/>
-              commentComponents.push(comment);
+      (async () => {
+        this.setState({
+          loadComments: true
+        })
+        await axios.get('http://3.209.12.36:8000/api/comment', options)
+        .then((res) => {
+            console.log("RESPONSE ==== : ", res);
+            this.setState({
+                commentDB: res.data.results
+            })
+            console.log('commentDB:')
+            console.log(this.state.commentDB);
+    
+            var commentComponents = [];
+            for (var i = 0; i < res.data.results.length; i++) {
+              if (res.data.results[i].post == this.state.postPersonID) {
+                var comment = <Comment commentText={res.data.results[i].body} commenterName={res.data.results[i].author} commenterTag={res.data.results[i].author} commenterId={res.data.results[i].id} pp={pp2} key={Math.random()}/>
+                commentComponents.push(comment);
+              }
             }
-          }
-          console.log('commentComponents: ');
-          console.log(commentComponents);
-          this.setState({
-            comments: commentComponents
-          })
-      })
-      .catch((err) => {
-          console.log("ERROR: ====", err);
-      })
+            console.log('commentComponents: ');
+            console.log(commentComponents);
+            this.setState({
+              comments: commentComponents,
+              loadComments: false
+            })
+        })
+        .catch((err) => {
+            console.log("ERROR: ====", err);
+        })
+      })();
 
     }
 
@@ -312,6 +323,16 @@ class Post extends Component {
             lg={12}
             xl={12}
           >
+            <Button variant="primary" style={{display: this.state.loadComments == true ? ('block'):('none')}} disabled>
+                <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+                />
+                Loading...
+            </Button>
             <ul style={{maxHeight:'200px', padding:'0px', overflowY:'scroll', width:'100%'}}>
                 <Col
                   xs={12}
@@ -319,7 +340,7 @@ class Post extends Component {
                   md={12}
                   lg={12}
                   xl={12}
-                  style={{margin:'0px', padding:'0px'}}
+                  style={{margin:'0px', padding:'0px', display: this.state.loadComments == false ? ('block'):('none')}}
                 >
                     {this.state.comments.map(comment => (
                         comment

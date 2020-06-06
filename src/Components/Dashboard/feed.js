@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Modal, Form, FormControl, Button, InputGroup, Image, ListGroup, DropdownButton, Dropdown } from "react-bootstrap";
+import { Spinner, Container, Row, Col, Modal, Form, Button, InputGroup, Image, ListGroup, DropdownButton, Dropdown } from "react-bootstrap";
 import Post from '../posts/post';
 import pp1 from '../../Images/pp1.jpg';
 import pp2 from '../../Images/pp2.jpg';
@@ -77,7 +77,8 @@ class Feed extends Component {
             postSearch: false,
             postSearchText: '',
             postDB: [],
-            token: '7ac7e8c9b85410ec2481f2c2c239a6037748f610'
+            token: '7ac7e8c9b85410ec2481f2c2c239a6037748f610',
+            loadPosts: true
         };
     }
 
@@ -90,33 +91,37 @@ class Feed extends Component {
             }
         };
         
-        axios.get('http://3.209.12.36:8000/api/post', options)
-        .then((res) => {
-            console.log("RESPONSE ==== : ", res);
-            this.setState({
-                postDB: res.data.results
-            })
-            console.log('postDB:')
-            console.log(this.state.postDB);
+        (async () => {
 
-            var postComponents = [];
-            for (var i = 0; i < res.data.results.length; i++) {
-                var post = <Post postText={res.data.results[i].body} postPersonName={res.data.results[i].user} 
-                postPersonTag={res.data.results[i].user} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].user} key={Math.random()} 
-                date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
-                LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
-                
-                postComponents.push(post);
-            }
-            console.log('postComponents: ');
-            console.log(postComponents);
-            this.setState({
-                posts: postComponents
+           await axios.get('http://3.209.12.36:8000/api/post', options)
+            .then((res) => {
+                console.log("RESPONSE ==== : ", res);
+                this.setState({
+                    postDB: res.data.results
+                })
+                console.log('postDB:')
+                console.log(this.state.postDB);
+
+                var postComponents = [];
+                for (var i = 0; i < res.data.results.length; i++) {
+                    var post = <Post postText={res.data.results[i].body} postPersonName={res.data.results[i].user} 
+                    postPersonTag={res.data.results[i].user} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].user} key={Math.random()} 
+                    date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
+                    LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
+                    
+                    postComponents.push(post);
+                }
+                console.log('postComponents: ');
+                console.log(postComponents);
+                this.setState({
+                    posts: postComponents,
+                    loadPosts: false
+                })
             })
-        })
-        .catch((err) => {
-            console.log("ERROR: ====", err);
-        })
+            .catch((err) => {
+                console.log("ERROR: ====", err);
+            })
+        })();
     }
 
   render() {
@@ -129,7 +134,7 @@ class Feed extends Component {
         if (filterOn) {
             for (var j = 0; j < newArray.length - 1; j++) {
                 for (var i = 0, swapping; i < newArray.length - 1; i++) {
-                    if (newArray[i].props["time"]> newArray[i + 1].props["time"]) {
+                    if (newArray[i].props["date"] < newArray[i + 1].props["date"]) {
                     swapping = newArray[i + 1];
                     newArray[i + 1] = newArray[i];
                     newArray[i] = swapping;
@@ -165,7 +170,6 @@ class Feed extends Component {
 
         const data = {
             body: post.value,
-            pub_date: "2020-06-04T06:36:47+02:00",
             cat: this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory),
             lat: "noloc",
             lon: "noloc",
@@ -180,6 +184,9 @@ class Feed extends Component {
         };
 
         (async () => {
+            this.setState({
+                loadPosts: true
+            })
             await axios.post('http://3.209.12.36:8000/api/post/', data, options)
 
             axios.get('http://3.209.12.36:8000/api/post', options)
@@ -197,7 +204,8 @@ class Feed extends Component {
                 console.log('postComponents: ');
                 console.log(postComponents);
                 this.setState({
-                    posts: postComponents
+                    posts: postComponents,
+                    loadPosts: false
                 })
             })
             .catch((err) => {
@@ -540,6 +548,16 @@ class Feed extends Component {
                                 xl={10}
                                 style={{padding:'5px', margin:'0px', width:'100%', backgroundColor:'transparent'}}
                             >
+                                <Button variant="primary" style={{display: this.state.loadPosts == true ? ('block'):('none')}} disabled>
+                                    <Spinner
+                                    as="span"
+                                    animation="grow"
+                                    size="sm"
+                                    role="status"
+                                    aria-hidden="true"
+                                    />
+                                    Loading...
+                                </Button>
                                 {
                                     timeSort(
                                     (this.state.followerFilter == true ? (this.state.posts.filter(post => this.state.LoggedInPersonFollowerIds.includes(post.props["id"]))):(this.state.posts))
@@ -547,7 +565,7 @@ class Feed extends Component {
                                     .filter(this.state.friendFilter == true ? (post => this.state.LoggedInPersonFriendIds.includes(post.props["id"])):(post => post))
                                     .filter(this.state.categoryFilter == true ? (post => post.props['category'] == this.state.categoryFilterText):(post => post))
                                     .filter(this.state.postSearch == true ? (post => post.props['postPersonName'].toLowerCase().includes(this.state.postSearchText.toLowerCase()) || post.props['postText'].toLowerCase().includes(this.state.postSearchText.toLowerCase())):(post => post))
-                                    , this.state.timeFilter)
+                                    , /*this.state.timeFilter*/true)
                                     .map(post => (
                                         post
                                     ))
