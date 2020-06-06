@@ -159,7 +159,7 @@ class Login extends Component {
         errors,
       }) => (
         <div className={classes.paper}>
-          <div style={{fontFamily: 'MyFont', fontSize: '50px', padding: '20px'}}>
+          <div style={{fontFamily: 'MyFont', fontSize: '70px', padding: '20px'}}>
             Twaddle
           </div>
           <Typography component="h1" variant="h5">

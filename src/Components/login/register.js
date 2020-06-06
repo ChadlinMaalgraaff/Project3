@@ -164,7 +164,7 @@ class Register extends Component {
         errors,
       }) => (
         <div className={classes.paper}>
-          <div style={{fontFamily: 'MyFont', fontSize: '50px', padding: '20px'}}>
+          <div style={{fontFamily: 'MyFont', fontSize: '70px', padding: '20px'}}>
             Twaddle
           </div>
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
