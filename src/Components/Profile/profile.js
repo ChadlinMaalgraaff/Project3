@@ -52,7 +52,7 @@ class Profile extends Component {
   
 
   render() {
-   const data = {
+ /*  const data = {
       username:"zizi",
       password: "1234"
     };
@@ -62,12 +62,12 @@ class Profile extends Component {
     })
     .catch((err) => {
       console.log("Error: Couldn't log in",err);
-    })
+    })*/
 
     const options = {
       headers: {
         'Content-Type' : 'application/json',
-        'Authorization': 'Token ' + this.state.token 
+        'Authorization': 'Token ' + localStorage.getItem('token') 
       }
     }
 
@@ -137,32 +137,28 @@ class Profile extends Component {
       first_name:name.value,
       username:tag.value
     };
-    const options = {
-      headers: {
-        'Content-Type' : 'application/json',
-        'Authorization': 'Token ' + this.state.token 
-       
-      }
-    };
-
-    axios.patch('http://3.209.12.36:8000/api/account/properties/update',{city:loc.value,
-  first_name:name.value,
-  username:tag.value,
-  bio:about.value,
-  last_name:lastN.value,
-  birthday:birthD.value
-},options)
     
-  
-      .then((res) => {
+    axios.all([
+    axios.patch('http://3.209.12.36:8000/api/account/properties/update',{city:loc.value,
+    first_name : name.value,
+    last_name : lastN.value,
+    username : tag.value,
+    bio: about.value,
+    birthday:birthD.value
+      
+      },options),
+    
+    axios.get('http://3.209.12.36:8000/api/account/properties',options)])
+
+      /*.then((res) => {
         console.log("Response: updated",res)
-       
-    })
-    axios.get('http://3.209.12.36:8000/api/account/properties',options)
+       this.setState({  show :false,
+       })
+    })*/
     .then((res) => {
       console.log("Response: retrieved data",res);
       this.setState({
-        show :false,
+        show:false,
         PersonName:res.data.first_name,
         PersonTag :res.data.username,
         personABout: res.data.bio,
@@ -176,9 +172,6 @@ class Profile extends Component {
 
       });
     })
-   
-    
-
    
   .catch((err) => {
     console.log("Error: Couldn't retrieve data",err);
