@@ -8,6 +8,7 @@ import pp4 from '../../Images/iu-8.jpeg';
 import Taskbar from './taskbar';
 import Person from '../Messaging/person';
 import './feed.css';
+import axios from 'axios';
 
 class Feed extends Component {
 /*
@@ -16,6 +17,8 @@ class Feed extends Component {
     - LoggedInPersonId
     - LoggedInPersonName
     - LoggedInPersonTag
+
+    This is used for commenting purposes
 */
 
     constructor(props) {
@@ -69,13 +72,53 @@ class Feed extends Component {
             selectedGroup: [],
             selectedGroupMemberIds: [],
             groupFilter: false,
-            categories: ['a', 'b', 'c', 'd', 'e'],
+            categories: ['a', 'b', 'c', 'd', 'e', 'awe'],
             categoryFilter: false,
             categoryFilterText: '',
             selectedCategory: '',
             postSearch: false,
-            postSearchText: ''
+            postSearchText: '',
+            postDB: [],
+            token: '7ac7e8c9b85410ec2481f2c2c239a6037748f610'
         };
+    }
+
+    componentDidMount() {
+        console.log('mounted component');
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + this.state.token
+            }
+        };
+        
+        axios.get('http://3.209.12.36:8000/api/post', options)
+        .then((res) => {
+            console.log("RESPONSE ==== : ", res);
+            this.setState({
+                postDB: res.data.results
+            })
+            console.log('postDB:')
+            console.log(this.state.postDB);
+
+            var postComponents = [];
+            for (var i = 0; i < res.data.results.length; i++) {
+                var post = <Post postText={res.data.results[i].body} postPersonName={res.data.results[i].user} 
+                postPersonTag={res.data.results[i].user} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].user} key={Math.random()} 
+                date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
+                LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
+                
+                postComponents.push(post);
+            }
+            console.log('postComponents: ');
+            console.log(postComponents);
+            this.setState({
+                posts: postComponents
+            })
+        })
+        .catch((err) => {
+            console.log("ERROR: ====", err);
+        })
     }
 
   render() {
@@ -102,18 +145,15 @@ class Feed extends Component {
 
     const createPost = () => {
         const post = document.getElementById('my-post');
-        var today = new Date();
         var otherCategory = document.getElementById('otherCategoryText').value;
-        console.log('otherCategory:');
-        console.log(otherCategory);
         
         // Need to get a reliable key value in the props
-        this.setState({
+        {/*this.setState({
             posts: [...this.state.posts, <Post postText={post.value} postPersonName={this.state.LoggedInPersonName} 
                 postPersonTag={this.state.LoggedInPersonTag} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={this.state.LoggedInPersonId} key={Math.random()} 
                 date={today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate()} time={today.getHours() + ":" + today.getMinutes()} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
                 LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory)}/>]
-        })
+        })*/}
 
         if (this.state.selectedCategory == 'Other') {
             this.setState({
@@ -125,10 +165,48 @@ class Feed extends Component {
             show: false
         })
 
-        console.log('categories:')
-        console.log(this.state.categories);
-        console.log('posts: ');
-        console.log(this.state.posts);
+        const data = {
+            body: post.value,
+            pub_date: "2020-06-04T06:36:47+02:00",
+            cat: this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory),
+            lat: "noloc",
+            lon: "noloc",
+            user: 1
+        };
+        
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization' : 'Token ' + this.state.token
+            }
+        };
+
+        (async () => {
+            await axios.post('http://3.209.12.36:8000/api/post/', data, options)
+
+            axios.get('http://3.209.12.36:8000/api/post', options)
+            .then((res) => {
+                console.log("RESPONSE ==== : ", res);
+                var postComponents = [];
+                for (var i = 0; i < res.data.results.length; i++) {
+                    var post = <Post postText={res.data.results[i].body} postPersonName={res.data.results[i].user} 
+                    postPersonTag={res.data.results[i].user} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].user} key={Math.random()} 
+                    date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
+                    LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
+                    
+                    postComponents.push(post);
+                }
+                console.log('postComponents: ');
+                console.log(postComponents);
+                this.setState({
+                    posts: postComponents
+                })
+            })
+            .catch((err) => {
+                console.log("ERROR: ====", err);
+            })
+        })();
+        
     };
 
     const createPost2 = () => {
