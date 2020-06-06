@@ -1,6 +1,7 @@
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import React, { Component, useState } from 'react';
+import { Row } from 'react-bootstrap';
 import Avatar from '@material-ui/core/Avatar';
 import { Button, LinearProgress } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,6 +20,7 @@ import img from "../../Images/facebook-logo.png";
 import axios from 'axios';
 import auth from './AuthService';
 import Cookie from "js-cookie";
+import logo from '../../Images/twaddle_dark_blue_circle.png';
 
 const styles = theme => ({
   paper: {
@@ -30,8 +32,8 @@ const styles = theme => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
-    width: theme.spacing(10),
-    height: theme.spacing(10),
+    width: theme.spacing(5),
+    height: theme.spacing(5),
   },
   form: {
     width: '100%',
@@ -157,9 +159,9 @@ class Login extends Component {
         errors,
       }) => (
         <div className={classes.paper}>
-          <Avatar className={classes.avatar} >
-          <img src="https://www.gravatar.com/avatar/2b3dedd1282b8980095c5c5ca3d1a1a7"/>
-          </Avatar>
+          <div style={{fontFamily: 'MyFont', fontSize: '50px', padding: '20px'}}>
+            Twaddle
+          </div>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>

@@ -18,10 +18,10 @@ POST http://3.209.12.36:8000/api/account/register
 Content-Type: application/json
 
 {
-    "username": "Kiara",
-    "email": "kiara@gmail.com",
-    "password": "12345",
-    "password2": "12345"
+    "username": "amiga",
+    "email": "amiga@gmail.com",
+    "password": "amiga9",
+    "password2": "amiga9"
 }
 
 ###
