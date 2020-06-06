@@ -14,11 +14,11 @@ class Auth {
         console.log(this.authenticated);
     }
 
-    logout(cb) {
+    /*logout(cb) {
         cb();
         //return <Redirect to='/login'/>
         //this.authenticated = false;
-    }
+    }*/
 
     isAuthenticated() {
         console.log(this.authenticated);

@@ -10,7 +10,9 @@ import img from '../../Images/iu.jpeg';
 import SettingsIcon from '@material-ui/icons/Settings';
 import auth from '../login/AuthService';
 import axios from 'axios';
- 
+import logo from '../../Images/twaddle_dark_blue_circle.png';
+import font from '../../fonts/hacked-font/Hacked-KerX.ttf';
+import './index.css';
 
 function Navigation() {
       function handleLogout() {
@@ -42,11 +44,11 @@ function Navigation() {
               //props.history.push('/login');
       }
         return (
-          <Navbar bg="dark" variant="dark" expand="sm" style={{textAlign: 'center', width:'100%'}}>
+          <Navbar expand="sm" variant="dark" style={{textAlign: 'center', width:'100%', backgroundColor: '#498ec5'}}>
           <Navbar.Brand href="/home">
-            <img src="https://www.gravatar.com/avatar/2b3dedd1282b8980095c5c5ca3d1a1a7" width="30" height="30"/>
+            <img src={logo} width="50" height="50"/>
           </Navbar.Brand>
-          <Navbar.Brand href="/home">Project 3</Navbar.Brand>
+          <Navbar.Brand href="/home" style={{fontFamily: 'MyFont', fontSize: '30px'}}>Twaddle</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ml-auto">
