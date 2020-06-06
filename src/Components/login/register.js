@@ -20,7 +20,7 @@ import axios from 'axios';
 import auth from './AuthService';
 import Cookie from 'js-cookie';
 import logo from '../../Images/twaddle_dark_blue_circle.png';
-import crypto from 'crypto-js';
+import CryptoJS from 'crypto-js';
 
 const styles = theme => ({
   paper: {
@@ -97,16 +97,20 @@ class Register extends Component {
            .then((res) => {
              console.log("RESPONSE ==== : ", res);
              console.log(res.data.response)
-             auth.login(() => {
-              //Cookie.set("token", res.data.token);
-              /*var cryptoemail = require('crypto');
-              cryptoemail.createHash('md5').update(res.data.email).digest("hex");
-              localStorage.setItem('email', cryptoemail);
-              console.log(res.data.email);
-              console.log(Cookie.get("token"));*/
-              localStorage.setItem('token', res.data.token);
-             })
+             
              if (res.data.response == "successfully registered new user.") {
+              auth.login(() => {
+                //Cookie.set("token", res.data.token);
+                /*var cryptoemail = require('crypto');
+                cryptoemail.createHash('md5').update(res.data.email).digest("hex");
+                localStorage.setItem('email', cryptoemail);
+                console.log(res.data.email);
+                console.log(Cookie.get("token"));*/
+                var hash = CryptoJS.MD5(values.email).toString();
+                console.log(hash)
+                localStorage.setItem('email', hash);
+                localStorage.setItem('token', res.data.token);
+               })
                const data = {
                  username: values.username,
                  email: values.email,
@@ -134,7 +138,7 @@ class Register extends Component {
                 console.log("could not update details")
                })
              } else {
-               alert("Could not register user");
+               alert("Username/email already exists");
              }
              this.props.history.push('/home');
            })
@@ -143,7 +147,7 @@ class Register extends Component {
            })
           setTimeout(() => {
             setSubmitting(false);
-            alert(JSON.stringify(values, null, 2));
+            //alert(JSON.stringify(values, null, 2));
           }, 500);
        }}
         initialValues={initialValues}
@@ -160,7 +164,7 @@ class Register extends Component {
         errors,
       }) => (
         <div className={classes.paper}>
-          <div style={{fontFamily: 'MyFont', fontSize: '50px', padding: '20px'}}>
+          <div style={{fontFamily: 'MyFont', fontSize: '70px', padding: '20px'}}>
             Twaddle
           </div>
           <form className={classes.form} noValidate onSubmit={handleSubmit}>

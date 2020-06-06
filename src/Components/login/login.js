@@ -138,8 +138,8 @@ class Login extends Component {
           //setSubmitting(false);
           setTimeout(() => {
             setSubmitting(false);
-            console.log(values);
-            alert(JSON.stringify(values, null, 2));
+            /*console.log(values);
+            alert(JSON.stringify(values, null, 2));*/
           }, 500);
         }}
         initialValues={{ 
@@ -159,7 +159,7 @@ class Login extends Component {
         errors,
       }) => (
         <div className={classes.paper}>
-          <div style={{fontFamily: 'MyFont', fontSize: '50px', padding: '20px'}}>
+          <div style={{fontFamily: 'MyFont', fontSize: '70px', padding: '20px'}}>
             Twaddle
           </div>
           <Typography component="h1" variant="h5">

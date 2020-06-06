@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Container, Row, Col, Button, Form, Image, Tooltip, OverlayTrigger } from "react-bootstrap";
+import { Container, Row, Col, Button, Form, Image, Tooltip, OverlayTrigger, Spinner } from "react-bootstrap";
 import Comment from './comment';
 import pp2 from '../../Images/pp2.jpg';
+import axios from 'axios';
 
 class Post extends Component {
   state = {
@@ -21,17 +22,60 @@ class Post extends Component {
     postPersonName: this.props.postPersonName,
     postPersonTag: this.props.postPersonTag,
     postPersonID: this.props.id,
-    followerIDs: this.props.followerIds
+    followerIDs: this.props.followerIds,
+    commentDB: [],
+    token: '7ac7e8c9b85410ec2481f2c2c239a6037748f610',
+    loadComments: true
   }
+
+ 
 
   render() {
     const rando = Math.random(); {/* used as a unique id, should probably get a more reliable unique id method */}
+    
     const comment = () => {
       const comment = document.getElementById('my-comment' + rando);
-      this.setState({
-        comments: [...this.state.comments, <Comment commentText={comment.value} commenterName={this.state.commenterName} commenterTag={this.state.commenterTag} commenterId={this.state.LoggedInPersonId} pp={pp2} key={rando}/>]
-      })
-      comment.value = '';
+
+      const data = {
+        body: comment.value,
+        author: 1,
+        post: this.state.postPersonID
+      };
+    
+      const options = {
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization' : 'Token ' + this.state.token
+          }
+      };
+
+      (async () => {
+          this.setState({
+            loadComments: true
+          })
+          await axios.post('http://3.209.12.36:8000/api/comment/', data, options)
+
+          axios.get('http://3.209.12.36:8000/api/comment', options)
+          .then((res) => {
+              console.log("RESPONSE ==== : ", res);
+              var commentComponents = [];
+              for (var i = 0; i < res.data.results.length; i++) {
+                if (res.data.results[i].post == this.state.postPersonID) {
+                  var comment = <Comment commentText={res.data.results[i].body} commenterName={res.data.results[i].author} commenterTag={res.data.results[i].author} commenterId={res.data.results[i].id} pp={pp2} key={Math.random()}/>
+                  commentComponents.push(comment);
+                }
+              }
+              console.log('comentComponents: ');
+              console.log(commentComponents);
+              this.setState({
+                  comments: commentComponents,
+                  loadComments: false
+              })
+          })
+          .catch((err) => {
+              console.log("ERROR: ====", err);
+          })
+      })();
     }
 
     const follow = () => {
@@ -72,6 +116,46 @@ class Post extends Component {
           bottom.style.maxHeight = '0px';
           bottom.style.opacity  = '0';
       }
+
+      const options = {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Token ' + this.state.token
+        }
+      };
+      
+      (async () => {
+        this.setState({
+          loadComments: true
+        })
+        await axios.get('http://3.209.12.36:8000/api/comment', options)
+        .then((res) => {
+            console.log("RESPONSE ==== : ", res);
+            this.setState({
+                commentDB: res.data.results
+            })
+            console.log('commentDB:')
+            console.log(this.state.commentDB);
+    
+            var commentComponents = [];
+            for (var i = 0; i < res.data.results.length; i++) {
+              if (res.data.results[i].post == this.state.postPersonID) {
+                var comment = <Comment commentText={res.data.results[i].body} commenterName={res.data.results[i].author} commenterTag={res.data.results[i].author} commenterId={res.data.results[i].id} pp={pp2} key={Math.random()}/>
+                commentComponents.push(comment);
+              }
+            }
+            console.log('commentComponents: ');
+            console.log(commentComponents);
+            this.setState({
+              comments: commentComponents,
+              loadComments: false
+            })
+        })
+        .catch((err) => {
+            console.log("ERROR: ====", err);
+        })
+      })();
+
     }
 
     const heart = () => {
@@ -239,13 +323,24 @@ class Post extends Component {
             lg={12}
             xl={12}
           >
-            <ul style={{maxHeight:'200px', overflowY:'scroll', width:'100%'}}>
+            <Button variant="primary" style={{display: this.state.loadComments == true ? ('block'):('none')}} disabled>
+                <Spinner
+                as="span"
+                animation="grow"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+                />
+                Loading...
+            </Button>
+            <ul style={{maxHeight:'200px', padding:'0px', overflowY:'scroll', width:'100%'}}>
                 <Col
                   xs={12}
                   sm={12}
                   md={12}
                   lg={12}
                   xl={12}
+                  style={{margin:'0px', padding:'0px', display: this.state.loadComments == false ? ('block'):('none')}}
                 >
                     {this.state.comments.map(comment => (
                         comment

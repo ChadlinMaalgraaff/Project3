@@ -1,6 +1,7 @@
 import { Route, Redirect } from 'react-router-dom';
 import React from 'react';
 import auth from './login/AuthService';
+import NavLogin from '../Components/Navigation/NavForLogin';
 
 export const GuestRoute = ({component: Component, ...rest}) => {
     return (
@@ -8,7 +9,8 @@ export const GuestRoute = ({component: Component, ...rest}) => {
             {...rest} 
             render={props => {
                 if (!auth.isAuthenticated()) {
-                    return <Component {...props} />;
+                    return <div> <NavLogin/>
+                    <Component {...props} /></div>;
                 }
                 else {
                     return <Redirect to={{

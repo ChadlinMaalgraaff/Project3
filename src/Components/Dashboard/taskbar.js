@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Container, Row, Col, Button, Modal, Form, FormControl, InputGroup } from 'react-bootstrap';
 import '../sidepanel/style.css';
 import './feed.css';
+import axios from 'axios';
 
 class Taskbar extends Component {
     state = {
@@ -15,7 +16,8 @@ class Taskbar extends Component {
         checkLocation: false,
         checkCategory: false,
         checkUserGroup: false,
-        searchInput: ''
+        searchInput: '',
+        token: '7ac7e8c9b85410ec2481f2c2c239a6037748f610'
     }
 
     check = (e) => {
@@ -125,6 +127,131 @@ class Taskbar extends Component {
             })
         }
 
+        const apiTestLogin = () => {
+            console.log('api')
+
+            const data = {
+                    username: 'test02',
+                    password: '1234'
+                };
+                
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+            
+            axios.post('http://3.209.12.36:8000/api/account/login', data, options)
+            .then((res) => {
+                console.log("RESPONSE ==== : ", res);
+            })
+            .catch((err) => {
+                console.log("ERROR: ====", err);
+            })
+        }
+
+        const apiTestCreatePost = () => {
+            console.log('api')
+
+            const data = {
+                    body: "Luke",
+                    pub_date: "2020-06-04T06:36:47+02:00",
+                    lat: "noloc",
+                    lon: "noloc",
+                    user: 1
+                };
+                
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization' : 'Token ' + this.state.token
+                }
+            };
+            
+            axios.post('http://3.209.12.36:8000/api/post/', data, options)
+            .then((res) => {
+                console.log("RESPONSE ==== : ", res);
+            })
+            .catch((err) => {
+                console.log("ERROR: ====", err);
+            })
+        }
+
+        const apiTestGetComments = () => {
+            console.log('apiPost')
+    
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + this.state.token
+                }
+            };
+            
+            axios.get('http://3.209.12.36:8000/api/comment/', options)
+            .then((res) => {
+                console.log("RESPONSE ==== : ", res);
+                console.log('results: ');
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log("ERROR: ====", err);
+            })
+        }
+
+        const apiTestUpdatePostPut = () => {
+            console.log('apiPost')
+    
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + this.state.token
+                }
+            };
+
+            const data = {
+                body: "Luke over there, it's your father.",
+                pub_date: "2020-06-04T06:36:47+02:00",
+                lat: "noloc",
+                lon: "noloc",
+                user: 3
+            };
+            
+            axios.put('http://3.209.12.36:8000/api/post/24/', data, options)
+            .then((res) => {
+                console.log("RESPONSE ==== : ", res);
+                console.log('results: ');
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log("ERROR: ====", err);
+            })
+        }
+
+        const apiTestUpdatePostPatch = () => {
+            console.log('apiPost')
+    
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + this.state.token
+                }
+            };
+
+            const data = {
+                body: "Luke I'm not your father bra.",
+            };
+            
+            axios.put('http://3.209.12.36:8000/api/post/24/', data, options)
+            .then((res) => {
+                console.log("RESPONSE ==== : ", res);
+                console.log('results: ');
+                console.log(res.data)
+            })
+            .catch((err) => {
+                console.log("ERROR: ====", err);
+            })
+        }
+
         return(
             <Container style={{padding:'0px', margin:'0px', width:'100%', height:'100%', borderRadius:'20px'}}>
                 <Row className='taskbar-row' style={{padding:'0px', margin:'0px', width:'100%', height:'100%', borderRadius:'20px'}}>
@@ -211,6 +338,71 @@ class Taskbar extends Component {
                                 >
                                     <Button className='feed-button' onClick={this.props.handleShowGroupJoin} style={{padding:'0px', margin:'0px', width:'100%'}}>
                                         Join group
+                                    </Button>
+                                </Col>
+                                <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={6}
+                                    lg={6}
+                                    xl={6}
+                                    style={{marginBottom:'20px'}}
+                                    className='content-item' id='content-item'
+                                >
+                                    <Button className='feed-button' onClick={apiTestLogin} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                                        apiTestLogin
+                                    </Button>
+                                </Col>
+                                <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={6}
+                                    lg={6}
+                                    xl={6}
+                                    style={{marginBottom:'20px'}}
+                                    className='content-item' id='content-item'
+                                >
+                                    <Button className='feed-button' onClick={apiTestGetComments} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                                        apiTestGetComments
+                                    </Button>
+                                </Col>
+                                <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={6}
+                                    lg={6}
+                                    xl={6}
+                                    style={{marginBottom:'20px'}}
+                                    className='content-item' id='content-item'
+                                >
+                                    <Button className='feed-button' onClick={apiTestCreatePost} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                                        apiTestCreatePost
+                                    </Button>
+                                </Col>
+                                <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={6}
+                                    lg={6}
+                                    xl={6}
+                                    style={{marginBottom:'20px'}}
+                                    className='content-item' id='content-item'
+                                >
+                                    <Button className='feed-button' onClick={apiTestUpdatePostPut} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                                        apiTestUpdatePostPut
+                                    </Button>
+                                </Col>
+                                <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={6}
+                                    lg={6}
+                                    xl={6}
+                                    style={{marginBottom:'20px'}}
+                                    className='content-item' id='content-item'
+                                >
+                                    <Button className='feed-button' onClick={apiTestUpdatePostPatch} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                                        apiTestUpdatePostPatch
                                     </Button>
                                 </Col>
                             </Row>
