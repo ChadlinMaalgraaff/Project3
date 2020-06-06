@@ -6,30 +6,29 @@ import pp2 from '../../Images/pp2.jpg';
 import { Avatar ,IconButton} from '@material-ui/core';
 import ImageUploader from "react-images-upload";
 import Gravatar from 'react-gravatar';
+import axios from 'axios';
+import Iframe from 'react-iframe'
 
 class Profile extends Component { 
-
   
+ 
   state = {
     show: false,
-    PersonName: 'Zizipho ',
-    PersonLast: 'Gebenga',
-    Birthdate: '1999-03-25',
-    PersonTag: 'ZeeGebenga',
-    geotag: 'Khayelitsha, Cape Town',
-    personABout: "Goal Oriented person. Love Coding.",
+    
     friends:145,
     picture:pp1,
     userProfile: '',
-    src: "https://www.gravatar.com/avatar/2b3dedd1282b8980095c5c5ca3d1a1a7",
     pictures:[pp1],
-    categoryImageArray : []
+    categoryImageArray : [],
+    username: '',
+    password:''
 
 
 
     
 
   }
+
 
   
   
@@ -53,8 +52,67 @@ class Profile extends Component {
   
 
   render() {
+   const data = {
+      username:"zizi",
+      password: "1234"
+    };
+    axios.post('http://3.209.12.36:8000/api/account/login',data)
+      .then((res) => {
+        this.setState({token:res.data.token})
+    })
+    .catch((err) => {
+      console.log("Error: Couldn't log in",err);
+    })
+
+    const options = {
+      headers: {
+        'Content-Type' : 'application/json',
+        'Authorization': 'Token ' + this.state.token 
+      }
+    }
+
+    axios.get('http://3.209.12.36:8000/api/account/properties',options)
+    .then((res) => {
+      console.log("Response: retrieved data",res);
+      this.setState({
+        
+        PersonName:res.data.first_name,
+        PersonTag :res.data.username,
+        personABout: res.data.bio,
+        geotag : res.data.city,
+        friends:145,
+        unfriend:false,
+        text:"Unfriend",
+        PersonLast: res.data.last_name,
+        Birthdate: res.data.birthday,
+        src: 'https://www.gravatar.com/avatar/'+res.data.avatar,
+        email: res.data.email
+
+
+      });
+    })
+  .catch((err) => {
+    console.log("Error: Couldn't retrieve data",err);
+  })
+    
+   /* const uploadedImage = React.useRef(null);
+  const imageUploader = React.useRef(null);*/
     const handleClose = () => {this.setState({show:false})};
     const handleShow = () => {this.setState({show:true})};
+    
+  
+    const handleImageUpload = e => {
+      const [file] = e.target.files;
+      if (file) {
+        const reader = new FileReader();
+        /*const { current } = uploadedImage;*/
+       /* current.file = file;*/
+        reader.onload = e => {
+         // current.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    };
 
     const onDrop = (event) => {
       this.setState(
@@ -71,29 +129,66 @@ class Profile extends Component {
       const about =document.getElementById('my-bio');
       const pic = document.getElementById('myInput');
       const lastN = document.getElementById('my-lastname');
-      const birthD = document.getElementById('my-birthdate')
+      const birthD = document.getElementById('my-birthdate');
       
+      
+      const data = {
+      city:loc.value,
+      first_name:name.value,
+      username:tag.value
+    };
+    const options = {
+      headers: {
+        'Content-Type' : 'application/json',
+        'Authorization': 'Token ' + this.state.token 
+       
+      }
+    };
 
+    axios.patch('http://3.209.12.36:8000/api/account/properties/update',{city:loc.value,
+  first_name:name.value,
+  username:tag.value,
+  bio:about.value,
+  last_name:lastN.value,
+  birthday:birthD.value
+},options)
+    
+  
+      .then((res) => {
+        console.log("Response: updated",res)
+       
+    })
+    axios.get('http://3.209.12.36:8000/api/account/properties',options)
+    .then((res) => {
+      console.log("Response: retrieved data",res);
       this.setState({
-          show:false,
-          
-          PersonName:name.value,
-          PersonTag : tag.value,
-          personABout: about.value,
-          geotag : loc.value,
-          friends:145,
-          unfriend:false,
-          text:"Unfriend",
-          PersonLast: lastN.value,
-          Birthdate: birthD.value
+        show :false,
+        PersonName:res.data.first_name,
+        PersonTag :res.data.username,
+        personABout: res.data.bio,
+        geotag : res.data.city,
+        friends:145,
+        unfriend:false,
+        text:"Unfriend",
+        PersonLast: res.data.last_name,
+        Birthdate: res.data.birthday,
+        src: 'https://www.gravatar.com/avatar/'+res.data.avatar
+
+      });
+    })
+   
+    
+
+   
+  .catch((err) => {
+    console.log("Error: Couldn't retrieve data",err);
+  })
 
 
-        })
 
     };
 
     
-
     const animateButton = () => {
         const button = document.getElementById('awe');
           //reset animation
@@ -129,8 +224,9 @@ class Profile extends Component {
           >
             <div>
            
+            <Image src= {this.state.src } className='profilepic'></Image>
             
-             <Gravatar email="gebengazizipho@gmail.com" className = 'profilepic' rating="pg" default="monsterid"  />
+            
              <div className= 'middle'>
              <div className= 'text'>Change Profile picture</div>
              </div>
@@ -143,6 +239,9 @@ class Profile extends Component {
             lg={10}
             xl={10}
           >
+            <div style = {{float: "right"}}>
+            <button class="btn"><i class="fa fa-trash" style={{color:'#0063B2FF'}}></i> Delete account</button>
+            </div>
             <div style={{display:'inline-block'}}>
               <p
                 style={{marginBottom:'0px', fontSize:'17px', marginLeft:'5px'}}
@@ -242,9 +341,23 @@ class Profile extends Component {
                 <Form.Control type="text" placeholder="my location..." id='my-location'/>
                 <Form.Label>Change Profile picture</Form.Label>
                 <Row>
-                <Button className='link-button  '><a href ={'https://wordpress.com/log-in?client_id=1854&redirect_to=https%3A%2F%2Fpublic-api.wordpress.com%2Foauth2%2Fauthorize%3Fclient_id%3D1854%26response_type%3Dcode%26blog_id%3D0%26state%3D5dcd1d4841549235e173528bbde348be6866e7109bfcaccbe0232193deedbf97%26redirect_uri%3Dhttps%253A%252F%252Fen.gravatar.com%252Fconnect%252F%253Faction%253Drequest_access_token'} style={{color:'white'}}>Profile Picture</a></Button>
+                <Iframe url="http://en.gravatar.com/emails/"
+            position="absolute"
+            width="50%"
+            id="myId"
+            className="myClassname"
+            height="100%"
+            styles={{height: "25px"}}/>
+            
                 </Row>
-                
+                <input
+        type="file"
+        accept="image/*"
+        onChange={handleImageUpload}
+        /*ref={imageUploader}*/
+        style={{
+          display: "none"
+        }}/>                
                 </div>
 
             </Modal.Body>
