@@ -146,7 +146,7 @@ class Register extends Component {
            })
           setTimeout(() => {
             setSubmitting(false);
-            alert(JSON.stringify(values, null, 2));
+            //alert(JSON.stringify(values, null, 2));
           }, 500);
        }}
         initialValues={initialValues}

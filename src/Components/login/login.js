@@ -138,8 +138,8 @@ class Login extends Component {
           //setSubmitting(false);
           setTimeout(() => {
             setSubmitting(false);
-            console.log(values);
-            alert(JSON.stringify(values, null, 2));
+            /*console.log(values);
+            alert(JSON.stringify(values, null, 2));*/
           }, 500);
         }}
         initialValues={{ 

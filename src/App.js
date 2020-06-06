@@ -19,7 +19,6 @@ function App() {
     return ( 
       <React.Fragment>
         <Router>
-          <Navigation/>
             <Switch>  
               <ProtectedRoute path='/home' component={Feed}/>
               <GuestRoute exact path='/' component={Login}/>
