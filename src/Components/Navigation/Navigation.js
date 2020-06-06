@@ -23,29 +23,6 @@ function Navigation() {
   const handleShow = () => setShow(true);
 
   const history = useHistory();
-        function handleModal() {
-          const show = false;
-          
-          const handleClose = () => (show=true);
-            return (
-              <>
-              <Modal show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Are you sure you want to logout?</Modal.Body>
-                <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose}>
-                    Close
-                  </Button>
-                  <Button variant="primary" onClick={handleLogout}>
-                    Logout
-                  </Button>
-                </Modal.Footer>
-              </Modal>
-            </>
-            );
-        }
         function handleLogout() {
           handleClose();
           const headers2 = {
@@ -68,6 +45,7 @@ function Navigation() {
               console.log("Logout ERROR: ====", err);
             })
             localStorage.removeItem('token');
+            localStorage.removeItem('email');
             //return <Redirect to="/login" />
 
             history.push("/");

@@ -4,12 +4,10 @@ import { Redirect } from 'react-router-dom';
 
 class Auth {
     constructor() {
-        this.authenticated = false;
         console.log(this.authenticated);
     }
 
     login(cb) {
-        this.authenticated = true;
         cb();
         console.log(this.authenticated);
     }
@@ -21,7 +19,6 @@ class Auth {
     }*/
 
     isAuthenticated() {
-        console.log(this.authenticated);
         if (localStorage.getItem('token')) {
             console.log(localStorage.getItem('token'));
             return true;

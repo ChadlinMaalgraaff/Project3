@@ -20,7 +20,7 @@ import axios from 'axios';
 import auth from './AuthService';
 import Cookie from 'js-cookie';
 import logo from '../../Images/twaddle_dark_blue_circle.png';
-import crypto from 'crypto-js';
+import CryptoJS from 'crypto-js';
 
 const styles = theme => ({
   paper: {
@@ -104,6 +104,9 @@ class Register extends Component {
               localStorage.setItem('email', cryptoemail);
               console.log(res.data.email);
               console.log(Cookie.get("token"));*/
+              var hash = CryptoJS.MD5(values.email).toString();
+              console.log(hash)
+              localStorage.setItem('email', hash);
               localStorage.setItem('token', res.data.token);
              })
              if (res.data.response == "successfully registered new user.") {
