@@ -22,7 +22,7 @@ function App() {
           <Navigation/>
             <Switch>  
               <ProtectedRoute path='/home' component={Feed}/>
-              <GuestRoute path='/login' component={Login}/>
+              <GuestRoute exact path='/' component={Login}/>
               <GuestRoute path='/register' component={Register} />
               <ProtectedRoute path='/requests' component={Request} />
               <ProtectedRoute path = "/profile" component = {Profile}/>
