@@ -177,7 +177,7 @@ class Taskbar extends Component {
             })
         }
 
-        const apiTestGetPost = () => {
+        const apiTestGetComments = () => {
             console.log('apiPost')
     
             const options = {
@@ -187,7 +187,7 @@ class Taskbar extends Component {
                 }
             };
             
-            axios.get('http://3.209.12.36:8000/api/post', options)
+            axios.get('http://3.209.12.36:8000/api/comment/', options)
             .then((res) => {
                 console.log("RESPONSE ==== : ", res);
                 console.log('results: ');
@@ -362,8 +362,8 @@ class Taskbar extends Component {
                                     style={{marginBottom:'20px'}}
                                     className='content-item' id='content-item'
                                 >
-                                    <Button className='feed-button' onClick={apiTestGetPost} style={{padding:'0px', margin:'0px', width:'100%'}}>
-                                        apiTestGetPost
+                                    <Button className='feed-button' onClick={apiTestGetComments} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                                        apiTestGetComments
                                     </Button>
                                 </Col>
                                 <Col

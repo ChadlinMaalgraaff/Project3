@@ -36,8 +36,6 @@ class Feed extends Component {
             LoggedInPersonTag: '@CaptainJackSparrow',
             LoggedInPersonGeotag: 'Tortuga, England',
             LoggedInPersonId: 1, /* Need to get a more reliable ID */
-            time: '11:57 PM',
-            date: ' 13 March 2020',
             LoggedInPersonPP: pp1,
             LoggedInPersonFriendIds: [2, 3, 4, 5, 6, 7, 8],
             LoggedInPersonFollowerIds: [2],
