@@ -105,7 +105,7 @@ class Feed extends Component {
                 var postComponents = [];
                 for (var i = 0; i < res.data.results.length; i++) {
                     var post = <Post postText={res.data.results[i].body} postPersonName={res.data.results[i].user} 
-                    postPersonTag={res.data.results[i].user} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].user} key={Math.random()} 
+                    postPersonTag={res.data.results[i].user} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
                     date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
                     
@@ -195,8 +195,8 @@ class Feed extends Component {
                 var postComponents = [];
                 for (var i = 0; i < res.data.results.length; i++) {
                     var post = <Post postText={res.data.results[i].body} postPersonName={res.data.results[i].user} 
-                    postPersonTag={res.data.results[i].user} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].user} key={Math.random()} 
-                    date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
+                    postPersonTag={res.data.results[i].user} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
+                    date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={res.data.results[i].user}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
                     
                     postComponents.push(post);
