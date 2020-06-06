@@ -19,6 +19,8 @@ import img from "../../Images/iu-2.jpeg";
 import axios from 'axios';
 import auth from './AuthService';
 import Cookie from 'js-cookie';
+import logo from '../../Images/twaddle_dark_blue_circle.png';
+import crypto from 'crypto-js';
 
 const styles = theme => ({
   paper: {
@@ -29,7 +31,7 @@ const styles = theme => ({
   },
   avatar: {
     margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: '#498ec5',
     width: theme.spacing(10),
     height: theme.spacing(10),
   },
@@ -95,17 +97,46 @@ class Register extends Component {
            .then((res) => {
              console.log("RESPONSE ==== : ", res);
              console.log(res.data.response)
+             auth.login(() => {
+              //Cookie.set("token", res.data.token);
+              /*var cryptoemail = require('crypto');
+              cryptoemail.createHash('md5').update(res.data.email).digest("hex");
+              localStorage.setItem('email', cryptoemail);
+              console.log(res.data.email);
+              console.log(Cookie.get("token"));*/
+              localStorage.setItem('token', res.data.token);
+             })
              if (res.data.response == "successfully registered new user.") {
-              auth.login(() => {
-                //Cookie.set("token", res.data.token);
-                console.log(Cookie.get("token"));
-                localStorage.setItem('token', res.data.token);
-                this.props.history.push('/home');
+               const data = {
+                 username: values.username,
+                 email: values.email,
+                 first_name: values.firstname,
+                 last_name: values.lastname,
+                 birthday: '2000-01-01',
+                 gender: 'N',
+                 avatar: 'null',
+                 bio: 'null',
+                 city: 'null'
+               }
+               const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + res.data.token
+                }
+                
+              };
+               axios.put('http://3.209.12.36:8000/api/account/properties/update', data, options) 
+               .then((res) => {
+                console.log("updated")
+               })
+               .catch((error) => {
+                console.log("ERROR: ====", error);
+                console.log("could not update details")
                })
              } else {
                alert("Could not register user");
              }
-  
+             this.props.history.push('/home');
            })
            .catch((err) => {
              console.log("ERROR: ====", err);
@@ -129,12 +160,9 @@ class Register extends Component {
         errors,
       }) => (
         <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <img src="https://www.gravatar.com/avatar/2b3dedd1282b8980095c5c5ca3d1a1a7"/>
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Register
-          </Typography>
+          <div style={{fontFamily: 'MyFont', fontSize: '50px', padding: '20px'}}>
+            Twaddle
+          </div>
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -243,7 +271,7 @@ class Register extends Component {
             </Button>
             <Grid container justify="flex-middle">
               <Grid item>
-                <Link href="/login" variant="body2">
+                <Link href="/" variant="body2">
                   Already have an account? Login
                 </Link>
               </Grid>
