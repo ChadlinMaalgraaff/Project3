@@ -97,19 +97,20 @@ class Register extends Component {
            .then((res) => {
              console.log("RESPONSE ==== : ", res);
              console.log(res.data.response)
-             auth.login(() => {
-              //Cookie.set("token", res.data.token);
-              /*var cryptoemail = require('crypto');
-              cryptoemail.createHash('md5').update(res.data.email).digest("hex");
-              localStorage.setItem('email', cryptoemail);
-              console.log(res.data.email);
-              console.log(Cookie.get("token"));*/
-              var hash = CryptoJS.MD5(values.email).toString();
-              console.log(hash)
-              localStorage.setItem('email', hash);
-              localStorage.setItem('token', res.data.token);
-             })
+             
              if (res.data.response == "successfully registered new user.") {
+              auth.login(() => {
+                //Cookie.set("token", res.data.token);
+                /*var cryptoemail = require('crypto');
+                cryptoemail.createHash('md5').update(res.data.email).digest("hex");
+                localStorage.setItem('email', cryptoemail);
+                console.log(res.data.email);
+                console.log(Cookie.get("token"));*/
+                var hash = CryptoJS.MD5(values.email).toString();
+                console.log(hash)
+                localStorage.setItem('email', hash);
+                localStorage.setItem('token', res.data.token);
+               })
                const data = {
                  username: values.username,
                  email: values.email,
@@ -137,7 +138,7 @@ class Register extends Component {
                 console.log("could not update details")
                })
              } else {
-               alert("Could not register user");
+               alert("Username/email already exists");
              }
              this.props.history.push('/home');
            })
