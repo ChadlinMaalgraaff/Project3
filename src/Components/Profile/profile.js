@@ -138,7 +138,7 @@ class Profile extends Component {
       username:tag.value
     };
     
-    axios.all([
+    
     axios.patch('http://3.209.12.36:8000/api/account/properties/update',{city:loc.value,
     first_name : name.value,
     last_name : lastN.value,
@@ -146,15 +146,15 @@ class Profile extends Component {
     bio: about.value,
     birthday:birthD.value
       
-      },options),
+      },options)
     
-    axios.get('http://3.209.12.36:8000/api/account/properties',options)])
-
-      /*.then((res) => {
+      .then((res) => {
         console.log("Response: updated",res)
        this.setState({  show :false,
        })
-    })*/
+    })
+    axios.get('http://3.209.12.36:8000/api/account/properties',options)
+
     .then((res) => {
       console.log("Response: retrieved data",res);
       this.setState({
@@ -310,28 +310,28 @@ class Profile extends Component {
                 
                 <div className='icons text-left'>
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="my name..." id='my-name'/>
+                <Form.Control type="text" placeholder={this.state.PersonName} id='my-name'/>
                 </div>
                 <div className='icons text-left'>
                 <Form.Label>Last Name</Form.Label>
-                <Form.Control type="text" placeholder="my last name..." id='my-lastname'/>
+                <Form.Control type="text" placeholder={this.state.PersonLast} id='my-lastname'/>
                 </div>
                 <div className='icons text-left'>
                 <Form.Label>Birthdate</Form.Label>
-                <Form.Control type="date" placeholder="birth date..." id='my-birthdate'/>
+                <Form.Control type="date" placeholder={this.state.Birthdate} id='my-birthdate'/>
                 </div>
                 <div className='icons text-left'>
                 <Form.Label>Bio</Form.Label>
-                <Form.Control type="text" placeholder="my bio..." id='my-bio'/>
+                <Form.Control type="text" placeholder={this.state.personABout} id='my-bio'/>
                 </div>
                 <div className='icons text-left'>
 
                 <Form.Label>Handle</Form.Label>
-                <Form.Control type="text" id='my-tag' placeholder="new handle..."/>
+                <Form.Control type="text" id='my-tag' placeholder={this.state.PersonTag}/>
                 </div>
                 <div className='icons text-left'>
                 <Form.Label>Location</Form.Label>
-                <Form.Control type="text" placeholder="my location..." id='my-location'/>
+                <Form.Control type="text" placeholder={this.state.geotag} id='my-location'/>
                 <Form.Label>Change Profile picture</Form.Label>
                 <Row>
                 <Iframe url="http://en.gravatar.com/emails/"
