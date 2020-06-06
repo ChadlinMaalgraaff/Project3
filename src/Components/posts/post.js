@@ -56,9 +56,10 @@ class Post extends Component {
               console.log("RESPONSE ==== : ", res);
               var commentComponents = [];
               for (var i = 0; i < res.data.results.length; i++) {
+                if (res.data.results[i].post == this.state.postPersonID) {
                   var comment = <Comment commentText={res.data.results[i].body} commenterName={res.data.results[i].author} commenterTag={res.data.results[i].author} commenterId={res.data.results[i].id} pp={pp2} key={Math.random()}/>
-                  
                   commentComponents.push(comment);
+                }
               }
               console.log('comentComponents: ');
               console.log(commentComponents);
