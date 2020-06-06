@@ -1,6 +1,7 @@
 import { Formik, Field, Form } from 'formik';
 import * as Yup from 'yup';
 import React, { Component, useState } from 'react';
+import { Row } from 'react-bootstrap';
 import Avatar from '@material-ui/core/Avatar';
 import { Button, LinearProgress } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -17,6 +18,9 @@ import Container from '@material-ui/core/Container';
 import { TextField } from 'formik-material-ui';
 import img from "../../Images/facebook-logo.png";
 import axios from 'axios';
+import auth from './AuthService';
+import Cookie from "js-cookie";
+import logo from '../../Images/twaddle_dark_blue_circle.png';
 
 const styles = theme => ({
   paper: {
@@ -28,8 +32,8 @@ const styles = theme => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
-    width: theme.spacing(10),
-    height: theme.spacing(10),
+    width: theme.spacing(5),
+    height: theme.spacing(5),
   },
   form: {
     width: '100%',
@@ -81,7 +85,7 @@ class Login extends Component {
       })
     }
   }*/
-
+  
   
   render() {
     const schema = Yup.object().shape({
@@ -100,32 +104,7 @@ class Login extends Component {
         validateOnBlur={false}
         validateOnChange={true}
         onSubmit={(values, { setSubmitting }) => {
-          //validate(values)
-          //this.onChangePassword(values.password);
-          //this.onChangeUserName(values.username);
-          //this.handleSubmit();
-          /*let axiosConfig = {
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8',
-                "Access-Control-Allow-Origin": "*",
-            }
-          };
-          
-          var postData = {
-            username: values.username,
-            password: values.password
-          };
-
-          console.log(values.username)
-          console.log(values.password)
-            axios.post('http://156.155.137.75:8000/api/account/login', postData, axiosConfig)
-            .then(res => { 
-              //this.history.push('/');
-              console.log(res);
-              //console.log(res.data);
-            }).catch((error) => {
-              console.log(error)
-            })*/
+            
             const data = {
               username: values.username,
               password: values.password
@@ -140,6 +119,18 @@ class Login extends Component {
             axios.post('http://3.209.12.36:8000/api/account/login', data, options)
              .then((res) => {
                console.log("RESPONSE ==== : ", res);
+               console.log(res.data.response)
+               if (res.data.response == "Successfully authenticated.") {
+                auth.login(() => {
+                  //Cookie.set("token", res.data.token);
+                  console.log(Cookie.get("token"));
+                  localStorage.setItem('token', res.data.token);
+                  this.props.history.push('/home');
+                 })
+               } else {
+                 alert("Invalid Username or Password");
+               }
+
              })
              .catch((err) => {
                console.log("ERROR: ====", err);
@@ -147,8 +138,8 @@ class Login extends Component {
           //setSubmitting(false);
           setTimeout(() => {
             setSubmitting(false);
-            console.log(values);
-            alert(JSON.stringify(values, null, 2));
+            /*console.log(values);
+            alert(JSON.stringify(values, null, 2));*/
           }, 500);
         }}
         initialValues={{ 
@@ -168,9 +159,9 @@ class Login extends Component {
         errors,
       }) => (
         <div className={classes.paper}>
-          <Avatar className={classes.avatar} >
-          <img src="https://www.gravatar.com/avatar/2b3dedd1282b8980095c5c5ca3d1a1a7"/>
-          </Avatar>
+          <div style={{fontFamily: 'MyFont', fontSize: '70px', padding: '20px'}}>
+            Twaddle
+          </div>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>

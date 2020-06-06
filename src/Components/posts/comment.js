@@ -52,13 +52,14 @@ class Comment extends Component {
 
     return(
         <div className='comment-container'>
-            <Row>
+            <Row style={{margin:'0px', padding:'0px'}}>
                 <Col
                     xs={12}
                     sm={12}
                     md={6}
                     lg={6}
                     xl={6}
+                    style={{margin:'0px', padding:'0px'}}
                 >
                     <Image src={this.state.pp} className='comment-pp'></Image>
                     <p
@@ -73,13 +74,14 @@ class Comment extends Component {
                     </p>
                 </Col>
             </Row>
-            <Row>
+            <Row style={{margin:'0px', padding:'0px'}}>
                 <Col
                     xs={12}
                     sm={12}
                     md={12}
                     lg={12}
                     xl={12}
+                    style={{margin:'0px', padding:'0px'}}
                 >
                     <div style={{width:'100%', marginTop:'10px', marginBottom:'5px'}}>
                         <p
