@@ -17,6 +17,8 @@ import Container from '@material-ui/core/Container';
 import { TextField } from 'formik-material-ui';
 import img from "../../Images/facebook-logo.png";
 import axios from 'axios';
+import auth from './AuthService';
+import Cookie from "js-cookie";
 
 const styles = theme => ({
   paper: {
@@ -81,7 +83,7 @@ class Login extends Component {
       })
     }
   }*/
-
+  
   
   render() {
     const schema = Yup.object().shape({
@@ -100,32 +102,7 @@ class Login extends Component {
         validateOnBlur={false}
         validateOnChange={true}
         onSubmit={(values, { setSubmitting }) => {
-          //validate(values)
-          //this.onChangePassword(values.password);
-          //this.onChangeUserName(values.username);
-          //this.handleSubmit();
-          /*let axiosConfig = {
-            headers: {
-                'Content-Type': 'application/json;charset=UTF-8',
-                "Access-Control-Allow-Origin": "*",
-            }
-          };
-          
-          var postData = {
-            username: values.username,
-            password: values.password
-          };
-
-          console.log(values.username)
-          console.log(values.password)
-            axios.post('http://156.155.137.75:8000/api/account/login', postData, axiosConfig)
-            .then(res => { 
-              //this.history.push('/');
-              console.log(res);
-              //console.log(res.data);
-            }).catch((error) => {
-              console.log(error)
-            })*/
+            
             const data = {
               username: values.username,
               password: values.password
@@ -140,6 +117,18 @@ class Login extends Component {
             axios.post('http://3.209.12.36:8000/api/account/login', data, options)
              .then((res) => {
                console.log("RESPONSE ==== : ", res);
+               console.log(res.data.response)
+               if (res.data.response == "Successfully authenticated.") {
+                auth.login(() => {
+                  //Cookie.set("token", res.data.token);
+                  console.log(Cookie.get("token"));
+                  localStorage.setItem('token', res.data.token);
+                  this.props.history.push('/home');
+                 })
+               } else {
+                 alert("Invalid Username or Password");
+               }
+
              })
              .catch((err) => {
                console.log("ERROR: ====", err);
