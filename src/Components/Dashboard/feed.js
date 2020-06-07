@@ -446,8 +446,8 @@ class Feed extends Component {
          */
 
         var memberIds = [];
-        for (var i = 0; i < this.state.selectedPeople; i++) {
-            memberIds.push(this.state.selectedPeople[i].personId);
+        for (var i = 0; i < this.state.selectedPeople.length; i++) {
+            memberIds.push(this.state.selectedPeople[i].props.personId);
         }
         memberIds.push(39/** Need to get user id from Kiara */);
 
@@ -461,7 +461,7 @@ class Feed extends Component {
             desc: 'my group',
             admin: 39, /** Need to get user id from Kiara */
             members: memberIds,
-            create_date:  "2020-06-06T04:12:19+02:00" /** DOesnt really matter */
+            create_date:  "2020-06-06T04:12:19+02:00" /** Doesnt really matter */
         };
 
         const options = {
@@ -498,7 +498,9 @@ class Feed extends Component {
                 }
 
                 this.setState({
-                    groups: groups
+                    groups: groups,
+                    showGroup: false,
+                    selectedPeople: [],
                 })
 
             })
@@ -506,12 +508,6 @@ class Feed extends Component {
                 console.log("ERROR: ====", err);
             })
         })();
-
-        this.setState({
-            groups: [...this.state.groups, [groupId, [this.state.LoggedInPersonId], [...this.state.selectedPeople, <Person personId={this.state.LoggedInPersonId} key={this.state.LoggedInPersonId} personName={this.state.LoggedInPersonName} personPP={this.state.LoggedInPersonPP}/>], groupName, groupPP]],
-            showGroup: false,
-            selectedPeople: [],
-        });
 
         if (this.state.groups.length > 0) {
             console.log('group[0] name: ');
@@ -571,6 +567,10 @@ class Feed extends Component {
             selectedId: ''
           });
         }
+
+
+        console.log('selected people:');
+        console.log(this.state.selectedPeople);
     }
 
     const removeGroup = (e) => {
