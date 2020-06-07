@@ -198,6 +198,29 @@ class Taskbar extends Component {
             })
         }
 
+        const list_users = () => {
+            console.log('apiPost')
+    
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + this.state.token
+                }
+            };
+            
+            axios.get('http://3.209.12.36:8000/api/account/list_users', options)
+            .then((res) => {
+                console.log("RESPONSE ==== : ", res);
+                console.log('list_users: ');
+                console.log(res.data)
+                console.log('res.data[38].pk: ');
+                console.log(res.data[38].pk)
+            })
+            .catch((err) => {
+                console.log("ERROR: ====", err);
+            })
+        }
+
         const apiTestUpdatePostPut = () => {
             console.log('apiPost')
     
@@ -403,6 +426,19 @@ class Taskbar extends Component {
                                 >
                                     <Button className='feed-button' onClick={apiTestUpdatePostPatch} style={{padding:'0px', margin:'0px', width:'100%'}}>
                                         apiTestUpdatePostPatch
+                                    </Button>
+                                </Col>
+                                <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={6}
+                                    lg={6}
+                                    xl={6}
+                                    style={{marginBottom:'20px'}}
+                                    className='content-item' id='content-item'
+                                >
+                                    <Button className='feed-button' onClick={list_users} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                                        list_users
                                     </Button>
                                 </Col>
                             </Row>

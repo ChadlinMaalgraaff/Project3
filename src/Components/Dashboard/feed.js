@@ -78,7 +78,8 @@ class Feed extends Component {
             postSearchText: '',
             postDB: [],
             token: '7ac7e8c9b85410ec2481f2c2c239a6037748f610',
-            loadPosts: true
+            loadPosts: true,
+            users: []
         };
     }
 
@@ -90,6 +91,21 @@ class Feed extends Component {
                 'Authorization': 'Token ' + this.state.token
             }
         };
+
+        (async () => {
+            await axios.get('http://3.209.12.36:8000/api/account/list_users', options)
+                .then((res) => {
+                    this.setState({
+                        users: res.data
+                    })
+                })
+                .catch((err) => {
+                    console.log("ERROR: ====", err);
+                })
+
+                console.log('Users:');
+                console.log(this.state.users);
+        })();
         
         (async () => {
 
@@ -104,8 +120,19 @@ class Feed extends Component {
 
                 var postComponents = [];
                 for (var i = 0; i < res.data.results.length; i++) {
-                    var post = <Post postText={res.data.results[i].body} postPersonName={res.data.results[i].user} 
-                    postPersonTag={res.data.results[i].user} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
+
+                    var name = 'Not a registered user';
+                    var surname = '';
+                    for (var j = 0; j < this.state.users.length; j++) {
+                        if (res.data.results[i].user == this.state.users[j].pk) {
+                            name = this.state.users[j].first_name;
+                            surname = this.state.users[j].last_name;
+                            j = this.state.users.length;
+                        }
+                    }
+
+                    var post = <Post postText={res.data.results[i].body} postPersonName={name + ' ' + surname} 
+                    postPersonTag={'@' + name + surname} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
                     date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
                     
@@ -173,7 +200,7 @@ class Feed extends Component {
             cat: this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory),
             lat: "noloc",
             lon: "noloc",
-            user: 1
+            user: 39 /** Need to get user id from Kiara */
         };
         
         const options = {
@@ -187,6 +214,24 @@ class Feed extends Component {
             this.setState({
                 loadPosts: true
             })
+            await axios.get('http://3.209.12.36:8000/api/account/list_users', options)
+                .then((res) => {
+                    this.setState({
+                        users: res.data
+                    })
+                })
+                .catch((err) => {
+                    console.log("ERROR: ====", err);
+                })
+
+                console.log('Users:');
+                console.log(this.state.users);
+        })();
+
+        (async () => {
+            this.setState({
+                loadPosts: true
+            })
             await axios.post('http://3.209.12.36:8000/api/post/', data, options)
 
             axios.get('http://3.209.12.36:8000/api/post', options)
@@ -194,8 +239,19 @@ class Feed extends Component {
                 console.log("RESPONSE ==== : ", res);
                 var postComponents = [];
                 for (var i = 0; i < res.data.results.length; i++) {
-                    var post = <Post postText={res.data.results[i].body} postPersonName={res.data.results[i].user} 
-                    postPersonTag={res.data.results[i].user} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
+
+                    var name = 'Not a registered user';
+                    var surname = '';
+                    for (var j = 0; j < this.state.users.length; j++) {
+                        if (res.data.results[i].user == this.state.users[j].pk) {
+                            name = this.state.users[j].first_name;
+                            surname = this.state.users[j].last_name;
+                            j = this.state.users.length;
+                        }
+                    }
+
+                    var post = <Post postText={res.data.results[i].body} postPersonName={name + ' ' + surname} 
+                    postPersonTag={'@' + name + surname} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
                     date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={res.data.results[i].user}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
                     
