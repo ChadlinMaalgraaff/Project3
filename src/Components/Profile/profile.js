@@ -14,6 +14,7 @@ class Profile extends Component {
  
   state = {
     show: false,
+    smshow:false,
     
     friends:145,
     picture:pp1,
@@ -30,7 +31,43 @@ class Profile extends Component {
   }
 
 
+  componentDidMount(){
+    const options = {
+      headers: {
+        'Content-Type' : 'application/json',
+        'Authorization': 'Token ' + localStorage.getItem('token') 
+      }
+    }
+
+    axios.get('http://3.209.12.36:8000/api/account/properties',options)
+    .then((res) => {
+      console.log("Response: retrieved data for prof",res);
+      this.setState({
+        
+        PersonName:res.data.first_name,
+        PersonTag :res.data.username,
+        personABout: res.data.bio,
+        geotag : res.data.city,
+        friends:145,
+        unfriend:false,
+        text:"Unfriend",
+        PersonLast: res.data.last_name,
+        Birthdate: res.data.birthday,
+        src: 'https://www.gravatar.com/avatar/'+res.data.avatar,
+        email: res.data.email
+
+        
+
+      });
+    })
+  .catch((err) => {
+    console.log("Error: Couldn't retrieve data",err);
+  })
+
   
+
+
+  }
   
    /* handleEdit (e) {
 
@@ -52,30 +89,127 @@ class Profile extends Component {
   
 
   render() {
- /*  const data = {
-      username:"zizi",
-      password: "1234"
-    };
-    axios.post('http://3.209.12.36:8000/api/account/login',data)
-      .then((res) => {
-        this.setState({token:res.data.token})
-    })
-    .catch((err) => {
-      console.log("Error: Couldn't log in",err);
-    })*/
-
-    const options = {
-      headers: {
-        'Content-Type' : 'application/json',
-        'Authorization': 'Token ' + localStorage.getItem('token') 
+ 
+  
+    
+   /* const uploadedImage = React.useRef(null);
+  const imageUploader = React.useRef(null);*/
+    const handleClose = () => {this.setState({show:false})};
+    const handleShow = () => {this.setState({show:true})};
+    
+    const handleEdit = () => {
+      const name = document.getElementById('my-name');
+      const tag = document.getElementById('my-tag');
+      const loc = document.getElementById('my-location');
+      const about =document.getElementById('my-bio');
+      const pic = document.getElementById('myInput');
+      const lastN = document.getElementById('my-lastname');
+      const birthD = document.getElementById('my-birthdate');
+      
+      const options = {
+        headers: {
+          'Content-Type' : 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('token') 
+        }
       }
-    }
+     
+      
+      if (name !== null ){
+        axios.patch('http://3.209.12.36:8000/api/account/properties/update',{
+        first_name : name.value
+        },options)
+        .then((res) => {
+          console.log("Response: updated name",res)
+         
+      })
+    
+      .catch((err) => {
+        console.log("Error: Couldn't patch name",err);
+      })
+        
+      }
+      if (tag !== null ){
+        axios.patch('http://3.209.12.36:8000/api/account/properties/update',{
+       
+        username : tag.value
+        },options)
+        .then((res) => {
+          console.log("Response: updated",res)
+         
+      })
+    
+      .catch((err) => {
+        console.log("Error: Couldn't patch data tag",err);
+      })
+      
+        
+      }
+      if (loc !== null ) {
+        axios.patch('http://3.209.12.36:8000/api/account/properties/update',{city:loc.value
+        },options)
+        .then((res) => {
+          console.log("Response: updated",res)
+         
+      })
+    
+      .catch((err) => {
+        console.log("Error: Couldn't patch data location",err);
+      })
+      
+      }
+      if (about  !==  null) {
+        axios.patch('http://3.209.12.36:8000/api/account/properties/update',{
+        
+        bio: about.value
+        },options)
+        .then((res) => {
+          console.log("Response: updated",res)
+         
+      })
+    
+      .catch((err) => {
+        console.log("Error: Couldn't patch data bio",err);
+      })
+      
+      }
 
+      if (lastN !== null) {
+        axios.patch('http://3.209.12.36:8000/api/account/properties/update',{
+        last_name : lastN.value},
+        options)
+        .then((res) => {
+          console.log("Response: updated",res)
+         
+      })
+    
+      .catch((err) => {
+        console.log("Error: Couldn't patch data lastN",err);
+      })
+        
+      }
+     if (birthD !== null) {
+        axios.patch('http://3.209.12.36:8000/api/account/properties/update',{
+        birthday:birthD.value},options) 
+        .then((res) => {
+          console.log("Response: updated",res)
+        
+      })
+    
+      .catch((err) => {
+        console.log("Error: Couldn't patch data birthdate",err);
+      })
+      }
+      
+      
+     
+    
+   
     axios.get('http://3.209.12.36:8000/api/account/properties',options)
+
     .then((res) => {
       console.log("Response: retrieved data",res);
       this.setState({
-        
+        show:false,
         PersonName:res.data.first_name,
         PersonTag :res.data.username,
         personABout: res.data.bio,
@@ -85,21 +219,20 @@ class Profile extends Component {
         text:"Unfriend",
         PersonLast: res.data.last_name,
         Birthdate: res.data.birthday,
-        src: 'https://www.gravatar.com/avatar/'+res.data.avatar,
-        email: res.data.email
-
-
+        src: 'https://www.gravatar.com/avatar/'+res.data.avatar
+  
       });
     })
-  .catch((err) => {
-    console.log("Error: Couldn't retrieve data",err);
-  })
+
+    .catch((err) => {
+      console.log("Error: Couldn't retrieve data",err);
+    })
+   
     
-   /* const uploadedImage = React.useRef(null);
-  const imageUploader = React.useRef(null);*/
-    const handleClose = () => {this.setState({show:false})};
-    const handleShow = () => {this.setState({show:true})};
-    
+  
+  
+  
+    };
   
     const handleImageUpload = e => {
       const [file] = e.target.files;
@@ -122,65 +255,39 @@ class Profile extends Component {
           }
       )
     }
-    const handleEdit = () => {
-      const name = document.getElementById('my-name');
-      const tag = document.getElementById('my-tag');
-      const loc = document.getElementById('my-location');
-      const about =document.getElementById('my-bio');
-      const pic = document.getElementById('myInput');
-      const lastN = document.getElementById('my-lastname');
-      const birthD = document.getElementById('my-birthdate');
-      
-      
-      const data = {
-      city:loc.value,
-      first_name:name.value,
-      username:tag.value
-    };
-    
-    axios.all([
-    axios.patch('http://3.209.12.36:8000/api/account/properties/update',{city:loc.value,
-    first_name : name.value,
-    last_name : lastN.value,
-    username : tag.value,
-    bio: about.value,
-    birthday:birthD.value
-      
-      },options),
-    
-    axios.get('http://3.209.12.36:8000/api/account/properties',options)])
+    const handleDelete = () => {
+      /*Make the delete request*/
+      const options = {
+        headers: {
+          'Content-Type' : 'application/json',
+          'Authorization': 'Token ' + localStorage.getItem('token') 
+        }
+      }
+      const token = localStorage.getItem('token')
+       axios.patch('http://3.209.12.36:8000/api/account/properties/update',{
+        /* email:'gsbd',
+         username:'snfh',*/
+        is_active:'False'},options) 
+        .then((res) => {
+          console.log("Response: deactivated",res)
 
-      /*.then((res) => {
-        console.log("Response: updated",res)
-       this.setState({  show :false,
-       })
-    })*/
-    .then((res) => {
-      console.log("Response: retrieved data",res);
-      this.setState({
-        show:false,
-        PersonName:res.data.first_name,
-        PersonTag :res.data.username,
-        personABout: res.data.bio,
-        geotag : res.data.city,
-        friends:145,
-        unfriend:false,
-        text:"Unfriend",
-        PersonLast: res.data.last_name,
-        Birthdate: res.data.birthday,
-        src: 'https://www.gravatar.com/avatar/'+res.data.avatar
-
-      });
     })
    
-  .catch((err) => {
-    console.log("Error: Couldn't retrieve data",err);
-  })
+      .catch((err) => {
+        console.log("Error: Couldn't deactivate",err);
+      })
+      
+          this.setState({smshow:false})
+          localStorage.removeItem( 'token');
 
+          this.props.history.push('/register');
+         
+    
+    
+      
 
-
-    };
-
+    }
+   
     
     const animateButton = () => {
         const button = document.getElementById('awe');
@@ -206,6 +313,8 @@ class Profile extends Component {
             <br></br>
 
         <Container maxWidth='xs' fixed >
+            <meta name= 'viewport' content = "width = device-width,initial-scale=1"/>
+
             
         <Row className='profile-container'>
           <Col
@@ -233,7 +342,7 @@ class Profile extends Component {
             xl={10}
           >
             <div style = {{float: "right"}}>
-            <button class="btn"><i class="fa fa-trash" style={{color:'#0063B2FF'}}></i> Delete account</button>
+            <button class="btn"><i class="fa fa-trash" style={{color:'#0063B2FF'}} onClick={()=> this.setState({smshow:true})}></i> Deactivate account</button>
             </div>
             <div style={{display:'inline-block'}}>
               <p
@@ -303,6 +412,13 @@ class Profile extends Component {
 
         {/* Modal used to tedit profile */}
         <Modal show={this.state.show} onHide={handleClose} centered id='mod'>
+        <Col
+              xs={12}
+              sm={12}
+              md={12}
+              lg={12}
+              xl={12}
+          >
             <Modal.Header closeButton style={{backgroundColor:'#faf6ee'}}>
                 <Modal.Title style={{fontFamily:'Vision-Heavy', color:'#67a495'}}>Edit Profile</Modal.Title>
             </Modal.Header>
@@ -310,28 +426,28 @@ class Profile extends Component {
                 
                 <div className='icons text-left'>
                 <Form.Label>Name</Form.Label>
-                <Form.Control type="text" placeholder="my name..." id='my-name'/>
+                <Form.Control type="text" placeholder={this.state.PersonName} id='my-name'/>
                 </div>
                 <div className='icons text-left'>
                 <Form.Label>Last Name</Form.Label>
-                <Form.Control type="text" placeholder="my last name..." id='my-lastname'/>
+                <Form.Control type="text" placeholder={this.state.PersonLast} id='my-lastname'/>
                 </div>
                 <div className='icons text-left'>
                 <Form.Label>Birthdate</Form.Label>
-                <Form.Control type="date" placeholder="birth date..." id='my-birthdate'/>
+                <Form.Control type="date" placeholder={this.state.birthday} id='my-birthdate'/>
                 </div>
                 <div className='icons text-left'>
                 <Form.Label>Bio</Form.Label>
-                <Form.Control type="text" placeholder="my bio..." id='my-bio'/>
+                <Form.Control type="text" placeholder={this.state.personABout} id='my-bio'/>
                 </div>
                 <div className='icons text-left'>
 
                 <Form.Label>Handle</Form.Label>
-                <Form.Control type="text" id='my-tag' placeholder="new handle..."/>
+                <Form.Control type="text" id='my-tag' placeholder={this.state.PersonTag}/>
                 </div>
                 <div className='icons text-left'>
                 <Form.Label>Location</Form.Label>
-                <Form.Control type="text" placeholder="my location..." id='my-location'/>
+                <Form.Control type="text" placeholder={this.state.geotag} id='my-location'/>
                 <Form.Label>Change Profile picture</Form.Label>
                 <Row>
                 <Iframe url="http://en.gravatar.com/emails/"
@@ -359,9 +475,43 @@ class Profile extends Component {
                 Save
             </Button>
             </Modal.Footer>
+            </Col>
         </Modal>
+        
         {/* Modal used to edit profile */}
+
+        
     </Container>
+    {/* Modal used to delete account */}
+    <Modal
+        size="sm"
+        show={this.state.smshow}
+        onHide={()=> this.setState({smshow:false})}
+        aria-labelledby="example-modal-sizes-title-sm"
+      >
+        
+        <Modal.Header closeButton>
+          <Modal.Title id="example-modal-sizes-title-sm">
+            Deactivate Account
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to deactivate your account?
+        </Modal.Body>
+        <div style = {{text:'center'}}>
+        <Button  variant= 'secondary'
+        style={{pull:'left',margin:'25px'}}
+        onClick={()=> this.setState({smshow:false})}
+        >Cancel</Button>
+        
+        
+        <Button  variant= 'primary'
+         style = {{pull:'right',margin:'25px'}}
+         onClick = {handleDelete}
+        >Confirm</Button>
+        </div>
+        
+      </Modal>
     </div>
     );
   }
