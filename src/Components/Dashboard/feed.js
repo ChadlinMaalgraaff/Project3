@@ -183,8 +183,6 @@ class Feed extends Component {
             await axios.get('http://3.209.12.36:8000/api/group', options)
             .then((res) => {
                 console.log("RESPONSE ==== : ", res);
-                console.log('groups: ');
-                console.log(res.data.results)
 
                 var groups = [];
                 for (var l = 0; l < res.data.results.length; l++) {
@@ -228,18 +226,20 @@ class Feed extends Component {
                 var categories = [];
                 for (var i = 0; i < res.data.results.length; i++) {
 
-                    var name = 'Not a registered user';
-                    var surname = '';
+                    var name = 'Fay-yaaz';
+                    var surname = 'Ahmed';
+                    var avatar = 'https://www.gravatar.com/avatar/2b3dedd1282b8980095c5c5ca3d1a1a7';
                     for (var j = 0; j < this.state.users.length; j++) {
                         if (res.data.results[i].user == this.state.users[j].pk) {
                             name = this.state.users[j].first_name;
                             surname = this.state.users[j].last_name;
+                            avatar = 'https://www.gravatar.com/avatar/' + this.state.users[j].avatar;
                             j = this.state.users.length;
                         }
                     }
 
                     var post = <Post users={this.state.users} postText={res.data.results[i].body} postPersonName={name + ' ' + surname} postPersonId={res.data.results[i].user}
-                    postPersonTag={'@' + name + surname} pp={'https://www.gravatar.com/avatar/'+ res.data.avatar} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
+                    postPersonTag={'@' + name + surname} pp={avatar} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
                     date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
                     
@@ -348,18 +348,20 @@ class Feed extends Component {
                 var categories = [];
                 for (var i = 0; i < res.data.results.length; i++) {
 
-                    var name = 'Not a registered user';
-                    var surname = '';
+                    var name = 'Fay-yaaz';
+                    var surname = 'Ahmed';
+                    var avatar = 'https://www.gravatar.com/avatar/2b3dedd1282b8980095c5c5ca3d1a1a7';
                     for (var j = 0; j < this.state.users.length; j++) {
                         if (res.data.results[i].user == this.state.users[j].pk) {
                             name = this.state.users[j].first_name;
                             surname = this.state.users[j].last_name;
+                            avatar = 'https://www.gravatar.com/avatar/' + this.state.users[j].avatar;
                             j = this.state.users.length;
                         }
                     }
 
                     var post = <Post postText={res.data.results[i].body} postPersonName={name + ' ' + surname} postPersonId={res.data.results[i].user}
-                    postPersonTag={'@' + name + surname} pp={'https://www.gravatar.com/avatar/'+ res.data.avatar} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
+                    postPersonTag={'@' + name + surname} pp={avatar} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
                     date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
                     
