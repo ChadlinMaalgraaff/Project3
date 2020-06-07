@@ -67,10 +67,11 @@ class Login extends Component {
     super(props);
     this.onChangePassword = this.onChangePassword.bind(this);
     this.onChangeUserName = this.onChangeUserName.bind(this);
-
+    this.onChangeCheck = this.onChangeCheck.bind(this);
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      remember: false
     }
   };
 
@@ -81,6 +82,9 @@ class Login extends Component {
     this.setState({password: e})
   }
   
+  onChangeCheck(e) {
+    this.setState({remember: e.target.checked})
+  }
   render() {
     const schema = Yup.object().shape({
       username: Yup.string().required("This field is required"),
@@ -116,11 +120,25 @@ class Login extends Component {
                console.log(res.data.response)
                if (res.data.response == "Successfully authenticated.") {
                 auth.login(() => {
-                  //Cookie.set("token", res.data.token);
-                  console.log(Cookie.get("token"));
-                  localStorage.setItem('token', res.data.token);
-                  localStorage.setItem('id', res.data.pk);
-                  this.props.history.push('/home');
+                  Cookie.set("token", res.data.token);
+                  console.log(this.state.remember)
+                  if (this.state.remember) {
+                    localStorage.setItem('token', res.data.token);
+                    localStorage.setItem('id', res.data.pk);
+                    this.props.history.push('/home');
+                  } else {
+                    console.log(Cookie.get("token"));
+                    var date = new Date();
+                    date.getDate();
+                    var tomorrow = new Date();
+                    tomorrow.setDate(date.getDate() + 1);
+                    localStorage.setItem('date', date);
+                    localStorage.setItem('tomorrow', tomorrow);
+                    localStorage.setItem('token', res.data.token);
+                    localStorage.setItem('id', res.data.pk);
+                    this.props.history.push('/home');
+                  }
+                  
                  })
                } else {
                  alert("Invalid Username or Password");
@@ -192,7 +210,7 @@ class Login extends Component {
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value={this.state.remember} onChange={this.onChangeCheck} color="primary" />}
               label="Remember me"
             />
             {isSubmitting && <LinearProgress />}
