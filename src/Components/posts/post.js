@@ -256,11 +256,11 @@ class Post extends Component {
                   {this.state.postPersonTag}
               </p>
             </div>
-            <div style={{display:'inline-block', marginLeft:'auto'}}>
+            {/*<div style={{display:'inline-block', marginLeft:'auto'}}>
               <p><Button className='follow-button' onClick={follow}>
                 {this.state.followerIDs.includes(this.state.postPersonID) ? ('unfollow'):('follow')}
               </Button></p>
-            </div>
+              </div>*/}
           </Col>
           <Col
               xs={12}
@@ -314,7 +314,7 @@ class Post extends Component {
                 <i className="fas fa-comment-alt post-icon icon-comment" onClick={openBottom}></i>
               </OverlayTrigger>{' '}
             </>
-            <>
+            {/*<>
               <OverlayTrigger
                 key={'top'}
                 placement={'top'}
@@ -355,7 +355,7 @@ class Post extends Component {
             </>
             <p align='right' style={{fontSize:'11px', color:'grey', marginBottom:'0px', display:'inline-block'}} >
                 {this.state.likes + ' likes' + '  ' +  this.state.reposts + ' reposts'}
-            </p>
+              </p>*/}
             </div>
           </Col>
         </Row>

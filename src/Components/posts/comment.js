@@ -89,9 +89,10 @@ class Comment extends Component {
                         >
                             {this.state.commentText}
                         </p>
-                        <p style={{display:'inline-block', color:'grey', marginRight:'10px'}}><i class="far fa-thumbs-up comment-icon icon-like" id={'like'+ randoLike} onClick={like} />{this.state.likes}</p>
+                       {/* <p style={{display:'inline-block', color:'grey', marginRight:'10px'}}><i class="far fa-thumbs-up comment-icon icon-like" id={'like'+ randoLike} onClick={like} />{this.state.likes}</p>
                         <p style={{display:'inline-block', color:'grey'}}><i class="far fa-thumbs-down comment-icon fa-flip-horizontal icon-dislike" id={'dislike'+ randoLike} onClick={dislike} />{this.state.dislikes}</p>
-                    </div>
+                        */}
+                        </div>
                 </Col>
             </Row>
         </div>
