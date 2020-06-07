@@ -124,6 +124,7 @@ class Login extends Component {
                   console.log(this.state.remember)
                   if (this.state.remember) {
                     localStorage.setItem('token', res.data.token);
+                    localStorage.setItem('id', res.data.pk);
                     this.props.history.push('/home');
                   } else {
                     console.log(Cookie.get("token"));
