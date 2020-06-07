@@ -133,6 +133,15 @@ body {
   border-color: lightseagreen;
   color: white;
 }
+.myButton1{font-size: 13px;
+  height: 20px;
+  border-radius: 1rem;
+  padding: 0px;
+  width: 80px;
+  background-color:grey;
+  border-color: lightseagreen;
+  color: white;
+}
 .myButton:hover {
   background-color: lightseagreen;
   border-color: lightseagreen;
