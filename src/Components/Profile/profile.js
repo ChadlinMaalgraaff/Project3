@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Container, Row, Col, Modal, Button, Form,Image} from "react-bootstrap";
+import React, { Component, Fragment } from "react";
+import { Container, Row, Col, Modal,ModalFooter, Button, Form,Image} from "react-bootstrap";
 import {Link,Router} from 'react-router-dom';
 import pp1 from '../../Images/pp1.jpg';
 import pp2 from '../../Images/pp2.jpg';
@@ -7,7 +7,8 @@ import { Avatar ,IconButton} from '@material-ui/core';
 import ImageUploader from "react-images-upload";
 import Gravatar from 'react-gravatar';
 import axios from 'axios';
-import Iframe from 'react-iframe'
+import Iframe from 'react-iframe';
+import Popup from "reactjs-popup";
 
 class Profile extends Component { 
   
@@ -15,8 +16,9 @@ class Profile extends Component {
   state = {
     show: false,
     smshow:false,
+    modshow:false,
     
-    friends:145,
+    friends:0,
     picture:pp1,
     userProfile: '',
     pictures:[pp1],
@@ -472,15 +474,30 @@ class Profile extends Component {
                 <div className='icons text-left'>
                 <Form.Label>Location</Form.Label>
                 <Form.Control type="text" placeholder={this.state.geotag} id='my-location'/>
-                <Form.Label>Change Profile picture</Form.Label>
                 <Row>
-                <Iframe url="http://en.gravatar.com/emails/"
-            position="absolute"
-            width="50%"
-            id="myId"
-            className="myClassname"
-            height="100%"
-            styles={{height: "25px"}}/>
+                
+            <Fragment>
+              <button onClick= {() => this.setState({modshow:true})}>Change profile picture</button>
+              <Modal show={this.state.modshow} onHide={handleClose}>
+                <iframe src= "http://en.gravatar.com/emails/" width="100%" height="100%" />
+              
+                <ModalFooter>
+                <Button variant="primary" onClick={()=> this.setState({modshow:false})}>
+                Save
+                </Button>
+                
+                
+                
+                <Button  variant= 'secondary'
+                    style={{pull:'left',margin:'25px'}}
+                     onClick={()=> this.setState({modshow:false})}
+                    >Cancel</Button>
+                    
+                  </ModalFooter>
+              </Modal>
+            </Fragment>
+
+             
             
                 </Row>
                 <input
