@@ -53,12 +53,26 @@ class Profile extends Component {
         text:"Unfriend",
         PersonLast: res.data.last_name,
         Birthdate: res.data.birthday,
-        src: 'https://www.gravatar.com/avatar/'+res.data.avatar,
-        email: res.data.email
+        src: 'https://www.gravatar.com/avatar/'+res.data.avatar+'?s=500',
+        email: res.data.email,
+        user: res.data.pk
 
         
 
       });
+      localStorage.setItem('user',res.data.pk)
+      axios.post('http://3.209.12.36:8000/api/account/friends_list',{'user':res.data.pk},options)
+  .then((res) => {
+    console.log("Response: got friends list",res)
+    this.setState({
+      friends:res.data.count
+    })
+  })
+  .catch((err) => {
+    console.log("couldn't get friends list",err)
+    console.log("state user",this.state.user)
+  })
+      console.log("user",res.data.pk)
     })
   .catch((err) => {
     console.log("Error: Couldn't retrieve data",err);
@@ -228,7 +242,8 @@ class Profile extends Component {
         text:"Unfriend",
         PersonLast: res.data.last_name,
         Birthdate: res.data.birthday,
-        src: 'https://www.gravatar.com/avatar/'+res.data.avatar
+        src: 'https://www.gravatar.com/avatar/'+res.data.avatar+'?s=500',
+        user: res.data.pk
   
       });
     })
