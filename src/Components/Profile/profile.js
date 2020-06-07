@@ -129,18 +129,27 @@ class Profile extends Component {
         
       }
       if (tag !== null ){
-        axios.patch('http://3.209.12.36:8000/api/account/properties/update',{
-       
-        username : tag.value
-        },options)
+        axios.post('http://3.209.12.36:8000/api/account/username_exists',{username:tag.value})
         .then((res) => {
-          console.log("Response: updated",res)
-         
-      })
-    
-      .catch((err) => {
-        console.log("Error: Couldn't patch data tag",err);
-      })
+          if(res.response == 0){
+            axios.patch('http://3.209.12.36:8000/api/account/properties/update',{
+       
+              username : tag.value
+              },options)
+              .then((res) => {
+                console.log("Response: updated",res)
+               
+            })
+          
+            .catch((err) => {
+              console.log("Error: Couldn't patch data tag",err);
+            })
+          }
+          else{
+            alert("Username already exists!")
+          }
+        })
+       
       
         
       }
