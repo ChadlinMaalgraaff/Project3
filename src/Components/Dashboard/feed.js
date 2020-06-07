@@ -139,7 +139,7 @@ class Feed extends Component {
                     for (var m = 0; m < res.data.results[l].members.length; m++) {
                         for (var u = 0; u < this.state.users.length; u++) {
                             if (res.data.results[l].members[m] == this.state.users[u].pk) {
-                                var person = <Person personId={this.state.users[m].pk} key={Math.random()} personName={this.state.users[m].first_name + ' ' + this.state.users[m].last_name} personPP={pp3}/>
+                                var person = <Person personId={this.state.users[u].pk} key={Math.random()} personName={this.state.users[u].first_name + ' ' + this.state.users[u].last_name} personPP={pp3}/>
                                 people.push(person);
                                 u = this.state.users.length;
                             }
@@ -485,16 +485,23 @@ class Feed extends Component {
                     var people = [];
                     for (var m = 0; m < res.data.results[l].members.length; m++) {
                         for (var u = 0; u < this.state.users.length; u++) {
+                            
                             if (res.data.results[l].members[m] == this.state.users[u].pk) {
-                                var person = <Person personId={this.state.users[m].pk} key={Math.random()} personName={this.state.users[m].first_name + ' ' + this.state.users[m].last_name} personPP={pp3}/>
+                                console.log('member id: ');
+                                console.log(res.data.results[l].members[m])
+                                var person = <Person personId={this.state.users[u].pk} key={Math.random()} personName={this.state.users[u].first_name + ' ' + this.state.users[u].last_name} personPP={pp3}/>
                                 people.push(person);
+                                console.log('person ');
+                                console.log(person);
                                 u = this.state.users.length;
                             }
                         }
                     }
-
+                    console.log('people ');
+                    console.log(people);
                     var group = [res.data.results[l].id, [res.data.results[l].admin], people, res.data.results[l].title, <Image src={pp3}></Image>];
                     groups.push(group);
+
                 }
 
                 this.setState({
@@ -595,17 +602,78 @@ class Feed extends Component {
         for (var i = 0; i < group[2].length; i++) {
             groupMemberIds.push(group[2][i].props['personId']);
         }
+        console.log('groupMemberIds: ');
+        console.log(groupMemberIds);
 
-        if (!groupMemberIds.includes(this.state.LoggedInPersonId)) {
-            var updatedGroup = this.state.groups.filter(group => group[0] == e.target.id)[0];
+        const data = {
+            title: group[3],
+            desc: 'my group',
+            admin: group[1], /** Need to get user id from Kiara */
+            members: groupMemberIds,
+            create_date:  "2020-06-06T04:12:19+02:00" /** Doesnt really matter */
+        };
+
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + this.state.token
+            }
+        };
+
+        var api = 'http://3.209.12.36:8000/api/group/' + group[0] + '/';
+        console.log('api: ' + api)
+
+        if (!groupMemberIds.includes(this.state.LoggedInPersonId/** Need to get from Kiara*/)) {
+            /*var updatedGroup = this.state.groups.filter(group => group[0] == e.target.id)[0];
             console.log('updatedGroup:');
             console.log(updatedGroup);
             updatedGroup[2] = [...updatedGroup[2], <Person personId={this.state.LoggedInPersonId} key={this.state.LoggedInPersonId} personName={this.state.LoggedInPersonName} personPP={this.state.LoggedInPersonPP}/>]
+            */
 
-            this.setState({
+            (async () => {
+                await axios.put(api, data, options)
+    
+                await axios.get('http://3.209.12.36:8000/api/group', options)
+                .then((res) => {
+                    console.log("RESPONSE ==== : ", res);
+                    console.log('groups: ');
+                    console.log(res.data.results)
+    
+                    var groups = [];
+                    for (var l = 0; l < res.data.results.length; l++) {
+                        var people = [];
+                        for (var m = 0; m < res.data.results[l].members.length; m++) {
+                            for (var u = 0; u < this.state.users.length; u++) {
+                                if (res.data.results[l].members[m] == this.state.users[u].pk) {
+                                    var person = <Person personId={this.state.users[m].pk} key={Math.random()} personName={this.state.users[m].first_name + ' ' + this.state.users[m].last_name} personPP={pp3}/>
+                                    people.push(person);
+                                    u = this.state.users.length;
+                                }
+                            }
+                        }
+    
+                        var group = [res.data.results[l].id, [res.data.results[l].admin], people, res.data.results[l].title, <Image src={pp3}></Image>];
+                        groups.push(group);
+                    }
+    
+                    this.setState({
+                        groups: groups,
+                        showGroup: false,
+                        selectedPeople: [],
+                        groupSearch: false
+                    })
+    
+                })
+                .catch((err) => {
+                    console.log("ERROR: ====", err);
+                })
+            })();
+
+            /*this.setState({
                 groups: [...this.state.groups.filter(group => group[0] != e.target.id), updatedGroup],
                 groupSearch: false
-            });
+            });*/
+
         }else {
             alert('You are already in this group.');
         }
@@ -614,12 +682,16 @@ class Feed extends Component {
     const filterGroup = (e) => {
         var group = [];
         var groupMemberIds = [];
+        console.log('selectedGroyp id: ');
+        console.log(e.target.id)
         for (var i = 0; i < this.state.groups.length; i++) {
             if (this.state.groups[i][0] == e.target.id) {
                 group = this.state.groups[i];
                 i = this.state.groups.length;
             }
         }
+        console.log('group after for:');
+        console.log(group);
         if (group.length > 0) {
             for (var j = 0; j < group[2].length; j++) {
                 groupMemberIds.push(group[2][j].props['personId']);
