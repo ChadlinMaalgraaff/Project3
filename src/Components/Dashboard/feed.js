@@ -306,7 +306,8 @@ class Feed extends Component {
         const data = {
             body: post.value,
             cat: this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory),
-            loc: null
+            loc: null,
+            user: this.state.LoggedInPersonId
         };
         
         const options = {
@@ -357,7 +358,7 @@ class Feed extends Component {
                         }
                     }
 
-                    var post = <Post users={this.state.users} postText={res.data.results[i].body} postPersonName={name + ' ' + surname} postPersonId={res.data.results[i].user}
+                    var post = <Post postText={res.data.results[i].body} postPersonName={name + ' ' + surname} postPersonId={res.data.results[i].user}
                     postPersonTag={'@' + name + surname} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
                     date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
