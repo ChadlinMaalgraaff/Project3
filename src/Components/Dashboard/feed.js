@@ -184,7 +184,7 @@ class Feed extends Component {
                         }
                     }
 
-                    var post = <Post postText={res.data.results[i].body} postPersonName={name + ' ' + surname} 
+                    var post = <Post postText={res.data.results[i].body} postPersonName={name + ' ' + surname} postPersonId={res.data.results[i].user}
                     postPersonTag={'@' + name + surname} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
                     date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
@@ -305,7 +305,7 @@ class Feed extends Component {
                         }
                     }
 
-                    var post = <Post postText={res.data.results[i].body} postPersonName={name + ' ' + surname} 
+                    var post = <Post postText={res.data.results[i].body} postPersonName={name + ' ' + surname} postPersonId={res.data.results[i].user}
                     postPersonTag={'@' + name + surname} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
                     date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={res.data.results[i].user}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
@@ -602,13 +602,19 @@ class Feed extends Component {
         for (var i = 0; i < group[2].length; i++) {
             groupMemberIds.push(group[2][i].props['personId']);
         }
+        groupMemberIds.push(39/** Need to get user id from Kiara */);
         console.log('groupMemberIds: ');
         console.log(groupMemberIds);
+
+        console.log('title');
+        console.log(group[3]);
+        console.log('admin:');
+        console.log(group[1][0]);
 
         const data = {
             title: group[3],
             desc: 'my group',
-            admin: group[1], /** Need to get user id from Kiara */
+            admin: group[1][0], /** Need to get user id from Kiara */
             members: groupMemberIds,
             create_date:  "2020-06-06T04:12:19+02:00" /** Doesnt really matter */
         };
@@ -623,7 +629,7 @@ class Feed extends Component {
         var api = 'http://3.209.12.36:8000/api/group/' + group[0] + '/';
         console.log('api: ' + api)
 
-        if (!groupMemberIds.includes(this.state.LoggedInPersonId/** Need to get from Kiara*/)) {
+        if (!groupMemberIds.includes(39/** Need to get from Kiara*/)) {
             /*var updatedGroup = this.state.groups.filter(group => group[0] == e.target.id)[0];
             console.log('updatedGroup:');
             console.log(updatedGroup);
@@ -632,7 +638,10 @@ class Feed extends Component {
 
             (async () => {
                 await axios.put(api, data, options)
-    
+                .catch((err) => {
+                    console.log("ERROR: ====", err);
+                })
+
                 await axios.get('http://3.209.12.36:8000/api/group', options)
                 .then((res) => {
                     console.log("RESPONSE ==== : ", res);
@@ -645,7 +654,7 @@ class Feed extends Component {
                         for (var m = 0; m < res.data.results[l].members.length; m++) {
                             for (var u = 0; u < this.state.users.length; u++) {
                                 if (res.data.results[l].members[m] == this.state.users[u].pk) {
-                                    var person = <Person personId={this.state.users[m].pk} key={Math.random()} personName={this.state.users[m].first_name + ' ' + this.state.users[m].last_name} personPP={pp3}/>
+                                    var person = <Person personId={this.state.users[u].pk} key={Math.random()} personName={this.state.users[u].first_name + ' ' + this.state.users[u].last_name} personPP={pp3}/>
                                     people.push(person);
                                     u = this.state.users.length;
                                 }
@@ -806,7 +815,7 @@ class Feed extends Component {
                                 {
                                     timeSort(
                                     (this.state.followerFilter == true ? (this.state.posts.filter(post => this.state.LoggedInPersonFollowerIds.includes(post.props["id"]))):(this.state.posts))
-                                    .filter(this.state.groupFilter == true ? (post => this.state.selectedGroupMemberIds.includes(post.props['id'])):(post => post))
+                                    .filter(this.state.groupFilter == true ? (post => this.state.selectedGroupMemberIds.includes(post.props['postPersonId'])):(post => post))
                                     .filter(this.state.friendFilter == true ? (post => this.state.LoggedInPersonFriendIds.includes(post.props["id"])):(post => post))
                                     .filter(this.state.categoryFilter == true ? (post => post.props['category'] == this.state.categoryFilterText):(post => post))
                                     .filter(this.state.postSearch == true ? (post => post.props['postPersonName'].toLowerCase().includes(this.state.postSearchText.toLowerCase()) || post.props['postText'].toLowerCase().includes(this.state.postSearchText.toLowerCase())):(post => post))
