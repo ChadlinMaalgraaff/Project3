@@ -35,7 +35,7 @@ class Feed extends Component {
             LoggedInPersonName: 'Captain Jack Sparrow',
             LoggedInPersonTag: '@CaptainJackSparrow',
             LoggedInPersonGeotag: 'Tortuga, England',
-            LoggedInPersonId: 1, /* Need to get a more reliable ID */
+            LoggedInPersonId: localStorage.getItem('id'),
             LoggedInPersonPP: pp1,
             LoggedInPersonFriendIds: [2, 3, 4, 5, 6, 7, 8],
             LoggedInPersonFollowerIds: [2],
@@ -77,7 +77,7 @@ class Feed extends Component {
             postSearch: false,
             postSearchText: '',
             postDB: [],
-            token: '7ac7e8c9b85410ec2481f2c2c239a6037748f610',
+            token: localStorage.getItem('token'),
             loadPosts: true,
             users: [],
             lat: '',
@@ -91,6 +91,8 @@ class Feed extends Component {
      */
     componentDidMount() {
         console.log('mounted component');
+        console.log('user id:');
+        console.log(localStorage.getItem('id'));
 
         if ("geolocation" in navigator) {
             console.log("Available");
@@ -136,6 +138,23 @@ class Feed extends Component {
                 .catch((err) => {
                     console.log("ERROR: ====", err);
                 })
+
+                for (var n = 0; n < this.state.users.length; n++) {
+                    if (this.state.users[n].pk = this.state.LoggedInPersonId) {
+                        var name = this.state.users[n].first_name;
+                        var surname = this.state.users[n].last_name;
+                        var city = this.state.users[n].city;
+                        var friends = this.state.users[n].friends;
+
+                        this.setState({
+                            LoggedInPersonName: name + ' ' + surname,
+                            LoggedInPersonTag: '@' + name + surname,
+                            LoggedInPersonGeotag: city,
+                            LoggedInPersonFriendIds: friends
+                        })
+                        n = this.state.users.length
+                    }
+                }
 
                 console.log('Users:');
                 console.log(this.state.users);
@@ -219,7 +238,7 @@ class Feed extends Component {
                         }
                     }
 
-                    var post = <Post postText={res.data.results[i].body} postPersonName={name + ' ' + surname} postPersonId={res.data.results[i].user}
+                    var post = <Post users={this.state.users} postText={res.data.results[i].body} postPersonName={name + ' ' + surname} postPersonId={res.data.results[i].user}
                     postPersonTag={'@' + name + surname} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
                     date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
@@ -287,8 +306,7 @@ class Feed extends Component {
         const data = {
             body: post.value,
             cat: this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory),
-            loc: null,
-            user: 39 /** Need to get user id from Kiara */
+            loc: null
         };
         
         const options = {
@@ -339,9 +357,9 @@ class Feed extends Component {
                         }
                     }
 
-                    var post = <Post postText={res.data.results[i].body} postPersonName={name + ' ' + surname} postPersonId={res.data.results[i].user}
+                    var post = <Post users={this.state.users} postText={res.data.results[i].body} postPersonName={name + ' ' + surname} postPersonId={res.data.results[i].user}
                     postPersonTag={'@' + name + surname} pp={this.state.LoggedInPersonPP} geotag={this.state.LoggedInPersonGeotag} id={res.data.results[i].id} key={Math.random()} 
-                    date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={res.data.results[i].user}
+                    date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
                     
                     if (!categories.includes(res.data.results[i].cat)) {
@@ -490,17 +508,15 @@ class Feed extends Component {
         for (var i = 0; i < this.state.selectedPeople.length; i++) {
             memberIds.push(this.state.selectedPeople[i].props.personId);
         }
-        memberIds.push(39/** Need to get user id from Kiara */);
+        memberIds.push(localStorage.getItem('id'));
 
         console.log('member ids:');
         console.log(memberIds);
 
-        /*memberIds = [39]*/
-
         const data = {
             title: groupName,
             desc: 'my group',
-            admin: 39, /** Need to get user id from Kiara */
+            admin: localStorage.getItem('id'),
             members: memberIds,
             create_date:  "2020-06-06T04:12:19+02:00" /** Doesnt really matter */
         };
@@ -708,18 +724,18 @@ class Feed extends Component {
         console.log('admin:');
         console.log(group[1][0]);
 
-        if (!groupMemberIds.includes(39/** Need to get from Kiara*/)) {
+        if (!groupMemberIds.includes(localStorage.getItem('id'))) {
             /*var updatedGroup = this.state.groups.filter(group => group[0] == e.target.id)[0];
             console.log('updatedGroup:');
             console.log(updatedGroup);
             updatedGroup[2] = [...updatedGroup[2], <Person personId={this.state.LoggedInPersonId} key={this.state.LoggedInPersonId} personName={this.state.LoggedInPersonName} personPP={this.state.LoggedInPersonPP}/>]
             */
-           groupMemberIds.push(39/** Need to get user id from Kiara */);
+           groupMemberIds.push(localStorage.getItem('id'));
 
            const data = {
                 title: group[3],
                 desc: 'my group',
-                admin: group[1][0], /** Need to get user id from Kiara */
+                admin: group[1][0],
                 members: groupMemberIds,
                 create_date:  "2020-06-06T04:12:19+02:00" /** Doesnt really matter */
             };
@@ -920,7 +936,7 @@ class Feed extends Component {
                                     timeSort(
                                     (this.state.followerFilter == true ? (this.state.posts.filter(post => this.state.LoggedInPersonFollowerIds.includes(post.props["id"]))):(this.state.posts))
                                     .filter(this.state.groupFilter == true ? (post => this.state.selectedGroupMemberIds.includes(post.props['postPersonId'])):(post => post))
-                                    .filter(this.state.friendFilter == true ? (post => this.state.LoggedInPersonFriendIds.includes(post.props["id"])):(post => post))
+                                    .filter(this.state.friendFilter == true ? (post => this.state.LoggedInPersonFriendIds.includes(post.props["postPersonId"])):(post => post))
                                     .filter(this.state.categoryFilter == true ? (post => post.props['category'] == this.state.categoryFilterText):(post => post))
                                     .filter(this.state.postSearch == true ? (post => post.props['postPersonName'].toLowerCase().includes(this.state.postSearchText.toLowerCase()) || post.props['postText'].toLowerCase().includes(this.state.postSearchText.toLowerCase())):(post => post))
                                     , /*this.state.timeFilter*/true)
@@ -984,7 +1000,7 @@ class Feed extends Component {
                     <Modal.Body style={{backgroundColor:'#ffffff'}}>
                         <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
                         <input style={{width:'100%'}} id='groupSearch' placeholder='search for a group...' onChange={groupSearch}></input>
-                        {this.state.groups.filter(group => group[1].includes(39/** Get actual value from Kiara*/))
+                        {this.state.groups.filter(group => group[1].includes(localStorage.getItem('id')))
                         .filter(this.state.groupSearch == true ? (g => g[3].toLowerCase().includes(this.state.groupSearchInput.toLowerCase())):(g => g == g))
                         .map((group) => (
                             <div key={group[0]}>

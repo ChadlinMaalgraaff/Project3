@@ -6,8 +6,8 @@ import axios from 'axios';
 
 class Post extends Component {
   state = {
-    commenterName: 'Barbossa', /* this.props.LoggedInPersonName */
-    commenterTag: '@Barbossa', /* this.props.LoggedInPersonTag */
+    commenterName: this.props.LoggedInPersonName,
+    commenterTag: this.props.LoggedInPersonTag,
     commenterId: this.props.LoggedInPersonId,
     comments: [],
     open: 'true',
@@ -24,11 +24,35 @@ class Post extends Component {
     postPersonID: this.props.id,
     followerIDs: this.props.followerIds,
     commentDB: [],
-    token: '7ac7e8c9b85410ec2481f2c2c239a6037748f610',
-    loadComments: true
+    token: localStorage.getItem('token'),
+    loadComments: true,
+    users: this.props.users
   }
 
- 
+  componentDidMount() {
+    console.log('user id: ');
+    console.log(localStorage.getItem('id'));
+
+    const options = {
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization' : 'Token ' + this.state.token
+      }
+    };
+
+    (async () => {
+      await axios.get('http://3.209.12.36:8000/api/account/list_users', options)
+      .then((res) => {
+          console.log("RESPONSE ==== : ", res);
+          this.setState({
+            users: res.data
+          })
+      })
+      .catch((err) => {
+          console.log("ERROR: ====", err);
+      })
+    })();
+  }
 
   render() {
     const rando = Math.random(); {/* used as a unique id, should probably get a more reliable unique id method */}
@@ -38,7 +62,7 @@ class Post extends Component {
 
       const data = {
         body: comment.value,
-        author: 1,
+        author: this.state.commenterId,
         post: this.state.postPersonID
       };
     
@@ -59,9 +83,19 @@ class Post extends Component {
           .then((res) => {
               console.log("RESPONSE ==== : ", res);
               var commentComponents = [];
+              var name = '';
+              var surname = '';
               for (var i = 0; i < res.data.results.length; i++) {
                 if (res.data.results[i].post == this.state.postPersonID) {
-                  var comment = <Comment commentText={res.data.results[i].body} commenterName={res.data.results[i].author} commenterTag={res.data.results[i].author} commenterId={res.data.results[i].id} pp={pp2} key={Math.random()}/>
+
+                  for (var j = 0; j < this.state.users.length; j++) {
+                    if (this.state.users[j].pk == res.data.results[i].author) {
+                      name = this.state.users[j].first_name;
+                      surname = this.state.users[j].last_name;
+                    }
+                  }
+
+                  var comment = <Comment commentText={res.data.results[i].body} commenterName={name + ' ' + surname} commenterTag={'@' + name + surname} commenterId={res.data.results[i].author} pp={pp2} key={Math.random()}/>
                   commentComponents.push(comment);
                 }
               }
@@ -123,7 +157,7 @@ class Post extends Component {
             'Authorization': 'Token ' + this.state.token
         }
       };
-      
+
       (async () => {
         this.setState({
           loadComments: true
@@ -138,9 +172,19 @@ class Post extends Component {
             console.log(this.state.commentDB);
     
             var commentComponents = [];
+            var name = '';
+            var surname = '';
             for (var i = 0; i < res.data.results.length; i++) {
               if (res.data.results[i].post == this.state.postPersonID) {
-                var comment = <Comment commentText={res.data.results[i].body} commenterName={res.data.results[i].author} commenterTag={res.data.results[i].author} commenterId={res.data.results[i].id} pp={pp2} key={Math.random()}/>
+
+                for (var j = 0; j < this.state.users.length; j++) {
+                  if (this.state.users[j].pk == res.data.results[i].author) {
+                    name = this.state.users[j].first_name;
+                    surname = this.state.users[j].last_name;
+                  }
+                }
+
+                var comment = <Comment commentText={res.data.results[i].body} commenterName={name + ' ' + surname} commenterTag={'@' + name + surname} commenterId={res.data.results[i].author} pp={pp2} key={Math.random()}/>
                 commentComponents.push(comment);
               }
             }
