@@ -130,10 +130,10 @@ export default class Requests extends Component {
            button = <LinearProgress />;
            console.log("loading")
         } else {
-            console.log("done loading")
-            if (!this.state.username) {
-                button = <div> <h4> No friend requests</h4></div>
+            if (Object.keys(this.state.usernames).length == 0) {
+                button = <div> <h6>No friend requests</h6></div>
             } else {
+                console.log("done loading")
                 button =  this.state.usernames.map((username, index) => (
                     <Container maxWidth='xs' fixed>
                         <Card width='8rem'>
@@ -157,7 +157,7 @@ export default class Requests extends Component {
                             </Card.Body>
                         </Card> 
                     </Container>))
-            }  
+            }
         };
     return (
         <div>
