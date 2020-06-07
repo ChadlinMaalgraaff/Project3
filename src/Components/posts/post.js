@@ -95,7 +95,7 @@ class Post extends Component {
                     }
                   }
 
-                  var comment = <Comment commentText={res.data.results[i].body} commenterName={name + ' ' + surname} commenterTag={'@' + name + surname} commenterId={res.data.results[i].author} pp={pp2} key={Math.random()}/>
+                  var comment = <Comment commentText={res.data.results[i].body} commenterName={name + ' ' + surname} commenterTag={'@' + name + surname} commenterId={res.data.results[i].author} pp={'https://www.gravatar.com/avatar/'+ res.data.avatar} key={Math.random()}/>
                   commentComponents.push(comment);
                 }
               }
@@ -184,7 +184,7 @@ class Post extends Component {
                   }
                 }
 
-                var comment = <Comment commentText={res.data.results[i].body} commenterName={name + ' ' + surname} commenterTag={'@' + name + surname} commenterId={res.data.results[i].author} pp={pp2} key={Math.random()}/>
+                var comment = <Comment commentText={res.data.results[i].body} commenterName={name + ' ' + surname} commenterTag={'@' + name + surname} commenterId={res.data.results[i].author} pp={'https://www.gravatar.com/avatar/'+ res.data.avatar} key={Math.random()}/>
                 commentComponents.push(comment);
               }
             }
