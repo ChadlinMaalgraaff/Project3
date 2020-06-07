@@ -206,6 +206,7 @@ class Feed extends Component {
                 console.log(this.state.postDB);
 
                 var postComponents = [];
+                var categories = [];
                 for (var i = 0; i < res.data.results.length; i++) {
 
                     var name = 'Not a registered user';
@@ -223,16 +224,21 @@ class Feed extends Component {
                     date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={this.state.LoggedInPersonId}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
                     
+                    if (!categories.includes(res.data.results[i].cat)) {
+                        categories.push(res.data.results[i].cat);
+                    }
+
                     postComponents.push(post);
                 }
                 console.log('postComponents: ');
                 console.log(postComponents);
                 this.setState({
                     posts: postComponents,
-                    loadPosts: false
+                    loadPosts: false,
+                    categories: categories
                 })
-                console.log('this.state.people:');
-                console.log(this.state.people);
+                console.log('this.state.categories:');
+                console.log(this.state.categories);
                 console.log('posts got------------------------------');
             })
             .catch((err) => {
@@ -275,21 +281,13 @@ class Feed extends Component {
                 LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory)}/>]
         })*/}
 
-        if (this.state.selectedCategory == 'Other') {
-            this.setState({
-                categories: [...this.state.categories.filter(category => category != otherCategory), otherCategory]
-            })
-        }
-        this.setState({
-            selectedCategory: '',
-            show: false
-        })
+        console.log('this.state.selectedCategory == "Other" ? (otherCategory):(this.state.selectedCategory):');
+        console.log(this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory));
 
         const data = {
             body: post.value,
             cat: this.state.selectedCategory == 'Other' ? (otherCategory):(this.state.selectedCategory),
-            lat: "noloc",
-            lon: "noloc",
+            loc: null,
             user: 39 /** Need to get user id from Kiara */
         };
         
@@ -328,6 +326,7 @@ class Feed extends Component {
             .then((res) => {
                 console.log("RESPONSE ==== : ", res);
                 var postComponents = [];
+                var categories = [];
                 for (var i = 0; i < res.data.results.length; i++) {
 
                     var name = 'Not a registered user';
@@ -345,13 +344,20 @@ class Feed extends Component {
                     date={res.data.results[i].pub_date} followerIds={this.state.LoggedInPersonFollowerIds} friendIds={this.state.LoggedInPersonFriendIds} LoggedInPersonId={res.data.results[i].user}
                     LoggedInPersonName={this.state.LoggedInPersonName} LoggedInPersonTag={this.state.LoggedInPersonTag} category={res.data.results[i].cat}/>
                     
+                    if (!categories.includes(res.data.results[i].cat)) {
+                        categories.push(res.data.results[i].cat);
+                    }
+
                     postComponents.push(post);
                 }
                 console.log('postComponents: ');
                 console.log(postComponents);
                 this.setState({
                     posts: postComponents,
-                    loadPosts: false
+                    loadPosts: false,
+                    categories: categories,
+                    selectedCategory: '',
+                    show: false
                 })
             })
             .catch((err) => {
