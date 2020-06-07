@@ -79,12 +79,43 @@ class Feed extends Component {
             postDB: [],
             token: '7ac7e8c9b85410ec2481f2c2c239a6037748f610',
             loadPosts: true,
-            users: []
+            users: [],
+            lat: '',
+            long: '',
+            haveLocation: false
         };
     }
 
     componentDidMount() {
         console.log('mounted component');
+
+        if ("geolocation" in navigator) {
+            console.log("Available");
+            var lat = '';
+            var long = '';
+            navigator.geolocation.getCurrentPosition(function(position) {
+                console.log("Latitude is :", position.coords.latitude);
+                console.log("Longitude is :", position.coords.longitude);
+                lat = position.coords.latitude;
+                long = position.coords.longitude;
+            });
+            this.setState({
+                haveLocation: true,
+                lat: lat,
+                long: long
+            });
+            navigator.geolocation.getCurrentPosition(function(position) {
+                console.log(position)
+            });
+        } else {
+            console.log("Not Available");
+            this.setState({
+                haveLocation: false,
+                lat: '',
+                long: ''
+            });
+        }
+
         const options = {
             headers: {
                 'Content-Type': 'application/json',
