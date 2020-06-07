@@ -124,8 +124,8 @@ class Login extends Component {
                   console.log(this.state.remember)
                   if (this.state.remember) {
                     localStorage.setItem('token', res.data.token);
+                    localStorage.setItem('rememberme', 'yes');
                     localStorage.setItem('id', res.data.pk);
-                    this.props.history.push('/home');
                   } else {
                     console.log(Cookie.get("token"));
                     var date = new Date();
@@ -134,10 +134,11 @@ class Login extends Component {
                     tomorrow.setDate(date.getDate() + 1);
                     localStorage.setItem('date', date);
                     localStorage.setItem('tomorrow', tomorrow);
+                    localStorage.setItem('rememberme', 'no');
                     localStorage.setItem('token', res.data.token);
                     localStorage.setItem('id', res.data.pk);
-                    this.props.history.push('/home');
                   }
+                  this.props.history.push('/home');
                   
                  })
                } else {

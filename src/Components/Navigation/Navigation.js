@@ -46,6 +46,7 @@ function Navigation() {
             })
             localStorage.removeItem('token');
             localStorage.removeItem('email');
+            localStorage.clear();
             //return <Redirect to="/login" />
 
             history.push("/");

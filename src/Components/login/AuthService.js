@@ -26,8 +26,13 @@ class Auth {
         date.getDate();
         if (localStorage.getItem('token')) {
             console.log(localStorage.getItem('token'));
+            if (localStorage.getItem('rememberme') == 'yes') {
+                return true;
+            }
             if (date >= localStorage.getItem('tomorrow')){
+                console.log('date');
                 localStorage.removeItem('token');
+                localStorage.clear();
                 return false;
             }
             return true;
