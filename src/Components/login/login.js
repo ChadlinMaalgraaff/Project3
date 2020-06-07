@@ -21,6 +21,8 @@ import axios from 'axios';
 import auth from './AuthService';
 import Cookie from "js-cookie";
 import logo from '../../Images/twaddle_dark_blue_circle.png';
+import './index.css';
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const styles = theme => ({
   paper: {
@@ -41,10 +43,22 @@ const styles = theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+    color: "black",
+    backgroundColor: '#498ec5',
+    '&:hover': {
+      backgroundColor: '#b6d1de'
+    }
   },
   image: {
     width: 'auto',
     height: 'auto'
+  },
+  button: {
+    color: "#498ec5",
+    backgroundColor: '#b6d1de',
+    '&:hover': {
+      backgroundColor: '#498ec5'
+    }
   }
 });      
 
@@ -66,26 +80,6 @@ class Login extends Component {
   onChangePassword(e) {
     this.setState({password: e})
   }
-
-  /*handleSubmit = event => {
-    console.log("username" + this.state.username + "password" + this.state.password);
-    //event.preventDefault();
-
-    const user = {
-      username: this.state.username, 
-      password: this.state.password
-    };
-      axios.post('http://156.155.137.75:8000/api/account/login', user)
-      .then(res => {
-        //this.history.push('/');
-        console.log(res);
-        console.log(res.data);
-      }).catch((error) => {
-        console.log(error)
-      })
-    }
-  }*/
-  
   
   render() {
     const schema = Yup.object().shape({
@@ -125,6 +119,7 @@ class Login extends Component {
                   //Cookie.set("token", res.data.token);
                   console.log(Cookie.get("token"));
                   localStorage.setItem('token', res.data.token);
+                  localStorage.setItem('id', res.data.pk);
                   this.props.history.push('/home');
                  })
                } else {
@@ -168,6 +163,7 @@ class Login extends Component {
           <form className={classes.form} noValidate onSubmit={handleSubmit}>
             <Field
               component={TextField}
+              color="black"
               variant="outlined"
               margin="normal"
               fullWidth
@@ -179,6 +175,7 @@ class Login extends Component {
               isValid ={touched.username && !errors.username}
               autoComplete="username"
               autoFocus
+              style={{color: "#b6d1de"}}
             />
             <Field
               component={TextField}
@@ -203,19 +200,18 @@ class Login extends Component {
               type="submit"
               fullWidth
               variant="contained"
-              color="primary"
               className={classes.submit}
             >
               Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
+                <Link href="#" variant="body2" color="#b6d1de">
                   Forgot password?
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/register" variant="body2">
+                <Link href="/register" variant="body2" color="#b6d1de">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -230,113 +226,3 @@ class Login extends Component {
 }
       
 export default withStyles(styles)(Login);
-/*import React, { useState, Component } from "react";
-import { Row, Col, Form, Button, FormGroup, FormControl} from "react-bootstrap";
-import img from "../../Images/facebook-logo.png";
-import { Formik } from 'formik';
-import * as Yup from 'yup';
-import '../../App.css';
-import { CssBaseline, Container } from "@material-ui/core";
-import { BrowserRouter as Router, Switch, Route, Link, useHistory, useRouteMatch, Redirect } from 'react-router-dom';
-
-
-class Login extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      email: "",
-      password: ""
-    }
-  }
-    render() {
-      const schema = Yup.object().shape({
-        email: Yup.string().email("Please enter a valid email address").required("This field is required"),
-        password: Yup.string().required("This field is required").min(8, "Password is too short - should be at least 8 characters")
-                              .matches(/(?=.*[0-9])/, "Password should contain at least one number")
-                    
-      });
-      
-      return (
-        <React.Fragment>
-          <CssBaseline />
-          <Container maxWidth="xs" fluid>
-          <Formik 
-          validationSchema={schema}
-          validateOnBlur={false}
-          onSubmit={(values, {setSubmitting,isSubmitting, resetForm, validate}) => {
-            //validate(values)
-            console.log("logged in");
-            if (isSubmitting) {
-              console.log("logged in");
-              this.props.push('/home');
-            }
-          }}
-          initialValues={{ 
-            email: '',
-            password:"", 
-            }}
-        >
-          {({
-          handleSubmit,
-          handleChange,
-          handleBlur,
-          values,
-          touched,
-          isValid,
-          errors,
-        }) => (
-          <Form className="form-wrapper" noValidate onSubmit={handleSubmit}>
-          <div>
-            <span> <img src={img} className="img"/> </span>
-          </div>
-          <Form.Group controlId="validationFormik02" className="email">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control 
-              required
-              type="email" 
-              placeholder="Enter email"
-              name="email"
-              value={values.email}
-              onChange={handleChange}
-              isInvalid={touched.email && !!errors.email}
-              isValid ={touched.email && !errors.email} />
-              <Form.Control.Feedback type="invalid">
-                {errors.email}
-              </Form.Control.Feedback>
-          </Form.Group>
-  
-          <Form.Group controlId="validationFormik04" className="password" >
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-            required
-            type="password" 
-            placeholder="Password"
-            name="password"
-            value={values.password}
-            onChange={handleChange}
-            isInvalid={touched.password && !!errors.password}
-            isValid ={touched.password && !errors.password} />
-            <Form.Control.Feedback type="invalid">
-            {errors.password}
-          </Form.Control.Feedback>
-          </Form.Group>
-          <Button variant="dark" type="submit">
-            Login
-          </Button>
-          
-            <Link to="/register">
-            <div className="but">
-              <Button variant="link" on>Don't have an account? Register</Button>
-              </div>
-            </Link>
-          
-        </Form>
-        )}
-      </Formik>
-      </Container>
-      </React.Fragment>
-      );
-    }
-    
-}*/

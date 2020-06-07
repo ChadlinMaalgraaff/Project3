@@ -2,8 +2,8 @@ POST http://3.209.12.36:8000/api/account/login
 Content-Type: application/json
 
 {
-    "username": "fayyaaz",
-    "password": "1234"
+    "username": "Buttercup",
+    "password": "12345678"
 }
 
 ###
@@ -29,3 +29,24 @@ Content-Type: application/json
 GET http://3.209.12.36:8000/logout
 Content-Type: application/json
 Authorization: Token 44fd62b5efa94830702617623ae71899e983c608
+
+###
+POST http://3.209.12.36:8000/api/account/send_request
+Content-Type: application/json
+Authorization: Token a79af587288185f784c87b870a43a6140aad3d61
+
+{
+    "from_user": "32",
+    "to_user": "9"
+}
+
+###
+
+POST http://3.209.12.36:8000/api/account/get_friend_requests
+Content-Type: application/json
+Authorization: Token a79af587288185f784c87b870a43a6140aad3d61
+
+{
+    "to_user": "14"
+}
+

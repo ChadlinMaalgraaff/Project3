@@ -11,7 +11,7 @@ import img from '../../Images/iu.jpeg';
 import SettingsIcon from '@material-ui/icons/Settings';
 import auth from '../login/AuthService';
 import axios from 'axios';
-import logo from '../../Images/twaddle_dark_blue_circle.png';
+import logo from '../../Images/mstile-150x150.png';
 import font from '../../fonts/hacked-font/Hacked-KerX.ttf';
 import './index.css';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -29,8 +29,8 @@ function Navigation() {
               'Content-Type': 'application/json',
               'Authorization': 'Token ' + localStorage.getItem('token')
           };
-          console.log("here")
-          console.log(headers2.Authorization)
+          //console.log("here")
+          //console.log(headers2.Authorization)
           axios.get('http://3.209.12.36:8000/logout/', { 'headers': { 'Authorization': headers2.Authorization } })
           .then((res) => {
               console.log("RESPONSE ==== : ", res);
