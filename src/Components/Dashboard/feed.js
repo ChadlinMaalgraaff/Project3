@@ -451,11 +451,17 @@ class Feed extends Component {
         }
         memberIds.push(39/** Need to get user id from Kiara */);
 
+        console.log('member ids:');
+        console.log(memberIds);
+
+        /*memberIds = [39]*/
+
         const data = {
             title: groupName,
             desc: 'my group',
             admin: 39, /** Need to get user id from Kiara */
-            members: memberIds
+            members: memberIds,
+            create_date:  "2020-06-06T04:12:19+02:00" /** DOesnt really matter */
         };
 
         const options = {
