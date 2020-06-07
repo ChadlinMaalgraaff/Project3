@@ -137,10 +137,11 @@ class Register extends Component {
                 console.log("ERROR: ====", error);
                 console.log("could not update details")
                })
+               this.props.history.push('/home');
              } else {
                alert("Username/email already exists");
+               this.props.history.push('/register');
              }
-             this.props.history.push('/home');
            })
            .catch((err) => {
              console.log("ERROR: ====", err);
