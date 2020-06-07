@@ -602,7 +602,6 @@ class Feed extends Component {
         for (var i = 0; i < group[2].length; i++) {
             groupMemberIds.push(group[2][i].props['personId']);
         }
-        groupMemberIds.push(39/** Need to get user id from Kiara */);
         console.log('groupMemberIds: ');
         console.log(groupMemberIds);
 
@@ -611,30 +610,31 @@ class Feed extends Component {
         console.log('admin:');
         console.log(group[1][0]);
 
-        const data = {
-            title: group[3],
-            desc: 'my group',
-            admin: group[1][0], /** Need to get user id from Kiara */
-            members: groupMemberIds,
-            create_date:  "2020-06-06T04:12:19+02:00" /** Doesnt really matter */
-        };
-
-        const options = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token ' + this.state.token
-            }
-        };
-
-        var api = 'http://3.209.12.36:8000/api/group/' + group[0] + '/';
-        console.log('api: ' + api)
-
         if (!groupMemberIds.includes(39/** Need to get from Kiara*/)) {
             /*var updatedGroup = this.state.groups.filter(group => group[0] == e.target.id)[0];
             console.log('updatedGroup:');
             console.log(updatedGroup);
             updatedGroup[2] = [...updatedGroup[2], <Person personId={this.state.LoggedInPersonId} key={this.state.LoggedInPersonId} personName={this.state.LoggedInPersonName} personPP={this.state.LoggedInPersonPP}/>]
             */
+           groupMemberIds.push(39/** Need to get user id from Kiara */);
+
+           const data = {
+                title: group[3],
+                desc: 'my group',
+                admin: group[1][0], /** Need to get user id from Kiara */
+                members: groupMemberIds,
+                create_date:  "2020-06-06T04:12:19+02:00" /** Doesnt really matter */
+            };
+
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + this.state.token
+                }
+            };
+
+            var api = 'http://3.209.12.36:8000/api/group/' + group[0] + '/';
+            console.log('api: ' + api);
 
             (async () => {
                 await axios.put(api, data, options)
