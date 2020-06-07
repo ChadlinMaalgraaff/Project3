@@ -221,6 +221,27 @@ class Taskbar extends Component {
             })
         }
 
+        const groups = () => {
+            console.log('apiPost')
+    
+            const options = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Token ' + this.state.token
+                }
+            };
+            
+            axios.get('http://3.209.12.36:8000/api/group', options)
+            .then((res) => {
+                console.log("RESPONSE ==== : ", res);
+                console.log('groups: ');
+                console.log(res.data.results)
+            })
+            .catch((err) => {
+                console.log("ERROR: ====", err);
+            })
+        }
+
         const apiTestUpdatePostPut = () => {
             console.log('apiPost')
     
@@ -439,6 +460,19 @@ class Taskbar extends Component {
                                 >
                                     <Button className='feed-button' onClick={list_users} style={{padding:'0px', margin:'0px', width:'100%'}}>
                                         list_users
+                                    </Button>
+                                </Col>
+                                <Col
+                                    xs={12}
+                                    sm={12}
+                                    md={6}
+                                    lg={6}
+                                    xl={6}
+                                    style={{marginBottom:'20px'}}
+                                    className='content-item' id='content-item'
+                                >
+                                    <Button className='feed-button' onClick={groups} style={{padding:'0px', margin:'0px', width:'100%'}}>
+                                        groups
                                     </Button>
                                 </Col>
                             </Row>
