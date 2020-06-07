@@ -22,8 +22,14 @@ class Auth {
 
     isAuthenticated() {
         console.log(this.authenticated);
+        var date = new Date();
+        date.getDate();
         if (localStorage.getItem('token')) {
             console.log(localStorage.getItem('token'));
+            if (date >= localStorage.getItem('tomorrow')){
+                localStorage.removeItem('token');
+                return false;
+            }
             return true;
         } else {
             console.log(localStorage.getItem('token'));
