@@ -9,8 +9,12 @@ import { Avatar } from '@material-ui/core';
 
 
 class Friends extends Component{
+  constructor(props){
+    super(props);
+  
 
-    state = {
+    this.state = { 
+      show:false,
         usernames: [
             {
                 name:'Fay-yaaz',
@@ -45,12 +49,12 @@ class Friends extends Component{
 
     
     }
-  
+  }
 
 removeItem = index => {
   this.setState(state => {
       const usernames = this.state.usernames.filter((item, j) => index != j);
-
+      this.setState({show:false})
       return {
           usernames,
       };
@@ -100,11 +104,24 @@ return (
                         </Col>
                         <Col> 
                             
-                            <Button className='myButton' onClick = {follow } >
-                            {!(this.state.followerIDs.includes(username.id)) ? ('follow'):('Unfollow')}
-
+                            <Button className='myButton' onClick ={()=> this.setState({show:true})} >
+                                        Unfriend
                             </Button>
                             
+                          <Modal show={this.state.show} onHide={handleClose}>
+                            <Modal.Header closeButton>
+                              <Modal.Title>Unfriend</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>Are you sure you want to Unfriend? {username.name}</Modal.Body>
+                            <Modal.Footer>
+                              <Button variant="secondary" onClick={handleClose}>
+                                Cancel
+                              </Button>
+                              <Button variant="primary" onClick={() => this.removeItem(index)}>
+                                Unfriend
+                              </Button>
+                            </Modal.Footer>
+                          </Modal>
                                
                             
                         </Col>
