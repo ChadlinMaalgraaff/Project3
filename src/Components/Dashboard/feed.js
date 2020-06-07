@@ -618,11 +618,68 @@ class Feed extends Component {
          * 
          * Do this before removing the chat from the admin's chat
          */
+        console.log('group id: ');
+        console.log(e.target.id);
 
-        this.setState({
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Token ' + this.state.token
+            }
+        };
+
+        var api = 'http://3.209.12.36:8000/api/group/' + e.target.id + '/';
+
+        (async () => {
+            await axios.delete(api, options)
+
+            await axios.get('http://3.209.12.36:8000/api/group', options)
+            .then((res) => {
+                console.log("RESPONSE ==== : ", res);
+                console.log('groups: ');
+                console.log(res.data.results)
+
+                var groups = [];
+                for (var l = 0; l < res.data.results.length; l++) {
+                    var people = [];
+                    for (var m = 0; m < res.data.results[l].members.length; m++) {
+                        for (var u = 0; u < this.state.users.length; u++) {
+                            
+                            if (res.data.results[l].members[m] == this.state.users[u].pk) {
+                                console.log('member id: ');
+                                console.log(res.data.results[l].members[m])
+                                var person = <Person personId={this.state.users[u].pk} key={Math.random()} personName={this.state.users[u].first_name + ' ' + this.state.users[u].last_name} personPP={pp3}/>
+                                people.push(person);
+                                console.log('person ');
+                                console.log(person);
+                                u = this.state.users.length;
+                            }
+                        }
+                    }
+                    console.log('people ');
+                    console.log(people);
+                    var group = [res.data.results[l].id, [res.data.results[l].admin], people, res.data.results[l].title, <Image src={pp3}></Image>];
+                    groups.push(group);
+
+                }
+
+                this.setState({
+                    groups: groups,
+                    showGroup: false,
+                    selectedPeople: [],
+                    groupSearch: false
+                })
+
+            })
+            .catch((err) => {
+                console.log("ERROR: ====", err);
+            })
+        })();
+
+        /*this.setState({
             groups: this.state.groups.filter(group => group[0] != e.target.id),
             groupSearch: false
-        });
+        });*/
     }
 
     const joinGroup = (e) => {
@@ -913,7 +970,7 @@ class Feed extends Component {
                     <Modal.Body style={{backgroundColor:'#ffffff'}}>
                         <div className='icons text-center' style={{height:'400px', overflowY:'scroll'}}>
                         <input style={{width:'100%'}} id='groupSearch' placeholder='search for a group...' onChange={groupSearch}></input>
-                        {this.state.groups.filter(group => group[1].includes(this.state.LoggedInPersonId))
+                        {this.state.groups.filter(group => group[1].includes(39/** Get actual value from Kiara*/))
                         .filter(this.state.groupSearch == true ? (g => g[3].toLowerCase().includes(this.state.groupSearchInput.toLowerCase())):(g => g == g))
                         .map((group) => (
                             <div key={group[0]}>
