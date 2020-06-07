@@ -676,6 +676,8 @@ class Feed extends Component {
                 .catch((err) => {
                     console.log("ERROR: ====", err);
                 })
+                console.log('joined groups:');
+                console.log(this.state.groups)
             })();
 
             /*this.setState({
