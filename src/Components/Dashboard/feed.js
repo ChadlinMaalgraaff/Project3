@@ -86,6 +86,9 @@ class Feed extends Component {
         };
     }
 
+    /**
+     * This method is only called once when the component mounts, no matter how many times the page is reloaded 
+     */
     componentDidMount() {
         console.log('mounted component');
 
@@ -147,8 +150,8 @@ class Feed extends Component {
                 this.setState({
                     people: people
                 })
+                console.log('users got---------------------------');
         })();
-
         /**
          * List of 2d group arrays
          * the first index contains the group id
@@ -184,7 +187,7 @@ class Feed extends Component {
                 this.setState({
                     groups: groups
                 })
-
+                console.log('groups got----------------------');
             })
             .catch((err) => {
                 console.log("ERROR: ====", err);
@@ -230,6 +233,7 @@ class Feed extends Component {
                 })
                 console.log('this.state.people:');
                 console.log(this.state.people);
+                console.log('posts got------------------------------');
             })
             .catch((err) => {
                 console.log("ERROR: ====", err);
@@ -783,6 +787,8 @@ class Feed extends Component {
         var groupMemberIds = [];
         console.log('selectedGroyp id: ');
         console.log(e.target.id)
+        console.log('state groups:');
+        console.log(this.state.groups);
         for (var i = 0; i < this.state.groups.length; i++) {
             if (this.state.groups[i][0] == e.target.id) {
                 group = this.state.groups[i];
@@ -794,6 +800,8 @@ class Feed extends Component {
         if (group.length > 0) {
             for (var j = 0; j < group[2].length; j++) {
                 groupMemberIds.push(group[2][j].props['personId']);
+                console.log('group[2][j].props["personId"]');
+                console.log(group[2][j].props['personId']);
             }
         }
 
@@ -859,7 +867,7 @@ class Feed extends Component {
                     <Col
                         xs={0}
                         sm={0}
-                        md={0}
+                        md={6}
                         lg={6}
                         xl={6}
                         style={{padding:'0px', margin:'0px', width:'100%'}}
@@ -869,7 +877,7 @@ class Feed extends Component {
                     <Col 
                         xs={12}
                         sm={12}
-                        md={12}
+                        md={6}
                         lg={6}
                         xl={6}
                         className='post-panel'
