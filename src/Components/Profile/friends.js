@@ -23,7 +23,7 @@ class Friends extends Component{
          profilePersonId: 6,
          loggedInPerson: '',
          selectedFriend: '',
-         Isfriend:[]
+         Isfriend:true
 
     
     }
@@ -107,9 +107,9 @@ removeItem = index => {
     console.log("Response: unfriended",res)
     this.setState({
       show:false,
-      Isfriend:false,
 
     })
+    this.get_data()
   })
   .catch((err) => {
     console.log("couldn't unfriend",err)
@@ -124,6 +124,35 @@ removeItem = index => {
       };
   });*/
 }; 
+get_data() {
+  const options = {
+    headers: {
+      'Content-Type' : 'application/json',
+      'Authorization': 'Token ' + localStorage.getItem('token') 
+    }
+  }
+  axios.get('http://3.209.12.36:8000/api/account/properties',options)
+  .then((res) =>{
+    this.setState({
+      loggedInPerson:res.data.first_name
+    })
+  })
+
+  axios.post('http://3.209.12.36:8000/api/account/friends_list',{'user':localStorage.getItem('user')},options)
+  .then((res) => {
+    console.log("Response: got friends list",res)
+    this.setState({
+      friends:res.data.count,
+      usernames:res.data.friends,
+      Isfriend:true
+
+    })
+  })
+  .catch((err) => {
+    console.log("couldn't get friends list",err)
+    console.log("state user",this.state.user)
+  })
+}
 
 
 render() {
@@ -195,7 +224,7 @@ return (
                               <Button variant="secondary" onClick={handleClose}>
                                 Cancel
                               </Button>
-                              <Button variant="primary" onClick={() => this.removeItem(index)}>
+                              <Button variant="primary" onClick={() => this.removeItem(username.id)}>
                                 Unfriend
                               </Button>
                             </Modal.Footer>
