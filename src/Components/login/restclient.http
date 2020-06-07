@@ -36,8 +36,8 @@ Content-Type: application/json
 Authorization: Token a79af587288185f784c87b870a43a6140aad3d61
 
 {
-    "from_user": "32",
-    "to_user": "9"
+    "from_user": "2",
+    "to_user": "32"
 }
 
 ###
@@ -47,6 +47,6 @@ Content-Type: application/json
 Authorization: Token a79af587288185f784c87b870a43a6140aad3d61
 
 {
-    "to_user": "14"
+    "to_user": "32"
 }
 
